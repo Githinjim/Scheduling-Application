@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JProgressBar;
 
 
-public class Test {
+public class GUI {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -42,7 +42,7 @@ public class Test {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Test window = new Test();
+					GUI window = new GUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +54,7 @@ public class Test {
 	/**
 	 * Create the application.
 	 */
-	public Test() {
+	public GUI() {
 		
 		initialize();
 	}
