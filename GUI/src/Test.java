@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
 
@@ -18,6 +20,25 @@ public class Test {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+			
+		// Set the look and feel of the GUI
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
