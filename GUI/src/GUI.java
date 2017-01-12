@@ -1,14 +1,11 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JTextField;
-import javax.swing.JProgressBar;
 
 
 public class GUI {
@@ -70,6 +67,7 @@ public class GUI {
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnNewButton = new JButton("Add TA/GA");
+		
 		btnNewButton.setBounds(27, 27, 119, 38);
 		frame.getContentPane().add(btnNewButton);
 		

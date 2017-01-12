@@ -1,6 +1,8 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.util.HashMap;
+
+import com.google.common.collect.ListMultimap;
 
 
 public class GA_STRUCT {
@@ -10,10 +12,8 @@ public class GA_STRUCT {
 			GA_Phone,
 			GA_ID;
 	
-	HashMap<Date, CLASS_STRUCT> availability;
-	
-	String pattern = "dd 'from' hh 'to' hh";
-	SimpleDateFormat date_format = new SimpleDateFormat(pattern);
+	ListMultimap<DayOfWeek, HashMap<Time, CLASS_STRUCT>> availability;
+	//HashMap<DayOfWeek, HashMap<Hour, CLASS_STRUCT>> availability;
 	
 	// Some sort of structure like this might allow for some comparisons.
 	/*
