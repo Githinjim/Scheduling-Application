@@ -17,7 +17,7 @@ public class GraduateAvailableTimes {
 	private boolean isAvailableAtEightPM = true;
 	
 	/**
-	 * Method to determine if a given Graduate Assistan is available at a given time.
+	 * Method to determine if a given Graduate Assistant is available at a given time.
 	 * 
 	 * @param timeToTest - the time to test is a GA is available.  Should be in the form of
 	 * 			8am, 9am, 10am, ..., 7pm, 8pm

@@ -1,3 +1,4 @@
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,41 +14,35 @@ import java.util.Iterator;
 public class Class {
 
 	private String classNumber = null; 	//the class number
-	private String proffesor = null;		//the proffesors name that is teaching the class
+	private String professor = null;		//the professors name that is teaching the class
 	private String qualifications = null;	//qualifications of the class
 	private String startTime = "";
 	private String endTime = "";
+	private ArrayList<DayOfWeek> daysOfWeek = new ArrayList<DayOfWeek>();
 	
 	private ArrayList<String> listOfAvailableGraduateAssistants = new ArrayList<String>();	//ArrayList of all the available Graduate Assistants
 	
-	public void setStartTime(String newTime){
+	public void setStartTime(String newTime)
+	{
 		
 		startTime = newTime;
 	}//end method setStartTime
 	
-	public void setEndTime(String newTime){
-		
+	public void setEndTime(String newTime)
+	{
 		endTime = newTime;
 	}//end method setEndTime
 	
-	public String getStartTime(){
-		return startTime;
+	public void setDaysOfWeek(ArrayList<DayOfWeek> newDays)
+	{
+		daysOfWeek = newDays;
 	}
 	
-	public String getEndTime(){
-		return endTime;
+	public void setDaysOfWeek(DayOfWeek day)
+	{
+		daysOfWeek = new ArrayList<DayOfWeek>();
+		daysOfWeek.add(day);
 	}
-	
-	/**
-	 * This method will add the a GA (name of the GA to the ArrayList)
-	 * 
-	 * @param newGA - the name of the GA that is to be added
-	 */
-	public void addAvailableGA(String newGA){
-		
-		listOfAvailableGraduateAssistants.add(newGA);
-		
-	}//end method addAvailableGA
 	
 	/**
 	 * This method will add the class number
@@ -60,13 +55,13 @@ public class Class {
 	}//end method for setClassNumber
 	
 	/**
-	 * This method will set the proffesor who is teaching the class
+	 * This method will set the professor who is teaching the class
 	 * 
-	 * @param newProffesor - the proffesors name
+	 * @param newProfessor - the professors name
 	 */
-	public void setProffesor(String newProffesor){
+	public void setProfessor(String newProfessor){
 		
-		proffesor = newProffesor;
+		professor = newProfessor;
 		
 	}//end method for setProffesor
 	
@@ -81,25 +76,46 @@ public class Class {
 		
 	}//end method for setQualifications
 	
+	
+	public String getStartTime(){
+		return startTime;
+	}
+	
+	public String getEndTime(){
+		return endTime;
+	}// end method getEndTime
+	
+	
+	/**
+	 * This method is used to retrieve the days of the week the class occurs
+	 * 
+	 * @return the days the class occurs
+	 */
+	public ArrayList<DayOfWeek> getDaysOfWeek()
+	{
+		return daysOfWeek;
+	}
+	
 	/**
 	 * This method is used to retrieve the classNumber
 	 * 
 	 * @return the class number (classNumber)
 	 */
-	public String getClassNumber(){
+	public String getClassNumber()
+	{
 		
 		return classNumber;
 		
 	}//end method getClassNumber
 	
 	/**
-	 * This method is used to retrieve the name of the proffesor
+	 * This method is used to retrieve the name of the professors
 	 * 
-	 * @return - the name of the proffesor (proffesor)
+	 * @return - the name of the professors (professors)
 	 */
-	public String getProffesor(){
+	public String getProfessor(){
 		
-		return proffesor;
+		return professor;
 		
 	}//end method getProffesor 
 	
@@ -137,5 +153,26 @@ public class Class {
 		return listOfAvailableGraduateAssistants.size();
 		
 	}//end method getNumberOfAvailableGA
+	
+	/**
+	 * This method will add the a GA (name of the GA to the ArrayList)
+	 * 
+	 * @param newGA - the name of the GA that is to be added
+	 */
+	public void addAvailableGA(String newGA){
+		
+		listOfAvailableGraduateAssistants.add(newGA);
+		
+	}//end method addAvailableGA
+	
+	/**
+	 * This method adds a day of the week that the class occurs on
+	 * 
+	 * @param newDayOfWeek - The day of the week that is to be added
+	 */
+	public void addDayOfWeek(DayOfWeek day)
+	{
+		
+	}
 
 }//end Class

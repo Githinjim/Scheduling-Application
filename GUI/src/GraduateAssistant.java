@@ -12,8 +12,14 @@ public class GraduateAssistant {
 	private ArrayList<String> listOfClassAssisting = new ArrayList<String>();
 	private ArrayList<String> listOfClassGACouldAssist = new ArrayList<String>();
 	
+	public GraduateAssistant(String name, String phone)
+	{
+		this.name = name;
+		phoneNumber = phone;
+	}
+	
 	/**
-	 * Method to add to the list of all possibel class a GA could assist with
+	 * Method to add to the list of all possible class a GA could assist with
 	 * 
 	 * @param classNumber - the number of the class to add
 	 */
