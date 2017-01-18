@@ -55,7 +55,7 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
-    private void runAlgorithm(ActionEvent event) throws Exception {
+    private void runAlgorithm(ActionEvent event) {
     	// Fake creation of GA
     	GraduateAssistant student = new GraduateAssistant("bob", "123-456-7890");
     	student.setAvailableAt(0, "8am");

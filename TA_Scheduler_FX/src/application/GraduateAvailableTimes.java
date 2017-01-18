@@ -16,7 +16,7 @@ public class GraduateAvailableTimes {
 	private boolean isAvailableAtSixPM = true;
 	private boolean isAvailableAtSevenPM = true;
 	private boolean isAvailableAtEightPM = true;
-	
+		
 	/**
 	 * Method to determine if a given Graduate Assistant is available at a given time.
 	 * 

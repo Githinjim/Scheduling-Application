@@ -172,12 +172,32 @@ public class GraduateAssistant {
 	/**
 	 * 
 	 * @param dayOfWeek
-	 * @param time
+	 * @param startTime - The starting time the GA is available.
+	 * @param endTime - The ending time the GA is available. 
+	 */
+	public void setNotAvailableAt(int dayOfWeek, String startTime, String endTime){
+		availability.setBusy(dayOfWeek, startTime, endTime);		
+	}//end setNotAvailableAt
+	
+	/**
+	 * 
+	 * @param dayOfWeek - The day of the week
+	 * @param time - Time the GA is available
 	 */
 	public void setAvailableAt(int dayOfWeek, String time){
+		availability.setFree(dayOfWeek, time);
+	}//end method setAvailableAt
+	
+	/**
+	 * 
+	 * @param dayOfWeek - The day of the week
+	 * @param startTime - The starting time the GA is available.
+	 * @param endTime - The ending time the GA is available. 
+	 */
+	public void setAvailableAt(int dayOfWeek, String startTime, String endTime){
 		
 		//availableTimes.get(dayOfTheWeek).setAvailable(time);
-		availability.setFree(dayOfWeek, time);
+		availability.setFree(dayOfWeek, startTime, endTime);
 		
 	}//end method setAvailableAt
 	
