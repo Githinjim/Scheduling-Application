@@ -18,32 +18,87 @@ public class Class {
 	private String classNumber = null; 	//the class number
 	private String professor = null;		//the professors name that is teaching the class
 	private String qualifications = null;	//qualifications of the class
+	
 	private String startTime = "";
 	private String endTime = "";
-	private ArrayList<DayOfWeek> daysOfWeek = new ArrayList<DayOfWeek>();
-	
+	private ArrayList<Integer> daysOfWeek = new ArrayList<Integer>();
+		
 	private ArrayList<String> listOfAvailableGraduateAssistants = new ArrayList<String>();	//ArrayList of all the available Graduate Assistants
 	
+	/**
+	 * Method for adding a day of the week that the class occurs
+	 * @param day
+	 */
+	public void addDayOfWeek(int day)
+	{
+		// Minor error checking
+		if (day >= 0 && day <= 4)
+		{
+			daysOfWeek.add(day);
+		}
+	}
+	
+	/**
+	 * Method for adding a day of the week that the class occurs
+	 * @param day
+	 */
+	public void addDayOfWeek(String day)
+	{
+		day.toUpperCase();
+		
+		switch (day)
+		{
+		
+		case "MONDAY":
+			daysOfWeek.add(0);
+		case "TUESDAY:":
+			daysOfWeek.add(1);
+		case "WEDNESDAY:":
+			daysOfWeek.add(2);
+		case "THURSDAY:":
+			daysOfWeek.add(3);
+		case "FRIDAY:":
+			daysOfWeek.add(4);
+		}
+	}
+	
+	/**
+	 * This method will add the a GA (name of the GA to the ArrayList)
+	 * 
+	 * @param newGA - the name of the GA that is to be added
+	 */
+	public void addAvailableGA(String newGA){
+		
+		listOfAvailableGraduateAssistants.add(newGA);
+		
+	}//end method addAvailableGA
+	
+	/**
+	 * 
+	 * @param newTime
+	 */
 	public void setStartTime(String newTime)
 	{
 		
 		startTime = newTime;
 	}//end method setStartTime
 	
+	/**
+	 * 
+	 * @param newTime
+	 */
 	public void setEndTime(String newTime)
 	{
 		endTime = newTime;
 	}//end method setEndTime
 	
-	public void setDaysOfWeek(ArrayList<DayOfWeek> newDays)
+	/**
+	 * 
+	 * @param newDays
+	 */
+	public void setDaysOfWeek(ArrayList<Integer> newDays)
 	{
 		daysOfWeek = newDays;
-	}
-	
-	public void setDaysOfWeek(DayOfWeek day)
-	{
-		daysOfWeek = new ArrayList<DayOfWeek>();
-		daysOfWeek.add(day);
 	}
 	
 	/**
@@ -77,26 +132,6 @@ public class Class {
 		qualifications = newQualifications;
 		
 	}//end method for setQualifications
-	
-	
-	public String getStartTime(){
-		return startTime;
-	}
-	
-	public String getEndTime(){
-		return endTime;
-	}// end method getEndTime
-	
-	
-	/**
-	 * This method is used to retrieve the days of the week the class occurs
-	 * 
-	 * @return the days the class occurs
-	 */
-	public ArrayList<DayOfWeek> getDaysOfWeek()
-	{
-		return daysOfWeek;
-	}
 	
 	/**
 	 * This method is used to retrieve the classNumber
@@ -157,24 +192,26 @@ public class Class {
 	}//end method getNumberOfAvailableGA
 	
 	/**
-	 * This method will add the a GA (name of the GA to the ArrayList)
 	 * 
-	 * @param newGA - the name of the GA that is to be added
+	 * @return
 	 */
-	public void addAvailableGA(String newGA){
-		
-		listOfAvailableGraduateAssistants.add(newGA);
-		
-	}//end method addAvailableGA
+	public String getStartTime()
+	{
+		return startTime;
+	}
 	
 	/**
-	 * This method adds a day of the week that the class occurs on
 	 * 
-	 * @param newDayOfWeek - The day of the week that is to be added
+	 * @return
 	 */
-	public void addDayOfWeek(DayOfWeek day)
+	public String getEndTime()
 	{
-		
+		return endTime;
+	}
+
+	public ArrayList<Integer> getDaysOfWeek()
+	{
+		return daysOfWeek;
 	}
 
 }//end Class

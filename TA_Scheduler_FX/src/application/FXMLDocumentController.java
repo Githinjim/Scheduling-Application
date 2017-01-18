@@ -33,7 +33,7 @@ public class FXMLDocumentController implements Initializable {
     private Desktop desktop = Desktop.getDesktop();
     
     @FXML
-    private void handleButtonAction(ActionEvent event) throws Exception {
+    private void selectFiles(ActionEvent event) throws Exception {
         List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
             if (list != null) {
@@ -52,6 +52,26 @@ public class FXMLDocumentController implements Initializable {
                 	
                 }
             }
+    }
+    
+    @FXML
+    private void runAlgorithm(ActionEvent event) throws Exception {
+    	// Fake creation of GA
+    	GraduateAssistant student = new GraduateAssistant("bob", "123-456-7890");
+    	student.setAvailableAt(0, "8am");
+    	
+    	
+    	String startTime = "8am";
+    	String endTime = "9am";
+    	
+    	// Fake creation of Class
+    	Class myClass = new Class();
+    	myClass.addDayOfWeek(0);
+    	myClass.setStartTime(startTime);
+    	myClass.setEndTime(endTime);
+      	
+    	// Demo of determining if the student is available for a certain class.
+    	System.out.println(student.isAvailable(myClass.getDaysOfWeek(), myClass.getStartTime(), myClass.getEndTime()));
     }
     
     
