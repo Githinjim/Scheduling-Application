@@ -18,12 +18,11 @@ public class Class {
 	private String classNumber = null; 	//the class number
 	private String professor = null;		//the professors name that is teaching the class
 	private String qualifications = null;	//qualifications of the class
-	
 	private String startTime = "";
 	private String endTime = "";
 	private ArrayList<Integer> daysOfWeek = new ArrayList<Integer>();
-		
-	private ArrayList<String> listOfAvailableGraduateAssistants = new ArrayList<String>();	//ArrayList of all the available Graduate Assistants
+	private GraduateAssistant assignedGA = null;
+	private ArrayList<GraduateAssistant> availableGraduateAssistants = new ArrayList<GraduateAssistant>();	//ArrayList of all the available Graduate Assistants
 	
 	/**
 	 * Method for adding a day of the week that the class occurs
@@ -67,9 +66,9 @@ public class Class {
 	 * 
 	 * @param newGA - the name of the GA that is to be added
 	 */
-	public void addAvailableGA(String newGA){
+	public void addAvailableGA(GraduateAssistant newGA){
 		
-		listOfAvailableGraduateAssistants.add(newGA);
+		availableGraduateAssistants.add(newGA);
 		
 	}//end method addAvailableGA
 	
@@ -99,6 +98,15 @@ public class Class {
 	public void setDaysOfWeek(ArrayList<Integer> newDays)
 	{
 		daysOfWeek = newDays;
+	}
+	
+	/**
+	 * 
+	 * @param ga
+	 */
+	public void setAssignedGA(GraduateAssistant ga)
+	{
+		assignedGA = ga;
 	}
 	
 	/**
@@ -171,11 +179,11 @@ public class Class {
 	 * This method will return an instance of an Iterator that contains all the 
 	 * the names of the available Graduate Assistants available for this class.
 	 * 
-	 * @return - an Iterator of the ArrayList listOfAvailableGraduateAssistants
+	 * @return - an Iterator of the ArrayList availableGraduateAssistants
 	 */
 	public Iterator getIterationOfAvailableGA(){
 		
-		return listOfAvailableGraduateAssistants.iterator();
+		return availableGraduateAssistants.iterator();
 		
 	}//end getIterationOfAvailableGA
 	
@@ -187,7 +195,7 @@ public class Class {
 	 */
 	public int getNumberOfAvailableGA(){
 		
-		return listOfAvailableGraduateAssistants.size();
+		return availableGraduateAssistants.size();
 		
 	}//end method getNumberOfAvailableGA
 	
@@ -212,6 +220,20 @@ public class Class {
 	public ArrayList<Integer> getDaysOfWeek()
 	{
 		return daysOfWeek;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<GraduateAssistant> getAvailableGA()
+	{
+		return availableGraduateAssistants;
+	}
+	
+	public GraduateAssistant getAssignedGA()
+	{
+		return assignedGA;
 	}
 
 }//end Class

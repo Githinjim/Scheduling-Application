@@ -59,6 +59,8 @@ public class FXMLDocumentController implements Initializable {
     	// Fake creation of GA
     	GraduateAssistant student = new GraduateAssistant("bob", "123-456-7890");
     	student.setAvailableAt(0, "8am");
+    	student.setAvailableAt(2, "8am");
+    	student.setAvailableAt(4, "8am");
     	
     	
     	String startTime = "8am";
@@ -66,12 +68,31 @@ public class FXMLDocumentController implements Initializable {
     	
     	// Fake creation of Class
     	Class myClass = new Class();
+    	myClass.setClassNumber("123");
     	myClass.addDayOfWeek(0);
+    	myClass.addDayOfWeek(2);
+    	myClass.addDayOfWeek(4);
     	myClass.setStartTime(startTime);
     	myClass.setEndTime(endTime);
+    	
+    	Class test = new Class();
+    	test.setClassNumber("456");
+    	test.addDayOfWeek(1);
+    	test.setStartTime(startTime);
+    	test.setEndTime(endTime);
       	
+    	Scheduler schedule = new Scheduler();
+    	schedule.addClass(myClass);
+    	schedule.addClass(test);
+    	schedule.addGradStudent(student);
+    	
+    	schedule.initializeGraph();
+    	schedule.createInitialSolution();
+    	
+    	System.out.println(myClass.getAssignedGA().getName());
+    	
     	// Demo of determining if the student is available for a certain class.
-    	System.out.println(student.isAvailable(myClass.getDaysOfWeek(), myClass.getStartTime(), myClass.getEndTime()));
+    	//System.out.println(student.isAvailable(myClass.getDaysOfWeek(), myClass.getStartTime(), myClass.getEndTime()));
     }
     
     

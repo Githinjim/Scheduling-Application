@@ -7,11 +7,10 @@ public class GraduateAssistant {
 
 	private String name;
 	private String phoneNumber;
-	private ArrayList<String> classDeallocationList;
+	private ArrayList<Class> classDeallocationList;
 	//private ArrayList<GraduateAvailableTimes> availableTimes;
-	private ArrayList<String> listOfClassAssisting;
-	private ArrayList<String> listOfClassGACouldAssist;
-	
+	private ArrayList<Class> listOfClassAssisting;
+	private ArrayList<Class> listOfClassGACouldAssist;
 	private Calendar availability;
 	
 	/**
@@ -21,15 +20,15 @@ public class GraduateAssistant {
 	{
 		name = null;
 		phoneNumber = null;
-		classDeallocationList = new ArrayList<String>();
+		classDeallocationList = new ArrayList<Class>();
 		
 		// Create ArrayList with five days of the week.
 		//availableTimes = new ArrayList<GraduateAvailableTimes>(5);
 		
 		availability = new Calendar();
 		
-		listOfClassAssisting = new ArrayList<String>();
-		listOfClassGACouldAssist = new ArrayList<String>();
+		listOfClassAssisting = new ArrayList<Class>();
+		listOfClassGACouldAssist = new ArrayList<Class>();
 	}
 	
 	/**
@@ -41,15 +40,15 @@ public class GraduateAssistant {
 	{
 		this.name = name;
 		phoneNumber = phone;
-		classDeallocationList = new ArrayList<String>();
+		classDeallocationList = new ArrayList<Class>();
 
 		// Create ArrayList with five days of the week.
 		//availableTimes = new ArrayList<GraduateAvailableTimes>(5);
 		
 		availability = new Calendar();
 		
-		listOfClassAssisting = new ArrayList<String>();
-		listOfClassGACouldAssist = new ArrayList<String>();
+		listOfClassAssisting = new ArrayList<Class>();
+		listOfClassGACouldAssist = new ArrayList<Class>();
 	}
 	
 	/**
@@ -57,7 +56,7 @@ public class GraduateAssistant {
 	 * 
 	 * @param classNumber - the number of the class to add
 	 */
-	public void addPossibleGAClass(String classNumber){
+	public void addPossibleGAClass(Class classNumber){
 		
 		listOfClassGACouldAssist.add(classNumber);
 	}//end method addPossibleGAClass
@@ -69,7 +68,7 @@ public class GraduateAssistant {
 	 * 
 	 * @param classNumber - the class number that the GA is responsible for
 	 */
-	public void addClassToCurrentList(String classNumber){
+	public void addClassToCurrentList(Class classNumber){
 		
 		listOfClassAssisting.add(classNumber);
 	}//end method addClassToCurrentList
@@ -80,7 +79,7 @@ public class GraduateAssistant {
 	 * 
 	 * @param dealocatedClass - class number that the student was dealocated.
 	 */
-	public void addDeallocatedClass(String dealocatedClass){
+	public void addDeallocatedClass(Class dealocatedClass){
 		
 		classDeallocationList.add(dealocatedClass);
 		
@@ -119,7 +118,7 @@ public class GraduateAssistant {
 		listOfClassAssisting.remove(classNumberToRemove);
 	}//end method removeClassFromCurrentList
 	
-	public Iterator<String> returnIteratorOfAllClassForGA(){
+	public Iterator<Class> returnIteratorOfAllClassForGA(){
 		
 		return listOfClassAssisting.iterator();
 	}//end method returnIteratorOfAllClassForGA
@@ -151,7 +150,7 @@ public class GraduateAssistant {
 	 * 
 	 * @return - the Iterator instance of all the deallocated classes.
 	 */
-	public Iterator<String> iteratorOfDealocatedClasses(){
+	public Iterator<Class> iteratorOfDealocatedClasses(){
 		
 		return classDeallocationList.iterator();
 		
@@ -251,7 +250,7 @@ public class GraduateAssistant {
 	 * 
 	 * @return an Iterator<String> of all the possible class this specific GA could assist with
 	 */
-	public Iterator<String> returnIteratorOfAllPossibleClasss(){
+	public Iterator<Class> returnIteratorOfAllPossibleClasss(){
 		
 		return listOfClassGACouldAssist.iterator();
 		
