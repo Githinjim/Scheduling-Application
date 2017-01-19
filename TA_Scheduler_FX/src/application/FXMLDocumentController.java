@@ -56,40 +56,42 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void runAlgorithm(ActionEvent event) {
-    	// Fake creation of GA
-    	GraduateAssistant student = new GraduateAssistant("bob", "123-456-7890");
-    	student.setAvailableAt(0, "8am");
-    	student.setAvailableAt(2, "8am");
-    	student.setAvailableAt(4, "8am");
+    	// Fake creation of GAs
+    	GraduateAssistant student1 = new GraduateAssistant("bob", "123-456-7890");
+    	student1.setAvailableAt(0, "8am");
+
+    	GraduateAssistant student2 = new GraduateAssistant("foo", "bar");
+    	student2.setAvailableAt(0, "8am");
+    	student2.setAvailableAt(1, "8am");
     	
     	
     	String startTime = "8am";
     	String endTime = "9am";
     	
     	// Fake creation of Class
-    	Class myClass = new Class();
-    	myClass.setClassNumber("123");
-    	myClass.addDayOfWeek(0);
-    	myClass.addDayOfWeek(2);
-    	myClass.addDayOfWeek(4);
-    	myClass.setStartTime(startTime);
-    	myClass.setEndTime(endTime);
+    	Class class1 = new Class();
+    	class1.setClassNumber("123");
+    	class1.addDayOfWeek(0);
+    	class1.setStartTime(startTime);
+    	class1.setEndTime(endTime);
     	
-    	Class test = new Class();
-    	test.setClassNumber("456");
-    	test.addDayOfWeek(1);
-    	test.setStartTime(startTime);
-    	test.setEndTime(endTime);
+    	Class class2 = new Class();
+    	class2.setClassNumber("456");
+    	class2.addDayOfWeek(1);
+    	class2.setStartTime(startTime);
+    	class2.setEndTime(endTime);
       	
     	Scheduler schedule = new Scheduler();
-    	schedule.addClass(myClass);
-    	schedule.addClass(test);
-    	schedule.addGradStudent(student);
+    	schedule.addClass(class1);
+    	schedule.addClass(class2);
+    	schedule.addGradStudent(student1);
+    	schedule.addGradStudent(student2);
     	
     	schedule.initializeGraph();
     	schedule.createInitialSolution();
     	
-    	System.out.println(myClass.getAssignedGA().getName());
+    	//System.out.println(class2.getAssignedGA().getName());
+    	System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
     	
     	// Demo of determining if the student is available for a certain class.
     	//System.out.println(student.isAvailable(myClass.getDaysOfWeek(), myClass.getStartTime(), myClass.getEndTime()));

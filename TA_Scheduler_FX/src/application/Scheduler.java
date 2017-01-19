@@ -37,7 +37,7 @@ public class Scheduler {
 	}
 	
 	/**
-	 * Method that initializes 
+	 * Method that determines the possible GA and Class matching
 	 */
 	public void initializeGraph()
 	{	
@@ -57,6 +57,9 @@ public class Scheduler {
 		}
 	}
 	
+	/**
+	 * Method that creates the initial solution
+	 */
 	public void createInitialSolution()
 	{
 		// Sort all Classes by the number of available TAs
@@ -71,15 +74,40 @@ public class Scheduler {
 			}
 			else if (weeklyClass.getNumberOfAvailableGA() == 1)
 			{
-				weeklyClass.setAssignedGA(weeklyClass.getAvailableGA().get(0));
+				//Check that the GA is still available
+				if (checkStillAvailable(weeklyClass, weeklyClass.getAvailableGA().get(0)))
+				{
+					weeklyClass.setAssignedGA(weeklyClass.getAvailableGA().get(0));
+					weeklyClass.getAvailableGA().get(0).addClassToCurrentList(weeklyClass);
+				}
+				else
+				{
+					//Problem!
+				}
 			}
 			else 
 			{
 				// How do we want to select the GA?
+				
+				// Start iterating over the list of available GAs
+				for (int i = 0; i < weeklyClass.getNumberOfAvailableGA(); i++)
+				{
+					// If a GA is available, assign them?
+					if (checkStillAvailable(weeklyClass, weeklyClass.getAvailableGA().get(i)))
+					{
+						weeklyClass.setAssignedGA(weeklyClass.getAvailableGA().get(i));
+						weeklyClass.getAvailableGA().get(i).addClassToCurrentList(weeklyClass);
+						break;
+					}
+				} // If we reach the end of the for loop and a GA has not been assigned,
+				  // then we start our alternating path
 			}
 		}
 	}
 	
+	/**
+	 * Method for performing a Variable Neighborhood Search
+	 */
 	public void VNS()
 	{
 		
@@ -90,8 +118,14 @@ public class Scheduler {
 		
 	}
 	
+	private boolean checkStillAvailable(Class weeklyClass, GraduateAssistant ga)
+	{
+		return true;
+	}
+	
 	/**
-	 * 
+	 * A custom Comparator class that allows for the comparison of two classes.
+	 * Classes that have a smaller number of available GAs will be sorted first.
 	 * @author Matthew
 	 *
 	 */

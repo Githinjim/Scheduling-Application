@@ -71,6 +71,7 @@ public class GraduateAssistant {
 	public void addClassToCurrentList(Class classNumber){
 		
 		listOfClassAssisting.add(classNumber);
+		availability.setBusy(classNumber.getDaysOfWeek(), classNumber.getStartTime(), classNumber.getEndTime());
 	}//end method addClassToCurrentList
 	
 	/**
@@ -106,6 +107,11 @@ public class GraduateAssistant {
 		return phoneNumber;
 		
 	}//end method phoneNumber
+	
+	public ArrayList<Class> getAssignedClasses()
+	{
+		return listOfClassAssisting;
+	}
 	
 	/**
 	 * This method will remove a class from the current ArrayList that
