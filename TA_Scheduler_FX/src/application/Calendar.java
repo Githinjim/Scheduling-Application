@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 public class Calendar {
 	private boolean[][] calendar;
 	
@@ -169,9 +171,29 @@ public class Calendar {
 		int startTime = stringToHour(startHour);
 		int endTime = stringToHour(endHour);
 		
-		for (int i = startTime; i <= endTime; i++)
+		for (int i = startTime; i < endTime; i++)
 		{
 			calendar[day][i] = false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param day
+	 * @param startHour
+	 * @param endHour
+	 */
+	public void setBusy(ArrayList<Integer> days, String startHour, String endHour)
+	{
+		int startTime = stringToHour(startHour);
+		int endTime = stringToHour(endHour);
+		
+		for (int day : days)
+		{
+			for (int i = startTime; i < endTime; i++)
+			{
+				calendar[day][i] = false;
+			}
 		}
 	}
 	
@@ -241,12 +263,31 @@ public class Calendar {
 		int startTime = stringToHour(startHour);
 		int endTime = stringToHour(endHour);
 		
-		for (int i = startTime; i <= endTime; i++)
+		for (int i = startTime; i < endTime; i++)
 		{
 			calendar[day][i] = true;
 		}
 	}
 	
+	public void setFree(ArrayList<Integer> days, String startHour, String endHour)
+	{
+		int startTime = stringToHour(startHour);
+		int endTime = stringToHour(endHour);
+		
+		for (int day : days)
+		{
+			for (int i = startTime; i < endTime; i++)
+			{
+				calendar[day][i] = true;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param day
+	 * @return
+	 */
 	private int stringToDay (String day)
 	{
 		int dayOfWeek = -1;
