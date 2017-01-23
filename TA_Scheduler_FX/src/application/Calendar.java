@@ -10,7 +10,7 @@ public class Calendar {
 	 */
 	public Calendar()
 	{
-		calendar = new boolean[5][12]; // Everything is false by default. Available = True
+		calendar = new boolean[5][13]; // Everything is false by default. Available = True
 	}
 	
 	/**
@@ -357,6 +357,12 @@ public class Calendar {
 			break;
 		case "7PM":
 			time = 11;
+			break;
+		case "8PM":
+			time = 12;
+			break;
+		case "9PM":
+			time = 13;
 			break;
 		}
 		
