@@ -1,6 +1,5 @@
 package application;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,6 +22,24 @@ public class Class {
 	private ArrayList<Integer> daysOfWeek = new ArrayList<Integer>();
 	private GraduateAssistant assignedGA = null;
 	private ArrayList<GraduateAssistant> availableGraduateAssistants = new ArrayList<GraduateAssistant>();	//ArrayList of all the available Graduate Assistants
+	private ArrayList<String> deAssignedGAs = new ArrayList<String>();
+	
+	/**
+	 * this method is to add a deAssigned GA by its name only to a list.
+	 * It is used for back tracking.
+	 * @param name
+	 */
+	public void addDeAssignedGA(String name){
+		deAssignedGAs.add(name);
+	}//end method addDeAssignedGA
+	
+	/**
+	 * Method to return the ArrayList for the deAssigned GA's
+	 * @return - ArrayList of deAssignedGA's
+	 */
+	public ArrayList<String> getListOfDeAssignedGAs(){
+		return deAssignedGAs;
+	}
 	
 	/**
 	 * Method for adding a day of the week that the class occurs
@@ -181,7 +198,7 @@ public class Class {
 	 * 
 	 * @return - an Iterator of the ArrayList availableGraduateAssistants
 	 */
-	public Iterator getIterationOfAvailableGA(){
+	public Iterator<GraduateAssistant> getIterationOfAvailableGA(){
 		
 		return availableGraduateAssistants.iterator();
 		
@@ -217,6 +234,30 @@ public class Class {
 		return endTime;
 	}
 
+	public int getTotalTime(){
+		ArrayList<String> timeList = new ArrayList<String>();
+		timeList.add("6am");
+		timeList.add("7am");
+		timeList.add("8am");
+		timeList.add("9am");
+		timeList.add("10am");
+		timeList.add("11am");
+		timeList.add("12pm");
+		timeList.add("1pm");
+		timeList.add("2pm");
+		timeList.add("3pm");
+		timeList.add("4pm");
+		timeList.add("5pm");
+		timeList.add("6pm");
+		timeList.add("7pm");
+		timeList.add("8pm");
+		
+		int startIndex = timeList.indexOf(this.getStartTime());
+		int endIndex = timeList.indexOf(this.getEndTime());
+		return (endIndex - startIndex) * this.daysOfWeek.size();
+		
+	} //end method getTotalTime
+	
 	public ArrayList<Integer> getDaysOfWeek()
 	{
 		return daysOfWeek;
@@ -236,4 +277,22 @@ public class Class {
 		return assignedGA;
 	}
 
+	public GraduateAssistant deAssignGAFromClass(){
+		GraduateAssistant nameToReturn = assignedGA;
+		deAssignedGAs.add(nameToReturn.getName());
+		assignedGA = null;
+		return nameToReturn;
+		
+	}//end method deAssignGAFromClass
+	
+	public boolean isGADealocated(String name){
+		
+		for(int i = 0; i < deAssignedGAs.size(); i++){
+			if(deAssignedGAs.get(i) == name){
+				return true;
+			}
+		}//end for loop
+		return false;
+	}//end method isGADealozted
+	
 }//end Class

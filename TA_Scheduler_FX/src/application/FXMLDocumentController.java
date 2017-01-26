@@ -81,7 +81,7 @@ public class FXMLDocumentController implements Initializable {
     	class2.setStartTime(startTime);
     	class2.setEndTime(endTime);
       	
-    	Scheduler schedule = new Scheduler();
+    	Algorithm schedule = new Algorithm();
     	schedule.addClass(class1);
     	schedule.addClass(class2);
     	schedule.addGradStudent(student1);
@@ -91,7 +91,7 @@ public class FXMLDocumentController implements Initializable {
     	schedule.createInitialSolution();
     	
     	//System.out.println(class2.getAssignedGA().getName());
-    	System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
+    	//System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
     	
     	// Demo of determining if the student is available for a certain class.
     	//System.out.println(student.isAvailable(myClass.getDaysOfWeek(), myClass.getStartTime(), myClass.getEndTime()));

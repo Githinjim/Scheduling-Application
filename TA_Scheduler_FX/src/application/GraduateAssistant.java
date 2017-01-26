@@ -12,6 +12,7 @@ public class GraduateAssistant {
 	private ArrayList<Class> listOfClassAssisting;
 	private ArrayList<Class> listOfClassGACouldAssist;
 	private Calendar availability;
+	private int hoursAssigned = 0;
 	
 	/**
 	 * Default constructor
@@ -29,6 +30,15 @@ public class GraduateAssistant {
 		
 		listOfClassAssisting = new ArrayList<Class>();
 		listOfClassGACouldAssist = new ArrayList<Class>();
+	}
+	
+	public void addToHours(int hoursToAdd){
+		hoursAssigned += hoursToAdd;
+	}
+	
+	public int getHoursAssigned(){
+		
+		return hoursAssigned;
 	}
 	
 	/**
@@ -81,8 +91,16 @@ public class GraduateAssistant {
 	 * @param dealocatedClass - class number that the student was dealocated.
 	 */
 	public void addDeallocatedClass(Class dealocatedClass){
+		int index = -1;
+		for (int i = 0; i < listOfClassAssisting.size(); i++){
+			if(listOfClassAssisting.get(i).getClassNumber() == dealocatedClass.getClassNumber()){
+				index = i;
+			}
+		}//end for loop
 		
+		listOfClassAssisting.remove(index);
 		classDeallocationList.add(dealocatedClass);
+		hoursAssigned -= dealocatedClass.getTotalTime();
 		
 	}//end of method addDealocatedClass
 	
@@ -258,7 +276,7 @@ public class GraduateAssistant {
 	 */
 	public Iterator<Class> returnIteratorOfAllPossibleClasss(){
 		
-		return listOfClassGACouldAssist.iterator();
+		return listOfClassAssisting.iterator();
 		
 	}//end method returnIteratorOfAllPossibleClasss
 	
