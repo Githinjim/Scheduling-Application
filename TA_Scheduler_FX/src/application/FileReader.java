@@ -1,11 +1,16 @@
 package application;
 
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Iterator; 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -13,45 +18,72 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * Michael Githinji
  */
 
-public class FileReader{
-		   
-	public static void main(String[] args) {
-	    try {
-	        FileInputStream file = new FileInputStream(new File("C:\\Users\\MGithinji\\git\\Scheduling-Application\\TA_Scheduler_FX\\test.xls"));
+public class FileReader extends Class {
 
-	        //Create Workbook instance holding reference to .xlsx file
-	        XSSFWorkbook workbook = new XSSFWorkbook(file);
+	public static void main(String[] args) throws IOException {
+		ArrayList<Class> classess = readFileUsingPOI();
+		for (Class cl : classess) {
+			System.out.println(cl.toString());
+		}
 
-	        //Get first/desired sheet from the workbook
-	        XSSFSheet sheet = workbook.getSheetAt(0);
+	}
 
-	        //Iterate through each rows one by one
-	        Iterator<Row> rowIterator = sheet.iterator();
-	        while (rowIterator.hasNext())
-	        {
-	            Row row = rowIterator.next();
-	            //For each row, iterate through all the columns
-	            Iterator<Cell> cellIterator = row.cellIterator();
+	private static ArrayList<Class> readFileUsingPOI() throws IOException {
+		ArrayList<Class> classess = new ArrayList<Class>();
 
-	            while (cellIterator.hasNext()) 
-	            {
-	                Cell cell = cellIterator.next();
-	                //Check the cell type and format accordingly
-	                switch (cell.getCellType()) 
-	                {
-	                    case Cell.CELL_TYPE_NUMERIC:
-	                        System.out.print(cell.getNumericCellValue() + "\t");
-	                        break;
-	                    case Cell.CELL_TYPE_STRING:
-	                        System.out.print(cell.getStringCellValue() + "\t");
-	                        break;
-	                }
-	            }
-	            System.out.println("");
-	        }
-	        file.close();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		ClassLoader classLoader = FileReader.class.getClassLoader();
+		String excelFilePath = "Excel.xls";
+		FileInputStream inputStream = new FileInputStream(new File(classLoader.getResource(excelFilePath).getFile()));
+
+		Workbook workbk = new XSSFWorkbook(inputStream);
+		org.apache.poi.ss.usermodel.Sheet sheet = workbk.getSheetAt(0);
+
+		Iterator<Row> iterator = sheet.iterator();
+		while (iterator.hasNext()) {
+			Row nextRow = iterator.next();
+
+			// Not creating country object for header
+			if (nextRow.getRowNum() == 0)
+				continue;
+
+			Class classObj = new Class();
+			Iterator<Cell> cellIterator = nextRow.cellIterator();
+
+			while (cellIterator.hasNext()) {
+				Cell cell = cellIterator.next();
+				int columnIndex = cell.getColumnIndex();
+				switch (columnIndex + 1) {
+				case 1:
+					classObj.setAssignedGA(cell.getStringCellValue());
+					break;
+				case 2:
+					classObj.setClassNumber(cell.getNumericCellValue());
+					break;
+				case 3:
+					classObj.setDaysOfWeek(cell.getStringCellValue());
+					break;
+				case 4:
+					classObj.setEndTime(cell.getNumericCellValue());
+					break;
+				case 5:
+					classObj.setProfessor(cell.getStringCellValue());
+					break;
+				case 6:
+					classObj.setQualifications(cell.getStringCellValue());
+					break;
+				case 7:
+					classObj.setStartTime(cell.getNumericCellValue());
+					break;
+
+				default:
+				}
+
+			}
+			classess.add(classObj);
+		}
+		workbk.close();
+		inputStream.close();
+
+		return classess;
 	}
 }
