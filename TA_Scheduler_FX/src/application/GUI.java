@@ -25,6 +25,7 @@ public class GUI extends Application {
         
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("TA/GA Scheduler");
     }
 
     /**

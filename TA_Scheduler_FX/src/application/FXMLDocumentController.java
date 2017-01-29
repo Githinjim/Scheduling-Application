@@ -30,6 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -40,6 +41,20 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class FXMLDocumentController implements Initializable {
     FileChooser fileChooser = new FileChooser();
     ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
+    
+    @FXML TextArea resultsText;
+    
+    @FXML 
+    private void selectClasses(ActionEvent event) throws Exception
+    {
+    	resultsText.appendText("Loading Classes.");
+    	//load in classes... >_>
+    	List<File> classes =
+                fileChooser.showOpenMultipleDialog(null);
+    	
+    	
+    	resultsText.appendText("Classes Loaded!");
+    }
 
 	@FXML
 	private void selectFiles(ActionEvent event) throws Exception {

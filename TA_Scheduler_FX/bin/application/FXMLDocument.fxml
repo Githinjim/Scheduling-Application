@@ -11,7 +11,7 @@
     <children>
         <Button fx:id="button" layoutX="1.0" layoutY="46.0" onAction="#selectFiles" text="Select Grad. Students" />
       <Button layoutX="11.0" layoutY="120.0" mnemonicParsing="false" onAction="#runAlgorithm" text="Run Algorithm" />
-      <TextArea editable="false" layoutX="146.0" layoutY="10.0" prefHeight="229.0" prefWidth="173.0" text="... For printing the current status... ??" wrapText="true" />
+      <TextArea editable="false" fx:id="resultsText" layoutX="146.0" layoutY="10.0" prefHeight="229.0" prefWidth="173.0" onAction="#selectClasses" text="... For printing the current status... ??" wrapText="true" />
       <Button layoutX="14.0" layoutY="81.0" mnemonicParsing="false" text="Select Classes" />
       <Button layoutX="18.0" layoutY="157.0" mnemonicParsing="false" text="Save Results" />
       <ColorPicker layoutX="1.0" layoutY="10.0">
