@@ -47,7 +47,6 @@ public class FXMLDocumentController implements Initializable {
    
 	@FXML
 	private void selectFiles(ActionEvent event) throws Exception {
-		System.out.println("testing");
 		List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
             if (list != null) {
@@ -222,7 +221,7 @@ public class FXMLDocumentController implements Initializable {
 	    {
 	    	resultsText.appendText("Loading Classes.\n");
 	    	//load in classes... >_>
-	    	System.out.print("Test");
+	    	
 	    	List<File> classes =
 	                fileChooser.showOpenMultipleDialog(null);
 	    	
