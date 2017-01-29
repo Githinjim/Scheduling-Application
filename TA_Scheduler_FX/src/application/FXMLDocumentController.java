@@ -47,6 +47,7 @@ public class FXMLDocumentController implements Initializable {
    
 	@FXML
 	private void selectFiles(ActionEvent event) throws Exception {
+		System.out.println("testing");
 		List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
             if (list != null) {
