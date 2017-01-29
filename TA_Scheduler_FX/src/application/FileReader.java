@@ -63,7 +63,7 @@ public class FileReader extends Class {
 					classObj.setDaysOfWeek(cell.getStringCellValue());
 					break;
 				case 4:
-					classObj.setEndTime(cell.getNumericCellValue());
+					classObj.setEndTime(cell.getStringCellValue());
 					break;
 				case 5:
 					classObj.setProfessor(cell.getStringCellValue());
@@ -72,7 +72,7 @@ public class FileReader extends Class {
 					classObj.setQualifications(cell.getStringCellValue());
 					break;
 				case 7:
-					classObj.setStartTime(cell.getNumericCellValue());
+					classObj.setStartTime(cell.getStringCellValue());
 					break;
 
 				default:
