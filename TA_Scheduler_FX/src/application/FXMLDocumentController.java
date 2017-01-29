@@ -221,6 +221,7 @@ public class FXMLDocumentController implements Initializable {
 	    {
 	    	resultsText.appendText("Loading Classes.\n");
 	    	//load in classes... >_>
+	    	System.out.print("Test");
 	    	List<File> classes =
 	                fileChooser.showOpenMultipleDialog(null);
 	    	
