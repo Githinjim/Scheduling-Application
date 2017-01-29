@@ -44,18 +44,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML TextArea resultsText;
     
-    @FXML 
-    private void selectClasses(ActionEvent event) throws Exception
-    {
-    	resultsText.appendText("Loading Classes.");
-    	//load in classes... >_>
-    	List<File> classes =
-                fileChooser.showOpenMultipleDialog(null);
-    	
-    	
-    	resultsText.appendText("Classes Loaded!");
-    }
-
+   
 	@FXML
 	private void selectFiles(ActionEvent event) throws Exception {
 		List<File> list =
@@ -227,6 +216,20 @@ public class FXMLDocumentController implements Initializable {
             }
     }//end selectFiles method for the grad students
 
+	 @FXML 
+	    private void selectClasses(ActionEvent event) throws Exception
+	    {
+	    	resultsText.appendText("Loading Classes.\n");
+	    	//load in classes... >_>
+	    	List<File> classes =
+	                fileChooser.showOpenMultipleDialog(null);
+	    	
+	    	
+	    	resultsText.appendText("Classes Loaded!\n"); 
+	    }
+
+	
+	
 	public void handle(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		//Desktop desktop =Desktop.getDesktop();
