@@ -16,13 +16,25 @@ public class Class {
 
 	private String classNumber = null; 	//the class number
 	private String professor = null;		//the professors name that is teaching the class
-	private String qualifications = null;	//qualifications of the class
+	//private String qualifications = null;	//qualifications of the class
+	private ArrayList<String> qualifications = new ArrayList<String>();
 	private String startTime = "";
 	private String endTime = "";
 	private ArrayList<Integer> daysOfWeek = new ArrayList<Integer>();
-	private GraduateAssistant assignedGA = null;
+	//private GraduateAssistant assignedGA = null;
+	private ArrayList<GraduateAssistant> assignedGA = new ArrayList<GraduateAssistant>();
 	private ArrayList<GraduateAssistant> availableGraduateAssistants = new ArrayList<GraduateAssistant>();	//ArrayList of all the available Graduate Assistants
 	private ArrayList<String> deAssignedGAs = new ArrayList<String>();
+	private int numberOfGAs;
+	private int numberOfHoursForPrep = 0;
+
+	public Class(int numberOfGAs){
+		numberOfGAs = numberOfGAs;
+	}
+	
+	public void setNumberOfHoursForPrep(int hours){
+		numberOfHoursForPrep = hours;
+	}
 	
 	/**
 	 * this method is to add a deAssigned GA by its name only to a list.
@@ -121,9 +133,16 @@ public class Class {
 	 * 
 	 * @param ga
 	 */
-	public void setAssignedGA(GraduateAssistant ga)
+	public boolean setAssignedGA(GraduateAssistant ga)
 	{
-		assignedGA = ga;
+		//assignedGA = ga;
+				if(assignedGA.size() >= numberOfGAs){
+					return false;
+				}
+				else{
+					assignedGA.add(ga);
+					return true;
+				}
 	}
 	
 	/**
@@ -152,7 +171,7 @@ public class Class {
 	 * 
 	 * @param newQualifications - the newQualification
 	 */
-	public void setQualifications(String newQualifications){
+	public void setQualifications(ArrayList<String> newQualifications){
 		
 		qualifications = newQualifications;
 		
@@ -186,7 +205,7 @@ public class Class {
 	 * 
 	 * @return - the qualifications of the class (qualifications)
 	 */
-	public String getQualifications(){
+	public ArrayList<String> getQualifications(){
 		
 		return qualifications;
 		
@@ -254,7 +273,7 @@ public class Class {
 		
 		int startIndex = timeList.indexOf(this.getStartTime());
 		int endIndex = timeList.indexOf(this.getEndTime());
-		return (endIndex - startIndex) * this.daysOfWeek.size();
+		return ((endIndex - startIndex) * this.daysOfWeek.size()) + numberOfHoursForPrep;
 		
 	} //end method getTotalTime
 	
@@ -272,15 +291,16 @@ public class Class {
 		return availableGraduateAssistants;
 	}
 	
-	public GraduateAssistant getAssignedGA()
+	public ArrayList<GraduateAssistant> getAssignedGA()
 	{
 		return assignedGA;
 	}
 
 	public GraduateAssistant deAssignGAFromClass(){
-		GraduateAssistant nameToReturn = assignedGA;
+		GraduateAssistant nameToReturn = assignedGA.get(numberOfGAs - 1);
 		deAssignedGAs.add(nameToReturn.getName());
-		assignedGA = null;
+		assignedGA.remove(assignedGA.size() - 1);
+		//assignedGA = null;
 		return nameToReturn;
 		
 	}//end method deAssignGAFromClass

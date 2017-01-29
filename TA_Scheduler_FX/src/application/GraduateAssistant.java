@@ -13,6 +13,7 @@ public class GraduateAssistant {
 	private ArrayList<Class> listOfClassGACouldAssist;
 	private Calendar availability;
 	private int hoursAssigned = 0;
+	private ArrayList<String> qualifications = new ArrayList<String>();
 	
 	/**
 	 * Default constructor
@@ -32,6 +33,14 @@ public class GraduateAssistant {
 		listOfClassGACouldAssist = new ArrayList<Class>();
 	}
 	
+	public void addQualification(String newQualification){
+		qualifications.add(newQualification);
+	}
+	
+	public ArrayList<String> getQualifications(){
+		return qualifications;
+	}
+	
 	public void addToHours(int hoursToAdd){
 		hoursAssigned += hoursToAdd;
 	}
@@ -40,6 +49,34 @@ public class GraduateAssistant {
 		
 		return hoursAssigned;
 	}
+	
+	public boolean checkIsQualified(String qualification){
+		for(int i = 0; i < qualifications.size(); i++){
+			if(qualifications.get(i).equals(qualification)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkIsQualified(ArrayList<String> qualificationList){
+		boolean isQualified = false;
+		if(qualificationList.size() == 0){
+			return true;
+		}
+		for(int i = 0; i < qualificationList.size(); i++){
+			isQualified = false;
+			for(int j = 0; j < qualifications.size(); j++){
+				if(qualificationList.get(i).equals(qualifications.get(j))){
+					isQualified = true;
+				}//end if
+				
+			}//end inner loop
+			
+		}//end outer loop
+		return isQualified;
+		
+	}//end method checkIsQualified
 	
 	/**
 	 * Constructor that allows for the initialization of the name and phone number of the GA

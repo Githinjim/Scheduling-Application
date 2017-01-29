@@ -13,11 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -26,7 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -42,28 +38,179 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * @author Matthew
  */
 public class FXMLDocumentController implements Initializable {
-	FileChooser fileChooser = new FileChooser();
-	private Desktop desktop = Desktop.getDesktop();
+    FileChooser fileChooser = new FileChooser();
+    ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
 
 	@FXML
 	private void selectFiles(ActionEvent event) throws Exception {
-		List<File> list = fileChooser.showOpenMultipleDialog(null);
-		if (list != null) {
-			for (File file : list) {
-				FileInputStream fIP = new FileInputStream(file);
-				XSSFWorkbook workbook = new XSSFWorkbook(fIP);
-				XSSFSheet spreadsheet = workbook.createSheet();
-				XSSFRow row = spreadsheet.createRow(0);
-				Cell cell = row.createCell(0);
-				cell.setCellValue("Test");
+		List<File> list =
+                fileChooser.showOpenMultipleDialog(null);
+            if (list != null) {
+                for (File file : list) {
+                    FileInputStream fIP = new FileInputStream(file);
+                    //XSSFWorkbook workbook = new XSSFWorkbook(fIP);
+                    Workbook workbook = new XSSFWorkbook(fIP);
+                    //XSSFSheet spreadsheet = workbook.createSheet();
+                    //XSSFRow row = spreadsheet.createRow(0);
+                    //Cell cell = row.createCell(0);
+                    //cell.setCellValue("test");
+                    Sheet datatypeSheet = workbook.getSheetAt(0);
+                    Iterator<Row> iterator = datatypeSheet.iterator();
+                    gradList.add(new GraduateAssistant());
+                    while(iterator.hasNext()){
+                    	Row currentRow = iterator.next();
+                    	Iterator<Cell> cellIterator = currentRow.iterator();
+                    	
+                    	while(cellIterator.hasNext()){
+                    		Cell currentCell = cellIterator.next();
+                    		//Conditional for the name field
+                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
+                    			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
+                    		}
+                    		
+                    		//Conditional for the phonenumber field
+                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 1){
+                    			gradList.get(gradList.size() - 1).setPhoneNumber(currentCell.getStringCellValue());
+                    		}
+                    		
+                    		//conditional to check if the current cell is part of the available times data
+                    		if(currentCell.getColumnIndex() >= 1 && currentCell.getColumnIndex() <= 5 && currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 15){
+                    			if(currentCell.getStringCellValue().equals("")){
+                    				//System.out.println("true");
+                    				String timeOfTheDay = "";
+                    				switch(currentCell.getRowIndex() - 3){
+                    					case 0: timeOfTheDay = "8am";
+                    							break;
+                    					case 1: timeOfTheDay = "9am";
+            									break;
+            									
+                    					case 2: timeOfTheDay = "10am";
+    											break;
+    										
+                    					case 3: timeOfTheDay = "11am";
+    											break;
+                    						
+                    					case 4: timeOfTheDay = "12pm";
+    											break;
+                    						
+                    					case 5: timeOfTheDay = "1pm";
+    											break;
+                    						
+                    					case 6: timeOfTheDay = "2pm";
+    											break;
+                    						
+                    					case 7: timeOfTheDay = "3pm";
+    											break;
+                    						
+                    					case 8: timeOfTheDay = "4pm";
+    											break;
+                    						
+                    					case 9: timeOfTheDay = "5pm";
+    											break;
+                    						
+                    					case 10: timeOfTheDay = "6pm";
+    											break;
+                    						
+                    					case 11: timeOfTheDay = "7pm";
+    											break;
+                    						
+                    					case 12: timeOfTheDay = "8pm";
+    											break;
+                    						
+                    				}//end switch case statement
+                    				gradList.get(gradList.size() - 1).setAvailableAt(currentCell.getColumnIndex() - 1, timeOfTheDay);
+                    			}//if conditional for setting avalablity of the tiem of the day.
+                    		}//end if conditional for the times section
+                    		
+                    		//conditional for the qualifications
+                    		if(currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 10 && currentCell.getColumnIndex() == 7){
+                    			
+                    			if(currentCell.getNumericCellValue() != Cell.CELL_TYPE_NUMERIC){
+                    				String qualificationToAdd = "";
+                    				int theint = (int) (currentCell.getNumericCellValue() / 1);
+                    				switch(Integer.toString(theint)){
+                    	
+                    				case "1":
+                    					qualificationToAdd = "Fitness Lab Supervision";
+                    					break;
+                    				case "2":
+                    					qualificationToAdd = "Gross Anatomy Lecture and Lab";
+                    					break;
+                    				case "3":
+                    					qualificationToAdd = "Open Anatomy Cadaver Lab Study Session";
+                    					break;
+                    				case "4":
+                    					qualificationToAdd = "Physiology lecture & Lab";
+                    					break;
+                    				case "5":
+                    					qualificationToAdd = "Physiology of exercise, lecture and lab";
+                    					break;
+                    				case "6":
+                    					qualificationToAdd = "Assesment and treatment of athletic injuries";
+                    					break;
+                    				case "7":
+                    					qualificationToAdd = "Fitness assessment and exercise Prescription";
+                    					break;
+                    				case "8":
+                    					qualificationToAdd = "Introduction to Biomechanics";
+                    					break;
+                    				case "9":
+                    					qualificationToAdd = "Clinical Physiology";
+                    					break;
+                    				case "10":
+                    					qualificationToAdd = "Clinical Biomechanics, lecture and lab";
+                    					break;
+                    				case "11":
+                    					qualificationToAdd = "Sports Biomechanics lecture and lab";
+                    					break;
+                    				case "12":
+                    					qualificationToAdd = "Sports Nutrition";
+                    					break;
+                    					
+                    				
+                    				}//end switch
+                    				gradList.get(gradList.size() - 1).addQualification(qualificationToAdd);
+                    			}//end if for if the qualifications is empty
+                    			
+                    		}//end if for the qualifications
+                    		
+                    		
+                    		
+                    		/**
+                    		if (currentCell.getCellTypeEnum() == CellType.STRING) {
+                                System.out.print(currentCell.getStringCellValue() + "--");
+                            } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+                                System.out.print(currentCell.getNumericCellValue() + "--");
+                            }
+                    		*/
+                    	}
+                    }
+                    
+                    //System.out.println(workbook.getName(name));
 
-				FileOutputStream fOP = new FileOutputStream(file);
-				workbook.write(fOP);
+                    //FileOutputStream fOP = new FileOutputStream(file);
+                    //workbook.write(fOP);
 
-				fOP.close();
-			}
-		}
-	}
+                    //fOP.close();
+                	
+                }
+            }//end if
+            else{
+            	System.out.println("No files were selected for the Graduate Students");
+            }
+            
+            //just some test code to test if the data population is working
+            for(int i = 0; i < gradList.size(); i ++){
+            	System.out.println("Grad Student: " + gradList.get(i).getName());
+            	System.out.println("Has phone number: " + gradList.get(i).getPhoneNumber());
+            	System.out.println("They have qualifications of:");
+            	for(int j = 0; j < gradList.get(i).getQualifications().size(); j++){
+            		System.out.println(gradList.get(i).getQualifications().get(j));
+            	}
+            	System.out.println("Is available on Monday at 3pm: " + gradList.get(i).isAvailable(0, "3pm"));
+            	System.out.println("Is available on Wednesday at 2pm: " + gradList.get(i).isAvailable(2, "2pm"));
+            }
+    }//end selectFiles method for the grad students
 
 	public void handle(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
@@ -140,30 +287,30 @@ public class FXMLDocumentController implements Initializable {
 		String startTime = "8am";
 		String endTime = "9am";
 
-		// Fake creation of Class
-		Class class1 = new Class();
-		class1.setClassNumber("123");
-		class1.addDayOfWeek(0);
-		class1.setStartTime(startTime);
-		class1.setEndTime(endTime);
-
-		Class class2 = new Class();
-		class2.setClassNumber("456");
-		class2.addDayOfWeek(1);
-		class2.setStartTime(startTime);
-		class2.setEndTime(endTime);
-
-		Algorithm schedule = new Algorithm();
-		schedule.addClass(class1);
-		schedule.addClass(class2);
-		schedule.addGradStudent(student1);
-		schedule.addGradStudent(student2);
-
-		schedule.initializeGraph();
-		schedule.createInitialSolution();
-
-		System.out.println(class2.getAssignedGA().getName());
-		 System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
+//		// Fake creation of Class
+//		Class class1 = new Class();
+//		class1.setClassNumber("123");
+//		class1.addDayOfWeek(0);
+//		class1.setStartTime(startTime);
+//		class1.setEndTime(endTime);
+//
+//		Class class2 = new Class();
+//		class2.setClassNumber("456");
+//		class2.addDayOfWeek(1);
+//		class2.setStartTime(startTime);
+//		class2.setEndTime(endTime);
+//
+//		Algorithm schedule = new Algorithm();
+//		schedule.addClass(class1);
+//		schedule.addClass(class2);
+//		schedule.addGradStudent(student1);
+//		schedule.addGradStudent(student2);
+//
+//		schedule.initializeGraph();
+//		schedule.createInitialSolution();
+//
+//		System.out.println(class2.getAssignedGA().getName());
+//		 System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
 
 		// Demo of determining if the student is available for a certain class.
 		// System.out.println(student.isAvailable(myClass.getDaysOfWeek(),
