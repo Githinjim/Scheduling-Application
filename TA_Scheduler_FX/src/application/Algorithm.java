@@ -87,13 +87,14 @@ public class Algorithm {
 		{
 			if (weeklyClass.getNumberOfAvailableGA() == 0)
 			{
-				// Problem!!
+				// Partial assignment
 			}
 			else 
 			{
 				if(!assignGA(weeklyClass))
 				{
-					// Partial assignment
+					backtrack(weeklyClass);
+					// Backtracking or partial assignment
 				}
 			}
 		}
@@ -158,32 +159,7 @@ public class Algorithm {
 	 * @return True if a GA was assigned
 	 */
 	public boolean assignGA(Class weeklyClass)
-	{
-		//Sort GAs by available time?
-//		ArrayList<Integer> visited = new ArrayList<Integer>();
-//		while (visited.size() != weeklyClass.getNumberOfAvailableGA())
-//		{
-//			MersenneTwisterFast random_generator = new MersenneTwisterFast();
-//			int currentGA;
-//
-//			// Select the GA randomly
-//			do
-//			{
-//				currentGA = random_generator.nextInt(weeklyClass.getNumberOfAvailableGA());
-//			}
-//			while(visited.contains(currentGA));
-//			visited.add(currentGA);
-//			
-//			// Assign the GA if they are still available
-//			if (checkStillAvailable(weeklyClass, weeklyClass.getAvailableGA().get(currentGA)) &&
-//				20 >= weeklyClass.getAvailableGA().get(currentGA).getHoursAssigned() + weeklyClass.getWorkTime())
-//			{
-//				weeklyClass.setAssignedGA(weeklyClass.getAvailableGA().get(currentGA));
-//				weeklyClass.getAvailableGA().get(currentGA).addAssistingClass(weeklyClass);
-//				return true; // A GA was assigned
-//			}
-//		}
-		
+	{		
 		for (GraduateAssistant ga : weeklyClass.getAvailableGA())
 		{
 		
@@ -208,7 +184,7 @@ public class Algorithm {
 	{
 		for (GraduateAssistant ga : weeklyClass.getAvailableGA())
 		{
-			// Find conflicting class
+			// Find conflicting class(es)
 			ArrayList<Class> conflicting = new ArrayList<Class>();
 			
 			for (Class potentialConflict : ga.getPotentialClasses())
@@ -226,14 +202,23 @@ public class Algorithm {
 			// Attempt to re-assign a conflicting class
 			for (Class conflict : conflicting)
 			{
+				//ArrayList<GraduateAssistant> temp = conflict.getAssignedGA();
+				conflict.removeAssignedGA(ga);
 				if (assignGA(conflict))
 				{
-					
-					break;
+					// Don't re-assign the same GA
+					if (conflict.getAssignedGA().contains(ga))
+					{
+						System.out.println("Re-assigned: " + conflict.getClassNumber());
+						assignGA(weeklyClass);
+						return true;
+					}
+				}
+				else {
+					conflict.setAssignedGA(ga);
 				}
 			}
 			
-			// 
 		}
 		return false;
 	}

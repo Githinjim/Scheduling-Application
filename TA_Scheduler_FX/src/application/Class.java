@@ -285,4 +285,22 @@ public class Class {
 		return assignedGA;
 	}
 	
+	/**
+	 * 
+	 * @param ga
+	 */
+	public void removeAssignedGA()
+	{
+		assignedGA.clear();
+	}
+	
+	/**
+	 * 
+	 * @param ga
+	 */
+	public void removeAssignedGA(GraduateAssistant ga)
+	{
+		assignedGA.remove(ga);
+	}
+	
 }//end Class
