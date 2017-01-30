@@ -207,7 +207,7 @@ public class Algorithm {
 				if (assignGA(conflict))
 				{
 					// Don't re-assign the same GA
-					if (conflict.getAssignedGA().contains(ga))
+					if (!conflict.getAssignedGA().contains(ga))
 					{
 						System.out.println("Re-assigned: " + conflict.getClassNumber());
 						assignGA(weeklyClass);
