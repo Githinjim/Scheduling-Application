@@ -93,7 +93,7 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		classList.get(classList.size() - 1).addDayOfWeek(2);
 		classList.get(classList.size() - 1).addDayOfWeek(4);
 
-		//456.002
+//		//456.002
 		classList.add(new Class());
 		classList.get(classList.size() - 1).setClassNumber("EXSC 456.002");
 		classList.get(classList.size() - 1).setStartTime("8am");
@@ -154,9 +154,9 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		classList.get(classList.size() - 1).addDayOfWeek(2);
 		classList.get(classList.size() - 1).addDayOfWeek(4);
 		
-		//551.001 - ALSO AT ANOTHER DAY&TIME!!
+		// IHP 551.001
 		classList.add(new Class());
-		classList.get(classList.size() - 1).setClassNumber("EXSC 551.001");
+		classList.get(classList.size() - 1).setClassNumber("IHP 551.001");
 		classList.get(classList.size() - 1).setStartTime("10am");
 		classList.get(classList.size() - 1).setEndTime("11am");
 		classList.get(classList.size() - 1).addDayOfWeek(0);
@@ -306,6 +306,13 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		classList.get(classList.size() - 1).setEndTime("8pm");
 		classList.get(classList.size() - 1).addDayOfWeek(3);
 		classList.get(classList.size() - 1).addDayOfWeek(1);
+		
+		// Anatomy Lab
+		classList.add(new Class());
+		classList.get(classList.size() - 1).setClassNumber("Anatomy Lab");
+		classList.get(classList.size() - 1).setPrepHours(2);
+		
+		
 	}
 	
 	private void setupGAs()
@@ -322,6 +329,11 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "8am", "12pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "2pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "9pm"); // All day Friday
+		GAList.get(GAList.size() - 1).addQualification("EXSC 456");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 446");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 458");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 551");
+		GAList.get(GAList.size() - 1).addQualification("Anatomy Lab");
 		
 		// #1
 		GAList.add(new GraduateAssistant());
@@ -336,20 +348,27 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "11am", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "9am", "10am");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "11am", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 370");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 351");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 350");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 445");
 		
 		// #2
 		GAList.add(new GraduateAssistant());
 		GAList.get(GAList.size() - 1).setName("2");
-		GAList.get(GAList.size() - 1).setAvailableAt(0, "8am", "12pm");
+		GAList.get(GAList.size() - 1).setAvailableAt(0, "8am", "9am");
 		GAList.get(GAList.size() - 1).setAvailableAt(0, "1pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(1, "8am", "4pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(1, "5pm", "9pm");
-		GAList.get(GAList.size() - 1).setAvailableAt(2, "8am", "4pm");
+		GAList.get(GAList.size() - 1).setAvailableAt(2, "8am", "3pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(2, "5pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "8am", "4pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "5pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "12pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "1pm", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 450");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 455");
+		GAList.get(GAList.size() - 1).addQualification("IHP 564");
 		
 		// #3
 		GAList.add(new GraduateAssistant());
@@ -363,6 +382,7 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "8am", "1pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "1pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 350");
 		
 		// #4
 		GAList.add(new GraduateAssistant());
@@ -377,6 +397,8 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "12pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "11am");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "12pm", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("IHP 551");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 350");
 		
 		// #5
 		GAList.add(new GraduateAssistant());
@@ -391,6 +413,10 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "12pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "9am");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "11am", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 350");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 351");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 450");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 353");
 		
 		// #6
 		GAList.add(new GraduateAssistant());
@@ -404,6 +430,8 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).setAvailableAt(3, "12pm", "9pm");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "8am", "9am");
 		GAList.get(GAList.size() - 1).setAvailableAt(4, "11am", "9pm");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 351");
+		GAList.get(GAList.size() - 1).addQualification("EXSC 370");
 		
 /*		GAList.add(new GraduateAssistant());
 		GAList.get(0).setName("Nick Cage");

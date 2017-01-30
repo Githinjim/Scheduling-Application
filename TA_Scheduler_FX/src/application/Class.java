@@ -1,7 +1,6 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * 
@@ -14,43 +13,46 @@ import java.util.Iterator;
 
 public class Class {
 
-	private String classNumber = null; 	//the class number
-	private String professor = null;		//the professors name that is teaching the class
-	//private String qualifications = null;	//qualifications of the class
-	private ArrayList<String> qualifications = new ArrayList<String>();
-	private String startTime = "";
-	private String endTime = "";
-	private ArrayList<Integer> daysOfWeek = new ArrayList<Integer>();
-	//private GraduateAssistant assignedGA = null;
-	private ArrayList<GraduateAssistant> assignedGA = new ArrayList<GraduateAssistant>();
-	private ArrayList<GraduateAssistant> availableGraduateAssistants = new ArrayList<GraduateAssistant>();	//ArrayList of all the available Graduate Assistants
-	private ArrayList<String> deAssignedGAs = new ArrayList<String>();
+	private String classNumber; 	//the class number
+	private String professor;		//the professors name that is teaching the class
+	//private ArrayList<String> qualifications = new ArrayList<String>();
+	private String startTime;
+	private String endTime;
+	private ArrayList<Integer> daysOfWeek;
+	private ArrayList<GraduateAssistant> assignedGA;
+	private ArrayList<GraduateAssistant> availableGAs;
 	private int numberOfGAs;
-	private int numberOfHoursForPrep = 0;
+	private int prepHours;
 
+	/**
+	 * 
+	 */
+	public Class()
+	{
+		classNumber = null;
+		professor = null;
+//		qualifications = new ArrayList<String>();
+		startTime = "";
+		endTime = "";
+		daysOfWeek = new ArrayList<Integer>();
+		assignedGA = new ArrayList<GraduateAssistant>();
+		availableGAs = new ArrayList<GraduateAssistant>();
+		numberOfGAs = 1;
+		prepHours = 0;
+		//Default constructor;
+	}
+	
+	/**
+	 * Constructor for creating a class with a number of GAs
+	 * @param numberOfGAs
+	 */
 	public Class(int numberOfGAs){
-		numberOfGAs = numberOfGAs;
+		this.numberOfGAs = numberOfGAs;
+		prepHours = 0;
 	}
 	
-	public void setNumberOfHoursForPrep(int hours){
-		numberOfHoursForPrep = hours;
-	}
-	
-	/**
-	 * this method is to add a deAssigned GA by its name only to a list.
-	 * It is used for back tracking.
-	 * @param name
-	 */
-	public void addDeAssignedGA(String name){
-		deAssignedGAs.add(name);
-	}//end method addDeAssignedGA
-	
-	/**
-	 * Method to return the ArrayList for the deAssigned GA's
-	 * @return - ArrayList of deAssignedGA's
-	 */
-	public ArrayList<String> getListOfDeAssignedGAs(){
-		return deAssignedGAs;
+	public void setPrepHours(int hours){
+		prepHours = hours;
 	}
 	
 	/**
@@ -97,7 +99,7 @@ public class Class {
 	 */
 	public void addAvailableGA(GraduateAssistant newGA){
 		
-		availableGraduateAssistants.add(newGA);
+		availableGAs.add(newGA);
 		
 	}//end method addAvailableGA
 	
@@ -135,14 +137,15 @@ public class Class {
 	 */
 	public boolean setAssignedGA(GraduateAssistant ga)
 	{
-		//assignedGA = ga;
-				if(assignedGA.size() >= numberOfGAs){
-					return false;
-				}
-				else{
-					assignedGA.add(ga);
-					return true;
-				}
+		if(assignedGA.size() >= numberOfGAs)
+		{
+			return false;
+		}
+		else
+		{
+			assignedGA.add(ga);
+			return true;
+		}
 	}
 	
 	/**
@@ -173,7 +176,7 @@ public class Class {
 	 */
 	public void setQualifications(ArrayList<String> newQualifications){
 		
-		qualifications = newQualifications;
+//		qualifications = newQualifications;
 		
 	}//end method for setQualifications
 	
@@ -205,23 +208,11 @@ public class Class {
 	 * 
 	 * @return - the qualifications of the class (qualifications)
 	 */
-	public ArrayList<String> getQualifications(){
-		
-		return qualifications;
-		
-	}//end method getQualifications
-	
-	/**
-	 * This method will return an instance of an Iterator that contains all the 
-	 * the names of the available Graduate Assistants available for this class.
-	 * 
-	 * @return - an Iterator of the ArrayList availableGraduateAssistants
-	 */
-	public Iterator<GraduateAssistant> getIterationOfAvailableGA(){
-		
-		return availableGraduateAssistants.iterator();
-		
-	}//end getIterationOfAvailableGA
+//	public ArrayList<String> getQualifications(){
+//		
+//		return qualifications;
+//		
+//	}//end method getQualifications
 	
 	/**
 	 * This method will return the size/number of entries for the
@@ -231,7 +222,7 @@ public class Class {
 	 */
 	public int getNumberOfAvailableGA(){
 		
-		return availableGraduateAssistants.size();
+		return availableGAs.size();
 		
 	}//end method getNumberOfAvailableGA
 	
@@ -253,10 +244,8 @@ public class Class {
 		return endTime;
 	}
 
-	public int getTotalTime(){
+	public int getWorkTime(){
 		ArrayList<String> timeList = new ArrayList<String>();
-		timeList.add("6am");
-		timeList.add("7am");
 		timeList.add("8am");
 		timeList.add("9am");
 		timeList.add("10am");
@@ -273,7 +262,7 @@ public class Class {
 		
 		int startIndex = timeList.indexOf(this.getStartTime());
 		int endIndex = timeList.indexOf(this.getEndTime());
-		return ((endIndex - startIndex) * this.daysOfWeek.size()) + numberOfHoursForPrep;
+		return ((endIndex - startIndex) * this.daysOfWeek.size()) + prepHours;
 		
 	} //end method getTotalTime
 	
@@ -288,31 +277,12 @@ public class Class {
 	 */
 	public ArrayList<GraduateAssistant> getAvailableGA()
 	{
-		return availableGraduateAssistants;
+		return availableGAs;
 	}
 	
 	public ArrayList<GraduateAssistant> getAssignedGA()
 	{
 		return assignedGA;
 	}
-
-	public GraduateAssistant deAssignGAFromClass(){
-		GraduateAssistant nameToReturn = assignedGA.get(numberOfGAs - 1);
-		deAssignedGAs.add(nameToReturn.getName());
-		assignedGA.remove(assignedGA.size() - 1);
-		//assignedGA = null;
-		return nameToReturn;
-		
-	}//end method deAssignGAFromClass
-	
-	public boolean isGADealocated(String name){
-		
-		for(int i = 0; i < deAssignedGAs.size(); i++){
-			if(deAssignedGAs.get(i) == name){
-				return true;
-			}
-		}//end for loop
-		return false;
-	}//end method isGADealozted
 	
 }//end Class

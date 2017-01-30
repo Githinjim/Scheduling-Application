@@ -7,13 +7,11 @@ public class GraduateAssistant {
 
 	private String name;
 	private String phoneNumber;
-	private ArrayList<Class> classDeallocationList;
-	//private ArrayList<GraduateAvailableTimes> availableTimes;
 	private ArrayList<Class> listOfClassAssisting;
 	private ArrayList<Class> listOfClassGACouldAssist;
 	private Calendar availability;
 	private int hoursAssigned = 0;
-	private ArrayList<String> qualifications = new ArrayList<String>();
+	private ArrayList<String> qualifiedClasses = new ArrayList<String>();
 	
 	/**
 	 * Default constructor
@@ -22,61 +20,12 @@ public class GraduateAssistant {
 	{
 		name = null;
 		phoneNumber = null;
-		classDeallocationList = new ArrayList<Class>();
-		
-		// Create ArrayList with five days of the week.
-		//availableTimes = new ArrayList<GraduateAvailableTimes>(5);
 		
 		availability = new Calendar();
 		
 		listOfClassAssisting = new ArrayList<Class>();
 		listOfClassGACouldAssist = new ArrayList<Class>();
 	}
-	
-	public void addQualification(String newQualification){
-		qualifications.add(newQualification);
-	}
-	
-	public ArrayList<String> getQualifications(){
-		return qualifications;
-	}
-	
-	public void addToHours(int hoursToAdd){
-		hoursAssigned += hoursToAdd;
-	}
-	
-	public int getHoursAssigned(){
-		
-		return hoursAssigned;
-	}
-	
-	public boolean checkIsQualified(String qualification){
-		for(int i = 0; i < qualifications.size(); i++){
-			if(qualifications.get(i).equals(qualification)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean checkIsQualified(ArrayList<String> qualificationList){
-		boolean isQualified = false;
-		if(qualificationList.size() == 0){
-			return true;
-		}
-		for(int i = 0; i < qualificationList.size(); i++){
-			isQualified = false;
-			for(int j = 0; j < qualifications.size(); j++){
-				if(qualificationList.get(i).equals(qualifications.get(j))){
-					isQualified = true;
-				}//end if
-				
-			}//end inner loop
-			
-		}//end outer loop
-		return isQualified;
-		
-	}//end method checkIsQualified
 	
 	/**
 	 * Constructor that allows for the initialization of the name and phone number of the GA
@@ -87,15 +36,27 @@ public class GraduateAssistant {
 	{
 		this.name = name;
 		phoneNumber = phone;
-		classDeallocationList = new ArrayList<Class>();
-
-		// Create ArrayList with five days of the week.
-		//availableTimes = new ArrayList<GraduateAvailableTimes>(5);
 		
 		availability = new Calendar();
 		
 		listOfClassAssisting = new ArrayList<Class>();
 		listOfClassGACouldAssist = new ArrayList<Class>();
+	}
+	
+	/**
+	 * 
+	 * @param newQualification
+	 */
+	public void addQualification(String newQualification){
+		qualifiedClasses.add(newQualification);
+	}
+	
+	/**
+	 * 
+	 * @param hoursToAdd
+	 */
+	public void addToHours(int hoursToAdd){
+		hoursAssigned += hoursToAdd;
 	}
 	
 	/**
@@ -115,31 +76,30 @@ public class GraduateAssistant {
 	 * 
 	 * @param classNumber - the class number that the GA is responsible for
 	 */
-	public void addClassToCurrentList(Class classNumber){
+	public void addAssistingClass(Class weeklyClass){
 		
-		listOfClassAssisting.add(classNumber);
-		availability.setBusy(classNumber.getDaysOfWeek(), classNumber.getStartTime(), classNumber.getEndTime());
+		listOfClassAssisting.add(weeklyClass);
+		availability.setBusy(weeklyClass.getDaysOfWeek(), weeklyClass.getStartTime(), weeklyClass.getEndTime());
+		addToHours(weeklyClass.getWorkTime());
 	}//end method addClassToCurrentList
 	
 	/**
-	 * This method will add to the list of class's that this grad
-	 * student has been deallocated from.
 	 * 
-	 * @param dealocatedClass - class number that the student was dealocated.
+	 * @return
 	 */
-	public void addDeallocatedClass(Class dealocatedClass){
-		int index = -1;
-		for (int i = 0; i < listOfClassAssisting.size(); i++){
-			if(listOfClassAssisting.get(i).getClassNumber() == dealocatedClass.getClassNumber()){
-				index = i;
-			}
-		}//end for loop
+	public int getHoursAssigned(){
 		
-		listOfClassAssisting.remove(index);
-		classDeallocationList.add(dealocatedClass);
-		hoursAssigned -= dealocatedClass.getTotalTime();
+		return hoursAssigned;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<String> getQualifications(){
+		return qualifiedClasses;
+	}
 		
-	}//end of method addDealocatedClass
 	
 	/**
 	 * This method will return the name of the grad student
@@ -163,103 +123,19 @@ public class GraduateAssistant {
 		
 	}//end method phoneNumber
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Class> getAssignedClasses()
 	{
 		return listOfClassAssisting;
 	}
 	
-	/**
-	 * This method will remove a class from the current ArrayList that
-	 * is keeping track of a specific GA
-	 * 
-	 * @param classNumberToRemove - the number of the class that is to be removed
-	 */
-	public void removeClassFromCurrentList(String classNumberToRemove){
-		
-		listOfClassAssisting.remove(classNumberToRemove);
-	}//end method removeClassFromCurrentList
-	
-	public Iterator<Class> returnIteratorOfAllClassForGA(){
-		
-		return listOfClassAssisting.iterator();
-	}//end method returnIteratorOfAllClassForGA
-	
-	/**
-	 * This method will set the name of the grad student
-	 * 
-	 * @param newName - name of the gradstudent
-	 */
-	public void setName(String newName){
-		
-		name = newName;
-		
-	}//end method setName
-	
-	/**
-	 * This method will set the phoneNumber of the grad student
-	 * 
-	 * @param newNumber - phone number to set for the grad student
-	 */
-	public void setPhoneNumber(String newNumber){
-		
-		phoneNumber = newNumber;
-		
-	}//end method setPhoneNumber
-	
-	/**
-	 * This method will an Iterator instance of the classDealocationList
-	 * 
-	 * @return - the Iterator instance of all the deallocated classes.
-	 */
-	public Iterator<Class> iteratorOfDealocatedClasses(){
-		
-		return classDeallocationList.iterator();
-		
-	}//end IteratorOfDealocatedClasses
-	
-	/**
-	 * 
-	 * @param dayOfWeek
-	 * @param time
-	 */
-	public void setNotAvailableAt(int dayOfWeek, String time){
-		availability.setBusy(dayOfWeek, time);
-		//availableTimes.get(dayOfTheWeek).setNotAvailable(time);
-		//availableTimes.setNotAvailable(time);
-		
-	}//end setNotAvailableAt
-	
-	/**
-	 * 
-	 * @param dayOfWeek
-	 * @param startTime - The starting time the GA is available.
-	 * @param endTime - The ending time the GA is available. 
-	 */
-	public void setNotAvailableAt(int dayOfWeek, String startTime, String endTime){
-		availability.setBusy(dayOfWeek, startTime, endTime);		
-	}//end setNotAvailableAt
-	
-	/**
-	 * 
-	 * @param dayOfWeek - The day of the week
-	 * @param time - Time the GA is available
-	 */
-	public void setAvailableAt(int dayOfWeek, String time){
-		availability.setFree(dayOfWeek, time);
-	}//end method setAvailableAt
-	
-	/**
-	 * 
-	 * @param dayOfWeek - The day of the week
-	 * @param startTime - The starting time the GA is available.
-	 * @param endTime - The ending time the GA is available. 
-	 */
-	public void setAvailableAt(int dayOfWeek, String startTime, String endTime){
-		
-		//availableTimes.get(dayOfTheWeek).setAvailable(time);
-		availability.setFree(dayOfWeek, startTime, endTime);
-		
-	}//end method setAvailableAt
+	public ArrayList<Class> getPotentialClasses()
+	{
+		return listOfClassGACouldAssist;
+	}
 	
 	/**
 	 * 
@@ -306,15 +182,124 @@ public class GraduateAssistant {
 	}
 	
 	/**
-	 * This method will return an iterator of the ArrayList of all the possible
-	 * class a certain GA could assist with.
 	 * 
-	 * @return an Iterator<String> of all the possible class this specific GA could assist with
+	 * @param qualification
+	 * @return
 	 */
-	public Iterator<Class> returnIteratorOfAllPossibleClasss(){
+	public boolean isQualified(String qualification){
+		qualification = qualification.split("[.]")[0];
+		for(int i = 0; i < qualifiedClasses.size(); i++){
+			if(qualifiedClasses.get(i).equals(qualification)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param qualificationList
+	 * @return
+	 */
+	public boolean isQualified(ArrayList<String> qualificationList){
+		boolean isQualified = false;
+		if(qualificationList.size() == 0){
+			return true;
+		}
+		for(int i = 0; i < qualificationList.size(); i++){
+			isQualified = false;
+			for(int j = 0; j < qualifiedClasses.size(); j++){
+				if(qualificationList.get(i).equals(qualifiedClasses.get(j))){
+					isQualified = true;
+				}//end if
+				
+			}//end inner loop
+			
+		}//end outer loop
+		return isQualified;
 		
-		return listOfClassAssisting.iterator();
+	}//end method checkIsQualified
+	
+	/**
+	 * This method will remove a class from the current ArrayList that
+	 * is keeping track of a specific GA
+	 * 
+	 * @param classNumberToRemove - the number of the class that is to be removed
+	 */
+	public void removeClassFromCurrentList(String classNumberToRemove){
 		
-	}//end method returnIteratorOfAllPossibleClasss
+		listOfClassAssisting.remove(classNumberToRemove);
+	}//end method removeClassFromCurrentList
+	
+//	public Iterator<Class> returnIteratorOfAllClassForGA(){
+//		
+//		return listOfClassAssisting.iterator();
+//	}//end method returnIteratorOfAllClassForGA
+	
+	/**
+	 * This method will set the name of the grad student
+	 * 
+	 * @param newName - name of the gradstudent
+	 */
+	public void setName(String newName){
+		
+		name = newName;
+		
+	}//end method setName
+	
+	/**
+	 * This method will set the phoneNumber of the grad student
+	 * 
+	 * @param newNumber - phone number to set for the grad student
+	 */
+	public void setPhoneNumber(String newNumber){
+		
+		phoneNumber = newNumber;
+		
+	}//end method setPhoneNumber
+	
+	/**
+	 * 
+	 * @param dayOfWeek
+	 * @param time
+	 */
+	public void setNotAvailableAt(int dayOfWeek, String time){
+		availability.setBusy(dayOfWeek, time);
+		//availableTimes.get(dayOfTheWeek).setNotAvailable(time);
+		//availableTimes.setNotAvailable(time);
+		
+	}//end setNotAvailableAt
+	
+	/**
+	 * 
+	 * @param dayOfWeek
+	 * @param startTime - The starting time the GA is available.
+	 * @param endTime - The ending time the GA is available. 
+	 */
+	public void setNotAvailableAt(int dayOfWeek, String startTime, String endTime){
+		availability.setBusy(dayOfWeek, startTime, endTime);		
+	}//end setNotAvailableAt
+	
+	/**
+	 * 
+	 * @param dayOfWeek - The day of the week
+	 * @param time - Time the GA is available
+	 */
+	public void setAvailableAt(int dayOfWeek, String time){
+		availability.setFree(dayOfWeek, time);
+	}//end method setAvailableAt
+	
+	/**
+	 * 
+	 * @param dayOfWeek - The day of the week
+	 * @param startTime - The starting time the GA is available.
+	 * @param endTime - The ending time the GA is available. 
+	 */
+	public void setAvailableAt(int dayOfWeek, String startTime, String endTime){
+		
+		//availableTimes.get(dayOfTheWeek).setAvailable(time);
+		availability.setFree(dayOfWeek, startTime, endTime);
+		
+	}//end method setAvailableAt
 	
 }//end class GraduateAssistant
