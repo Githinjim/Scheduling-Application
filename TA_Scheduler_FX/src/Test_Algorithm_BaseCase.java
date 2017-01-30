@@ -312,6 +312,15 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		classList.get(classList.size() - 1).setClassNumber("Anatomy Lab");
 		classList.get(classList.size() - 1).setPrepHours(2);
 		
+		// Anatomy Lab
+		classList.add(new Class());
+		classList.get(classList.size() - 1).setClassNumber("Anatomy Lab");
+		classList.get(classList.size() - 1).setPrepHours(2);
+		
+		// Anatomy Lab
+		classList.add(new Class());
+		classList.get(classList.size() - 1).setClassNumber("Anatomy Lab");
+		classList.get(classList.size() - 1).setPrepHours(2);
 		
 	}
 	
@@ -333,7 +342,7 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		GAList.get(GAList.size() - 1).addQualification("EXSC 446");
 		GAList.get(GAList.size() - 1).addQualification("EXSC 458");
 		GAList.get(GAList.size() - 1).addQualification("EXSC 551");
-		GAList.get(GAList.size() - 1).addQualification("Anatomy Lab");
+		//GAList.get(GAList.size() - 1).addQualification("Anatomy Lab");
 		
 		// #1
 		GAList.add(new GraduateAssistant());

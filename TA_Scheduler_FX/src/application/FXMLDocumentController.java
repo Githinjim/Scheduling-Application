@@ -5,12 +5,10 @@
  */
 package application;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -23,8 +21,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javafx.event.ActionEvent;
@@ -41,23 +37,19 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class FXMLDocumentController implements Initializable {
     FileChooser fileChooser = new FileChooser();
     ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
+    ArrayList<Class> classes = new ArrayList<Class>();
     
     @FXML TextArea resultsText;
     
    
 	@FXML
-	private void selectFiles(ActionEvent event) throws Exception {
+	private void selectGAs(ActionEvent event) throws Exception {
 		List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
             if (list != null) {
                 for (File file : list) {
                     FileInputStream fIP = new FileInputStream(file);
-                    //XSSFWorkbook workbook = new XSSFWorkbook(fIP);
                     Workbook workbook = new XSSFWorkbook(fIP);
-                    //XSSFSheet spreadsheet = workbook.createSheet();
-                    //XSSFRow row = spreadsheet.createRow(0);
-                    //Cell cell = row.createCell(0);
-                    //cell.setCellValue("test");
                     Sheet datatypeSheet = workbook.getSheetAt(0);
                     Iterator<Row> iterator = datatypeSheet.iterator();
                     gradList.add(new GraduateAssistant());
@@ -72,7 +64,7 @@ public class FXMLDocumentController implements Initializable {
                     			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
                     		}
                     		
-                    		//Conditional for the phonenumber field
+                    		//Conditional for the phone number field
                     		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 1){
                     			gradList.get(gradList.size() - 1).setPhoneNumber(currentCell.getStringCellValue());
                     		}
@@ -123,7 +115,7 @@ public class FXMLDocumentController implements Initializable {
                     						
                     				}//end switch case statement
                     				gradList.get(gradList.size() - 1).setAvailableAt(currentCell.getColumnIndex() - 1, timeOfTheDay);
-                    			}//if conditional for setting avalablity of the tiem of the day.
+                    			}//if conditional for setting availability of the tiem of the day.
                     		}//end if conditional for the times section
                     		
                     		//conditional for the qualifications
@@ -144,7 +136,7 @@ public class FXMLDocumentController implements Initializable {
                     					qualificationToAdd = "Open Anatomy Cadaver Lab Study Session";
                     					break;
                     				case "4":
-                    					qualificationToAdd = "Physiology lecture & Lab";
+                    					qualificationToAdd = "Physiology Lecture & Lab";
                     					break;
                     				case "5":
                     					qualificationToAdd = "Physiology of exercise, lecture and lab";
@@ -177,25 +169,8 @@ public class FXMLDocumentController implements Initializable {
                     			}//end if for if the qualifications is empty
                     			
                     		}//end if for the qualifications
-                    		
-                    		
-                    		
-                    		/**
-                    		if (currentCell.getCellTypeEnum() == CellType.STRING) {
-                                System.out.print(currentCell.getStringCellValue() + "--");
-                            } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-                                System.out.print(currentCell.getNumericCellValue() + "--");
-                            }
-                    		*/
                     	}
                     }
-                    
-                    //System.out.println(workbook.getName(name));
-
-                    //FileOutputStream fOP = new FileOutputStream(file);
-                    //workbook.write(fOP);
-
-                    //fOP.close();
                 	
                 }
             }//end if
@@ -221,7 +196,6 @@ public class FXMLDocumentController implements Initializable {
 	    {
 	    	resultsText.appendText("Loading Classes.\n");
 	    	//load in classes... >_>
-	    	System.out.println("test");
 	    	List<File> classes =
 	                fileChooser.showOpenMultipleDialog(null);
 	    	

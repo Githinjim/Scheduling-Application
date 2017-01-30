@@ -72,6 +72,9 @@ public class Algorithm {
 	 */
 	public void createInitialSolution()
 	{
+		
+		ArrayList<Class> unassignedClasses = new ArrayList<Class>();
+		
 		// Sort all Classes by the number of available TAs
 		Collections.sort(classes, new CompareClasses());
 		
@@ -88,15 +91,36 @@ public class Algorithm {
 			if (weeklyClass.getNumberOfAvailableGA() == 0)
 			{
 				// Partial assignment
+				unassignedClasses.add(weeklyClass);
+				//partialAssignment(weeklyClass);
 			}
 			else 
 			{
 				if(!assignGA(weeklyClass))
 				{
-					backtrack(weeklyClass);
-					// Backtracking or partial assignment
+					// Was unable to assign a class
+					// Need to perform backtracking or partial assignment
+					if (!backtrack(weeklyClass))
+					{
+						unassignedClasses.add(weeklyClass);
+					}
+					
 				}
 			}
+		}
+		
+		// Now attempt to partially assign any assigned classes
+//		for (int i = 0; i < unassignedClasses.size(); i++)
+//		{
+//			if (partialAssignment(unassignedClasses.get(i)))
+//			{
+//				unassignedClasses.remove(i);
+//			}
+//		}
+		
+		for (Class weeklyClass : unassignedClasses)
+		{
+			partialAssignment(weeklyClass);
 		}
 		
 		// Verifying output
@@ -158,11 +182,25 @@ public class Algorithm {
 	 * @param weeklyClass The class that needs a GA assigned
 	 * @return True if a GA was assigned
 	 */
-	public boolean assignGA(Class weeklyClass)
-	{		
-		for (GraduateAssistant ga : weeklyClass.getAvailableGA())
-		{
+	private boolean assignGA(Class weeklyClass)
+	{	
+		MersenneTwisterFast random_index = new MersenneTwisterFast();
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		int index;
 		
+		// For the number of available GAs
+		for (int i = 0; i < weeklyClass.getNumberOfAvailableGA(); i++)
+		{	
+			// Get a random GA
+			do
+			{
+				index = random_index.nextInt(weeklyClass.getNumberOfAvailableGA());
+			}
+			while (visited.contains(index));
+			visited.add(index);
+			
+			GraduateAssistant ga = weeklyClass.getAvailableGA().get(index);
+			
 			// Assign the GA if they are still available
 			if (checkStillAvailable(weeklyClass, ga) &&
 				20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
@@ -171,14 +209,15 @@ public class Algorithm {
 				ga.addAssistingClass(weeklyClass);;
 				return true; // A GA was assigned
 			}
+			
 		}
-		
+
 		return false; // A GA was not assigned.
 	}
 
 	/**
 	 * 
-	 * @return
+	 * @return True if the class was assigned
 	 */
 	private boolean backtrack(Class weeklyClass)
 	{
@@ -202,16 +241,14 @@ public class Algorithm {
 			// Attempt to re-assign a conflicting class
 			for (Class conflict : conflicting)
 			{
-				//ArrayList<GraduateAssistant> temp = conflict.getAssignedGA();
 				conflict.removeAssignedGA(ga);
 				if (assignGA(conflict))
 				{
 					// Don't re-assign the same GA
-					if (!conflict.getAssignedGA().contains(ga))
+					if (conflict.getAssignedGA().contains(ga))
 					{
-						System.out.println("Re-assigned: " + conflict.getClassNumber());
 						assignGA(weeklyClass);
-						return true;
+						return false;
 					}
 				}
 				else {
@@ -220,7 +257,118 @@ public class Algorithm {
 			}
 			
 		}
-		return false;
+		return true;
+	}
+	
+	/**
+	 * Assigns a GA to a class - where the GA is only available for part of the class times
+	 * @param weeklyClass
+	 * @return True if a GA was assigned
+	 */
+	private boolean partialAssignment(Class weeklyClass)
+	{
+		// Ignore qualifications		
+		if (assignIgnoringQualifications(weeklyClass))
+		{
+			//return true;
+		}
+		
+		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
+				
+		// Attempt to assign a GA that is available for the given times, but not all days of the week
+		
+		// Attempt to assign a GA that is available some days of the week, for some of the time
+		
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param weeklyClass
+	 * @return True if the classes was assigned
+	 */
+	private boolean assignIgnoringQualifications(Class weeklyClass)
+	{
+		boolean returnVal = false;
+		
+		MersenneTwisterFast random_index = new MersenneTwisterFast(System.nanoTime());
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		int index;
+		
+		// For the number of available GAs
+		for (int i = 0; i < students.size(); i++)
+		{	
+			// Get a random GA
+			do
+			{
+				index = random_index.nextInt(students.size());
+			}
+			while (visited.contains(index));
+			visited.add(index);
+			
+			GraduateAssistant ga = students.get(index);
+			
+			
+			
+			// Assign the GA if they are still available
+			if (checkStillAvailable(weeklyClass, ga) &&
+				20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+			{
+				weeklyClass.setAssignedGA(ga);
+				ga.addAssistingClass(weeklyClass);
+				returnVal = true; // A GA was assigned
+				break;
+			}
+			else // Don't want that GA to be considered available
+			{
+
+				weeklyClass.removeAvailableGA(ga);
+				ga.removePossibleClass(weeklyClass);
+			}
+			
+		}
+		return returnVal;
+	}
+	
+	/**
+	 * 
+	 * @param days
+	 * @param startTime
+	 * @param endTime
+	 * @param ga
+	 * @return
+	 */
+	private boolean availablePartialHours(ArrayList<Integer> days, String startTime, String endTime, GraduateAssistant ga)
+	{
+		boolean returnVal = true;
+		
+		ArrayList<String> timeList = new ArrayList<String>();
+		timeList.add("8am");
+		timeList.add("9am");
+		timeList.add("10am");
+		timeList.add("11am");
+		timeList.add("12pm");
+		timeList.add("1pm");
+		timeList.add("2pm");
+		timeList.add("3pm");
+		timeList.add("4pm");
+		timeList.add("5pm");
+		timeList.add("6pm");
+		timeList.add("7pm");
+		timeList.add("8pm");
+		
+		int startIndex = timeList.indexOf(startTime);
+		int endIndex = timeList.indexOf(endTime);
+		
+		for (int i = startIndex + 1; i < endIndex; i++)
+		{
+			if (!ga.isAvailable(days, timeList.get(startIndex), endTime))
+			{
+				returnVal = false;
+			}
+		}
+
+		return returnVal;
 	}
 	
 	/**
@@ -245,26 +393,9 @@ public class Algorithm {
 					return -1;
 				}
 			}
-			return 0;
+			return 1;
 		}
 	}
-	
-	/**
-	 * 
-	 * @author Matthew
-	 *
-	 */
-	private class CompareGAS implements Comparator<GraduateAssistant>
-	{
-		@Override
-		public int compare(GraduateAssistant g1, GraduateAssistant g2)
-		{
-			if (g1.getHoursAssigned() < g2.getHoursAssigned())
-			{
-				return -1;
-			}
-			return 0;
-		}
-	}
+
 	
 }//end class Algorithm

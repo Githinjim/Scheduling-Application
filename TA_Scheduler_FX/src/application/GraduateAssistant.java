@@ -302,4 +302,9 @@ public class GraduateAssistant {
 		
 	}//end method setAvailableAt
 	
+	public void removePossibleClass(Class weeklyClass)
+	{
+		listOfClassGACouldAssist.remove(weeklyClass);
+	}
+	
 }//end class GraduateAssistant
