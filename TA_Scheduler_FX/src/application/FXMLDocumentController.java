@@ -217,86 +217,97 @@ public class FXMLDocumentController implements Initializable {
     }//end selectFiles method for the grad students
 
 	 @FXML 
-	    private void selectClasses(ActionEvent event) throws Exception
-	    {
-	    	resultsText.appendText("Loading Classes.\n");
-		    	List<File> classes =
-		                fileChooser.showOpenMultipleDialog(null);
-		    	 
-		    	 if (classes != null) {
-		               for (File file : classes) {
-		                    FileInputStream fIP = new FileInputStream(file);
-		                    Workbook workbook = new XSSFWorkbook(fIP);
-		                    Sheet datatypeSheet = workbook.getSheetAt(0);
-		                    Iterator<Row> iterator = datatypeSheet.iterator();
-		                    							
-		                    while(iterator.hasNext()){
-		                    	Row currentRow = iterator.next();
-		                    	Iterator<Cell> cellIterator = currentRow.iterator();
-		                    	
-		                    	while(cellIterator.hasNext()){
-		                    		Cell currentCell = cellIterator.next();
-		                    		if (currentCell.getStringCellValue().equals(""))
-		                    		{
-		                    			break;
-		                    		}
-		                    		else
-		                    		{
-		                    			 classList.add(new Class());
-		                    	   		//conditional to set Course Number
-			                    		if(currentCell.getColumnIndex() == 0 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-			                    			classList.get(classes.size() - 1).setClassNumber(currentCell.getStringCellValue());
-			                    		}
-			                    		
-			                    		//conditional to set Start Time
-			                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-			                    			if (!currentCell.getStringCellValue().equals(""))
-			                    			{
-			                    				classList.get(classes.size() - 1).setStartTime(currentCell.getStringCellValue());
-			                    			}
-			                    		}
-			                    		
-			                    		//conditional to set End Time
-			                    		if(currentCell.getColumnIndex() == 2 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-			                    			classList.get(classes.size() - 1).setEndTime(currentCell.getStringCellValue());
-			                    		}
-			                    		
-			                    		//conditional to set Professor's Name
-			                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
-			                    
-			                    			classList.get(classes.size() - 1).setProfessor(currentCell.getStringCellValue());
-			                    		}
-			                    		
-			                    		//conditional to set Prep Time
-			                    		if(currentCell.getColumnIndex() == 8 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-			                    			classList.get(classes.size() - 1).setPrepHours((int)currentCell.getNumericCellValue());
-			                    		}
-			                    		
-			                    		//conditional to set Day of Week class is available
-			                    		if(currentCell.getColumnIndex() >= 3 && currentCell.getColumnIndex() <= 7 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-			                    			if(currentCell.getStringCellValue().equals("Has Class")){
-			                    			classList.get(classes.size() - 1).addDayOfWeek((int)currentCell.getColumnIndex()-4);
-			                    			}
-		                    		}
-		                 
-		                    	}
-		                    }
-		                }
-		               }
-		               /* testing purposes
+	private void selectClasses(ActionEvent event) throws Exception {
+		resultsText.appendText("Loading Classes.\n");
+		List<File> classes = fileChooser.showOpenMultipleDialog(null);
+
+		if (classes != null) {
+			for (File file : classes) {
+				FileInputStream fIP = new FileInputStream(file);
+				Workbook workbook = new XSSFWorkbook(fIP);
+				Sheet datatypeSheet = workbook.getSheetAt(0);
+				Iterator<Row> iterator = datatypeSheet.iterator();
+
+				String professorName = "";
+
+				while (iterator.hasNext()) {
+					Row currentRow = iterator.next();
+					Iterator<Cell> cellIterator = currentRow.iterator();
+
+					if (currentRow.getRowNum() == 0) 
+					{
+						Cell currentCell = currentRow.getCell(1);
+						professorName = currentCell.getStringCellValue();
+					} 
+					else 
+					{
+						while (cellIterator.hasNext()) 
+						{
+							Cell currentCell = cellIterator.next();
+							if (currentCell.getColumnIndex() == 0 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								// Determine if there is another class that
+								// needs to be created
+								if (currentCell.getStringCellValue().isEmpty()) 
+								{
+									break;
+								} 
+								else 
+								{
+									classList.add(new Class());
+									classList.get(classes.size() - 1).setClassNumber(currentCell.getStringCellValue());
+									classList.get(classes.size() - 1).setProfessor(professorName);
+								}
+							}
+							// conditional to set Start Time
+							else if (currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setStartTime(currentCell.getStringCellValue());
+							}
+
+							// conditional to set End Time
+							else if (currentCell.getColumnIndex() == 2 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setEndTime(currentCell.getStringCellValue());
+							}
+
+							// conditional to set Prep Time
+							else if (currentCell.getColumnIndex() == 8 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setPrepHours((int) currentCell.getNumericCellValue());
+							}
+
+							// conditional to set Day of Week class is available
+							else if (currentCell.getColumnIndex() >= 3 && currentCell.getColumnIndex() <= 7
+									&& currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15) 
+							{
+								if (currentCell.getStringCellValue().equals("Has Class")) 
+								{
+									classList.get(classes.size() - 1)
+											.addDayOfWeek((int) currentCell.getColumnIndex() - 3);
+								}
+							}
+						}
+					}
+				}
+			}
+		               // testing purposes
 		               resultsText.appendText("Classes Loaded!\n");
-		               resultsText.appendText(classList.get(classes.size()-1).getClassNumber());
-		               resultsText.appendText(classList.get(classes.size()-1).getStartTime());
 		               System.out.println(classList.get(classes.size()-1).getClassNumber());
 		               System.out.println(classList.get(classes.size()-1).getStartTime());
 		               System.out.println(classList.get(classes.size()-1).getEndTime());
-		               System.out.println(classList.get(classes.size()-1).getProfessor()); */
-		    	 }
-		          else
-		          {
-		        	  resultsText.appendText("No Classes loaded.\n");
-		          }
-	    }
+		               System.out.println(classList.get(classes.size()-1).getProfessor());
+		               System.out.println(classList.get(classes.size()-1).getDaysOfWeek());
+		               System.out.println(classList.size());
+		} 
+		else {
+			resultsText.appendText("No Classes loaded.\n");
+		}
+	}
 
 	
 	
@@ -305,7 +316,7 @@ public class FXMLDocumentController implements Initializable {
 		//Desktop desktop =Desktop.getDesktop();
 
 		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		// Show save file dialog
