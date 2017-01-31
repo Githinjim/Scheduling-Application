@@ -229,57 +229,68 @@ public class FXMLDocumentController implements Initializable {
 		                    Workbook workbook = new XSSFWorkbook(fIP);
 		                    Sheet datatypeSheet = workbook.getSheetAt(0);
 		                    Iterator<Row> iterator = datatypeSheet.iterator();
-		                    classList.add(new Class());
+		                    							
 		                    while(iterator.hasNext()){
 		                    	Row currentRow = iterator.next();
 		                    	Iterator<Cell> cellIterator = currentRow.iterator();
 		                    	
 		                    	while(cellIterator.hasNext()){
 		                    		Cell currentCell = cellIterator.next();
-		                    		
-		                    		//conditional to set Course Number
-		                    		if(currentCell.getColumnIndex() == 0 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-		                    			classList.get(classes.size() - 1).setClassNumber(currentCell.getStringCellValue());
+		                    		if (currentCell.getStringCellValue().equals(""))
+		                    		{
+		                    			break;
 		                    		}
-		                    		
-		                    		//conditional to set Start Time
-		                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-		                    			classList.get(classes.size() - 1).setStartTime(currentCell.getStringCellValue());
-		                    			System.out.print(currentCell.getStringCellValue());
+		                    		else
+		                    		{
+		                    			 classList.add(new Class());
+		                    	   		//conditional to set Course Number
+			                    		if(currentCell.getColumnIndex() == 0 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
+			                    			classList.get(classes.size() - 1).setClassNumber(currentCell.getStringCellValue());
+			                    		}
+			                    		
+			                    		//conditional to set Start Time
+			                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
+			                    			if (!currentCell.getStringCellValue().equals(""))
+			                    			{
+			                    				classList.get(classes.size() - 1).setStartTime(currentCell.getStringCellValue());
+			                    			}
+			                    		}
+			                    		
+			                    		//conditional to set End Time
+			                    		if(currentCell.getColumnIndex() == 2 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
+			                    			classList.get(classes.size() - 1).setEndTime(currentCell.getStringCellValue());
+			                    		}
+			                    		
+			                    		//conditional to set Professor's Name
+			                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
+			                    
+			                    			classList.get(classes.size() - 1).setProfessor(currentCell.getStringCellValue());
+			                    		}
+			                    		
+			                    		//conditional to set Prep Time
+			                    		if(currentCell.getColumnIndex() == 8 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
+			                    			classList.get(classes.size() - 1).setPrepHours((int)currentCell.getNumericCellValue());
+			                    		}
+			                    		
+			                    		//conditional to set Day of Week class is available
+			                    		if(currentCell.getColumnIndex() >= 3 && currentCell.getColumnIndex() <= 7 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
+			                    			if(currentCell.getStringCellValue().equals("Has Class")){
+			                    			classList.get(classes.size() - 1).addDayOfWeek((int)currentCell.getColumnIndex()-4);
+			                    			}
 		                    		}
-		                    		
-		                    		//conditional to set End Time
-		                    		if(currentCell.getColumnIndex() == 2 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-		                    			classList.get(classes.size() - 1).setEndTime(currentCell.getStringCellValue());
-		                    		}
-		                    		
-		                    		//conditional to set Professor's Name
-		                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
-		                    
-		                    			classList.get(classes.size() - 1).setProfessor(currentCell.getStringCellValue());
-		                    		}
-		                    		
-		                    		//conditional to set Prep Time
-		                    		if(currentCell.getColumnIndex() == 8 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-		                    			classList.get(classes.size() - 1).setPrepHours((int)currentCell.getNumericCellValue());
-		                    		}
-		                    		
-		                    		//conditional to set Day of Week class is available
-		                    		if(currentCell.getColumnIndex() >= 3 && currentCell.getColumnIndex() <= 7 && currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15){
-		                    			if(currentCell.getStringCellValue().equals("Has Class")){
-		                    			classList.get(classes.size() - 1).addDayOfWeek((int)currentCell.getColumnIndex()-4);
-		                    			}
-		                    		}
+		                 
+		                    	}
 		                    }
 		                }
 		               }
-		               resultsText.appendText("Classes Loaded!");
+		               /* testing purposes
+		               resultsText.appendText("Classes Loaded!\n");
 		               resultsText.appendText(classList.get(classes.size()-1).getClassNumber());
 		               resultsText.appendText(classList.get(classes.size()-1).getStartTime());
-		               System.out.print(classList.get(classes.size()-1).getClassNumber());
-		               System.out.print(classList.get(classes.size()-1).getStartTime());
-		               System.out.print(classList.get(classes.size()-1).getEndTime());
-		               System.out.print(classList.get(classes.size()-1).getProfessor());
+		               System.out.println(classList.get(classes.size()-1).getClassNumber());
+		               System.out.println(classList.get(classes.size()-1).getStartTime());
+		               System.out.println(classList.get(classes.size()-1).getEndTime());
+		               System.out.println(classList.get(classes.size()-1).getProfessor()); */
 		    	 }
 		          else
 		          {
