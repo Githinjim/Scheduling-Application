@@ -91,8 +91,7 @@ public class Algorithm {
 			if (weeklyClass.getNumberOfAvailableGA() == 0)
 			{
 				// Partial assignment
-				unassignedClasses.add(weeklyClass);
-				//partialAssignment(weeklyClass);
+				//unassignedClasses.add(weeklyClass);
 			}
 			else 
 			{
@@ -110,13 +109,13 @@ public class Algorithm {
 		}
 		
 		// Now attempt to partially assign any assigned classes
-//		for (int i = 0; i < unassignedClasses.size(); i++)
-//		{
-//			if (partialAssignment(unassignedClasses.get(i)))
-//			{
-//				unassignedClasses.remove(i);
-//			}
-//		}
+		for (int i = 0; i < unassignedClasses.size(); i++)
+		{
+			if (partialAssignment(unassignedClasses.get(i)))
+			{
+				unassignedClasses.remove(i);
+			}
+		}
 		
 		for (Class weeklyClass : unassignedClasses)
 		{
@@ -231,6 +230,7 @@ public class Algorithm {
 				// Class conflicts if the start and end time are the same?
 				// And the potential class is not the same as the weeklyClass
 				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) &&
+					potentialConflict.getAssignedGA().size() >= 1 &&
 					potentialConflict.getStartTime().equals(weeklyClass.getStartTime()) &&
 					potentialConflict.getEndTime().equals(weeklyClass.getEndTime()))
 				{
@@ -241,23 +241,29 @@ public class Algorithm {
 			// Attempt to re-assign a conflicting class
 			for (Class conflict : conflicting)
 			{
+				System.out.println(conflict.getAssignedGA().get(0).getName());
 				conflict.removeAssignedGA(ga);
+				conflict.removeAvailableGA(ga);
 				if (assignGA(conflict))
 				{
+					conflict.addAvailableGA(ga);
 					// Don't re-assign the same GA
-					if (conflict.getAssignedGA().contains(ga))
+					if (!conflict.getAssignedGA().contains(ga))
 					{
 						assignGA(weeklyClass);
-						return false;
+						
+						return true;
 					}
 				}
 				else {
 					conflict.setAssignedGA(ga);
 				}
+				
+				System.out.println(conflict.getAssignedGA().get(0).getName());
 			}
 			
 		}
-		return true;
+		return false;
 	}
 	
 	/**
