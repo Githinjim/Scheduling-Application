@@ -91,7 +91,7 @@ public class Algorithm {
 			if (weeklyClass.getNumberOfAvailableGA() == 0)
 			{
 				// Partial assignment
-				//unassignedClasses.add(weeklyClass);
+				unassignedClasses.add(weeklyClass);
 			}
 			else 
 			{
@@ -99,27 +99,25 @@ public class Algorithm {
 				{
 					// Was unable to assign a class
 					// Need to perform backtracking or partial assignment
-					if (!backtrack(weeklyClass))
+					if (!alternatingPath(weeklyClass))
 					{
 						unassignedClasses.add(weeklyClass);
 					}
-					
 				}
 			}
 		}
 		
-		// Now attempt to partially assign any assigned classes
+		// Now attempt to assign any assigned classes
 		for (int i = 0; i < unassignedClasses.size(); i++)
 		{
-			if (partialAssignment(unassignedClasses.get(i)))
-			{
-				unassignedClasses.remove(i);
-			}
-		}
-		
-		for (Class weeklyClass : unassignedClasses)
-		{
-			partialAssignment(weeklyClass);
+//			if (partialAssignment(unassignedClasses.get(i)))
+//			{
+//				unassignedClasses.remove(i);
+//			}
+//			else 
+//			{
+//				
+//			}
 		}
 		
 		// Verifying output
@@ -186,7 +184,7 @@ public class Algorithm {
 		MersenneTwisterFast random_index = new MersenneTwisterFast();
 		ArrayList<Integer> visited = new ArrayList<Integer>();
 		int index;
-		
+
 		// For the number of available GAs
 		for (int i = 0; i < weeklyClass.getNumberOfAvailableGA(); i++)
 		{	
@@ -218,48 +216,58 @@ public class Algorithm {
 	 * 
 	 * @return True if the class was assigned
 	 */
-	private boolean backtrack(Class weeklyClass)
+	private boolean alternatingPath(Class weeklyClass)
 	{
+		System.out.println("Class: " + weeklyClass + " was unassigned");
 		for (GraduateAssistant ga : weeklyClass.getAvailableGA())
 		{
+			System.out.println(ga + ": " + ga.getAssignedClasses());
 			// Find conflicting class(es)
 			ArrayList<Class> conflicting = new ArrayList<Class>();
-			
-			for (Class potentialConflict : ga.getPotentialClasses())
+			for (Class potentialConflict : ga.getAssignedClasses())
 			{
 				// Class conflicts if the start and end time are the same?
 				// And the potential class is not the same as the weeklyClass
 				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) &&
-					potentialConflict.getAssignedGA().size() >= 1 &&
-					potentialConflict.getStartTime().equals(weeklyClass.getStartTime()) &&
-					potentialConflict.getEndTime().equals(weeklyClass.getEndTime()))
+//					potentialConflict.getAssignedGA().size() >= 1 &&
+					isBetween(potentialConflict, weeklyClass))
 				{
 					conflicting.add(potentialConflict);
 				}
 			}
 			
+			System.out.println("Conflicting: " + conflicting);
 			// Attempt to re-assign a conflicting class
 			for (Class conflict : conflicting)
 			{
-				System.out.println(conflict.getAssignedGA().get(0).getName());
+				System.out.println(conflict + " is assigned: " + conflict.getAssignedGA());
+				System.out.println("With GA's" + conflict.getAvailableGA() + "available");
 				conflict.removeAssignedGA(ga);
 				conflict.removeAvailableGA(ga);
+				
+				System.out.println("Checking removal of assignment: " + conflict.getAvailableGA());
 				if (assignGA(conflict))
 				{
-					conflict.addAvailableGA(ga);
+					System.out.println(conflict + " now assigned: " + conflict.getAssignedGA());
+						
 					// Don't re-assign the same GA
 					if (!conflict.getAssignedGA().contains(ga))
 					{
-						assignGA(weeklyClass);
-						
+						System.out.println("Assigning " + ga + " to " + weeklyClass);
+						weeklyClass.setAssignedGA(ga);
 						return true;
 					}
 				}
-				else {
+//				else if (alternatingPath(conflict))
+//				{
+//					return true;
+//				}
+				else
+				{
 					conflict.setAssignedGA(ga);
 				}
-				
-				System.out.println(conflict.getAssignedGA().get(0).getName());
+				// Ensure that the GA is still available 
+				conflict.addAvailableGA(ga);
 			}
 			
 		}
@@ -348,33 +356,104 @@ public class Algorithm {
 	{
 		boolean returnVal = true;
 		
-		ArrayList<String> timeList = new ArrayList<String>();
-		timeList.add("8am");
-		timeList.add("9am");
-		timeList.add("10am");
-		timeList.add("11am");
-		timeList.add("12pm");
-		timeList.add("1pm");
-		timeList.add("2pm");
-		timeList.add("3pm");
-		timeList.add("4pm");
-		timeList.add("5pm");
-		timeList.add("6pm");
-		timeList.add("7pm");
-		timeList.add("8pm");
-		
-		int startIndex = timeList.indexOf(startTime);
-		int endIndex = timeList.indexOf(endTime);
+		int startIndex = stringToHour(startTime);
+		int endIndex = stringToHour(endTime);
 		
 		for (int i = startIndex + 1; i < endIndex; i++)
 		{
-			if (!ga.isAvailable(days, timeList.get(startIndex), endTime))
+			if (!ga.isAvailable(days, startTime, endTime))
 			{
 				returnVal = false;
 			}
 		}
 
 		return returnVal;
+	}
+	
+	/**
+	 * 
+	 * @param c1
+	 * @param c2
+	 * @return True if Class 1 has any hours that overlap with Class 2
+	 */
+	private boolean isBetween(Class c1, Class c2)
+	{
+		boolean returnVal = false;
+		
+		int c1_start = stringToHour(c1.getStartTime());
+		int c1_end = stringToHour(c1.getEndTime());
+		int c2_start = stringToHour(c2.getStartTime());
+		int c2_end = stringToHour(c2.getEndTime());
+		
+		for (int i = c1_start; i < c1_end; i++)
+		{
+			if (i >= c2_start && i < c2_end)
+			{
+				returnVal = true;
+				break;
+			}
+		}
+		
+		return returnVal;
+	}
+	
+	/**
+	 * Converts a Time string to its integer representation
+	 * @param hour
+	 * @return
+	 */
+	private int stringToHour(String hour)
+	{
+		int time = -1;
+		hour = hour.toUpperCase();
+		
+		switch (hour)
+		{
+		case "8AM":
+			time = 0;
+			break;
+		case "9AM":
+			time = 1;
+			break;
+		case "10AM":
+			time = 2;
+			break;
+		case "11AM":
+			time = 3;
+			break;
+		case "12PM":
+			time = 4;
+			break;
+		case "1PM":
+			time = 5;
+			break;
+		case "2PM":
+			time = 6;
+			break;
+		case "3PM":
+			time = 7;
+			break;
+		case "4PM":
+			time = 8;
+			break;
+		case "5PM":
+			time = 9;
+			break;
+		case "6PM":
+			time = 10;
+			break;
+		case "7PM":
+			time = 11;
+			break;
+		case "8PM":
+			time = 12;
+			break;
+		case "9PM":
+			time = 13;
+			break;
+		}
+		
+		return time;
 	}
 	
 	/**

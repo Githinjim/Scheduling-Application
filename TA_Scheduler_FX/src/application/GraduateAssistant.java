@@ -307,4 +307,10 @@ public class GraduateAssistant {
 		listOfClassGACouldAssist.remove(weeklyClass);
 	}
 	
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+	
 }//end class GraduateAssistant

@@ -71,12 +71,12 @@ public class FXMLDocumentController implements Initializable {
                     		}
                     		
                     		//Conditional for the phone number field
-                    		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 1){
+                    		else if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 1){
                     			gradList.get(gradList.size() - 1).setPhoneNumber(currentCell.getStringCellValue());
                     		}
                     		
                     		//conditional to check if the current cell is part of the available times data
-                    		if(currentCell.getColumnIndex() >= 1 && currentCell.getColumnIndex() <= 5 && currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 15){
+                    		else if(currentCell.getColumnIndex() >= 1 && currentCell.getColumnIndex() <= 5 && currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 15){
                     			if(currentCell.getStringCellValue().equals("")){
                     				//System.out.println("true");
                     				String timeOfTheDay = "";
@@ -114,7 +114,7 @@ public class FXMLDocumentController implements Initializable {
                     		}//end if conditional for the times section
                     		
                     		//conditional for the qualifications
-                    		if(currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 10 && currentCell.getColumnIndex() == 7){
+                    		else if(currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 10 && currentCell.getColumnIndex() == 7){
                     			if (!currentCell.getStringCellValue().isEmpty())
                     			{
                     				gradList.get(gradList.size() - 1).addQualification(currentCell.getStringCellValue());

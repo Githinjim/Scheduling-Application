@@ -308,4 +308,10 @@ public class Class {
 		availableGAs.remove(ga);
 	}
 	
+	@Override
+	public String toString()
+	{
+		return classNumber;
+	}
+	
 }//end Class
