@@ -36,9 +36,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public class FXMLDocumentController implements Initializable {
     FileChooser fileChooser = new FileChooser();
-    ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
-    ArrayList<Class> classes = new ArrayList<Class>();
     
+    ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
+    ArrayList<Class> classList = new ArrayList<Class>();
+    ArrayList<Class> classes = new ArrayList<Class>();
+
     @FXML TextArea resultsText;
     
    
@@ -175,7 +177,7 @@ public class FXMLDocumentController implements Initializable {
                 }
             }//end if
             else{
-            	System.out.println("No files were selected for the Graduate Students");
+            	resultsText.appendText("No files were selected for the Graduate Students\n");
             }
             
             //just some test code to test if the data population is working
@@ -192,25 +194,104 @@ public class FXMLDocumentController implements Initializable {
     }//end selectFiles method for the grad students
 
 	 @FXML 
-	    private void selectClasses(ActionEvent event) throws Exception
-	    {
-	    	resultsText.appendText("Loading Classes.\n");
-	    	//load in classes... >_>
-	    	List<File> classes =
-	                fileChooser.showOpenMultipleDialog(null);
-	    	
-	    	
-	    	resultsText.appendText("Classes Loaded!\n"); 
-	    }
+	private void selectClasses(ActionEvent event) throws Exception {
+		resultsText.appendText("Loading Classes.\n");
+		List<File> classes = fileChooser.showOpenMultipleDialog(null);
 
-	
+		if (classes != null) {
+			for (File file : classes) {
+				FileInputStream fIP = new FileInputStream(file);
+				Workbook workbook = new XSSFWorkbook(fIP);
+				Sheet datatypeSheet = workbook.getSheetAt(0);
+				Iterator<Row> iterator = datatypeSheet.iterator();
+
+				String professorName = "";
+
+				while (iterator.hasNext()) {
+					Row currentRow = iterator.next();
+					Iterator<Cell> cellIterator = currentRow.iterator();
+
+					if (currentRow.getRowNum() == 0) 
+					{
+						Cell currentCell = currentRow.getCell(1);
+						professorName = currentCell.getStringCellValue();
+					} 
+					else 
+					{
+						while (cellIterator.hasNext()) 
+						{
+							Cell currentCell = cellIterator.next();
+							if (currentCell.getColumnIndex() == 0 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								// Determine if there is another class that
+								// needs to be created
+								if (currentCell.getStringCellValue().isEmpty()) 
+								{
+									break;
+								} 
+								else 
+								{
+									classList.add(new Class());
+									classList.get(classes.size() - 1).setClassNumber(currentCell.getStringCellValue());
+									classList.get(classes.size() - 1).setProfessor(professorName);
+								}
+							}
+							// conditional to set Start Time
+							else if (currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setStartTime(currentCell.getStringCellValue());
+							}
+
+							// conditional to set End Time
+							else if (currentCell.getColumnIndex() == 2 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setEndTime(currentCell.getStringCellValue());
+							}
+
+							// conditional to set Prep Time
+							else if (currentCell.getColumnIndex() == 8 && currentCell.getRowIndex() >= 4
+									&& currentCell.getRowIndex() <= 15) 
+							{
+								classList.get(classes.size() - 1).setPrepHours((int) currentCell.getNumericCellValue());
+							}
+
+							// conditional to set Day of Week class is available
+							else if (currentCell.getColumnIndex() >= 3 && currentCell.getColumnIndex() <= 7
+									&& currentCell.getRowIndex() >= 4 && currentCell.getRowIndex() <= 15) 
+							{
+								if (currentCell.getStringCellValue().equals("Has Class")) 
+								{
+									classList.get(classes.size() - 1)
+											.addDayOfWeek((int) currentCell.getColumnIndex() - 3);
+								}
+							}
+						}
+					}
+				}
+			}
+		               // testing purposes
+		               resultsText.appendText("Classes Loaded!\n");
+		               System.out.println(classList.get(classes.size()-1).getClassNumber());
+		               System.out.println(classList.get(classes.size()-1).getStartTime());
+		               System.out.println(classList.get(classes.size()-1).getEndTime());
+		               System.out.println(classList.get(classes.size()-1).getProfessor());
+		               System.out.println(classList.get(classes.size()-1).getDaysOfWeek());
+		               System.out.println(classList.size());
+		} 
+		else {
+			resultsText.appendText("No Classes loaded.\n");
+		}
+	}	
 	
 	public void handle(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		//Desktop desktop =Desktop.getDesktop();
 
 		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		// Show save file dialog
@@ -269,45 +350,9 @@ public class FXMLDocumentController implements Initializable {
 
 	@FXML
 	private void runAlgorithm(ActionEvent event) {
-		// Fake creation of GAs
-		GraduateAssistant student1 = new GraduateAssistant("bob", "123-456-7890");
-		student1.setAvailableAt(0, "8am");
-
-		GraduateAssistant student2 = new GraduateAssistant("foo", "bar");
-		student2.setAvailableAt(0, "8am");
-		student2.setAvailableAt(1, "8am");
-
-		String startTime = "8am";
-		String endTime = "9am";
-
-//		// Fake creation of Class
-//		Class class1 = new Class();
-//		class1.setClassNumber("123");
-//		class1.addDayOfWeek(0);
-//		class1.setStartTime(startTime);
-//		class1.setEndTime(endTime);
-//
-//		Class class2 = new Class();
-//		class2.setClassNumber("456");
-//		class2.addDayOfWeek(1);
-//		class2.setStartTime(startTime);
-//		class2.setEndTime(endTime);
-//
-//		Algorithm schedule = new Algorithm();
-//		schedule.addClass(class1);
-//		schedule.addClass(class2);
-//		schedule.addGradStudent(student1);
-//		schedule.addGradStudent(student2);
-//
-//		schedule.initializeGraph();
-//		schedule.createInitialSolution();
-//
-//		System.out.println(class2.getAssignedGA().getName());
-//		 System.out.println(student1.getAssignedClasses().get(0).getClassNumber());
-
-		// Demo of determining if the student is available for a certain class.
-		// System.out.println(student.isAvailable(myClass.getDaysOfWeek(),
-		// myClass.getStartTime(), myClass.getEndTime()));
+		Algorithm alg = new Algorithm(gradList, classList);
+		alg.initializeGraph();
+		alg.createInitialSolution();
 	}
 
 	@Override
