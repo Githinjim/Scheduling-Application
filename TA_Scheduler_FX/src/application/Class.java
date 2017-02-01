@@ -303,4 +303,9 @@ public class Class {
 		assignedGA.remove(ga);
 	}
 	
+	public void removeAvailableGA(GraduateAssistant ga)
+	{
+		availableGAs.remove(ga);
+	}
+	
 }//end Class
