@@ -10,7 +10,7 @@
     <children>
         <Button fx:id="button" layoutX="17.0" layoutY="46.0" onAction="#selectGAs" text="Select Grad. Students" />
       <Button layoutX="35.0" layoutY="124.0" mnemonicParsing="false" onAction="#runAlgorithm" text="Run Algorithm" />
-      <TextArea editable="false" fx:id="resultsText" layoutX="165.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" text="... For printing the current status... ??" wrapText="true" />
+      <TextArea editable="false" fx:id="resultsText" layoutX="165.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" text="" wrapText="true" />
       <Button layoutX="37.0" layoutY="85.0" mnemonicParsing="false" onAction="#selectClasses" text="Select Classes" />
       <Button layoutX="41.0" layoutY="161.0" mnemonicParsing="false" text="Save Results" />
     </children>

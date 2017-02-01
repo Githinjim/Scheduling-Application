@@ -43,8 +43,12 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML TextArea resultsText;
     
-   
 	@FXML
+	/**
+	 * Method for opening several Excel files and reading them in to populate GA data structures
+	 * @param event
+	 * @throws Exception
+	 */
 	private void selectGAs(ActionEvent event) throws Exception {
 		List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
@@ -81,37 +85,26 @@ public class FXMLDocumentController implements Initializable {
                     							break;
                     					case 1: timeOfTheDay = "9am";
             									break;
-            									
                     					case 2: timeOfTheDay = "10am";
     											break;
-    										
                     					case 3: timeOfTheDay = "11am";
     											break;
-                    						
                     					case 4: timeOfTheDay = "12pm";
     											break;
-                    						
                     					case 5: timeOfTheDay = "1pm";
     											break;
-                    						
                     					case 6: timeOfTheDay = "2pm";
     											break;
-                    						
                     					case 7: timeOfTheDay = "3pm";
     											break;
-                    						
                     					case 8: timeOfTheDay = "4pm";
     											break;
-                    						
                     					case 9: timeOfTheDay = "5pm";
     											break;
-                    						
                     					case 10: timeOfTheDay = "6pm";
     											break;
-                    						
                     					case 11: timeOfTheDay = "7pm";
     											break;
-                    						
                     					case 12: timeOfTheDay = "8pm";
     											break;
                     						
@@ -122,58 +115,14 @@ public class FXMLDocumentController implements Initializable {
                     		
                     		//conditional for the qualifications
                     		if(currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 10 && currentCell.getColumnIndex() == 7){
-                    			
-                    			if(currentCell.getNumericCellValue() != Cell.CELL_TYPE_NUMERIC){
-                    				String qualificationToAdd = "";
-                    				int theint = (int) (currentCell.getNumericCellValue() / 1);
-                    				switch(Integer.toString(theint)){
-                    	
-                    				case "1":
-                    					qualificationToAdd = "Fitness Lab Supervision";
-                    					break;
-                    				case "2":
-                    					qualificationToAdd = "Gross Anatomy Lecture and Lab";
-                    					break;
-                    				case "3":
-                    					qualificationToAdd = "Open Anatomy Cadaver Lab Study Session";
-                    					break;
-                    				case "4":
-                    					qualificationToAdd = "Physiology Lecture & Lab";
-                    					break;
-                    				case "5":
-                    					qualificationToAdd = "Physiology of exercise, lecture and lab";
-                    					break;
-                    				case "6":
-                    					qualificationToAdd = "Assesment and treatment of athletic injuries";
-                    					break;
-                    				case "7":
-                    					qualificationToAdd = "Fitness assessment and exercise Prescription";
-                    					break;
-                    				case "8":
-                    					qualificationToAdd = "Introduction to Biomechanics";
-                    					break;
-                    				case "9":
-                    					qualificationToAdd = "Clinical Physiology";
-                    					break;
-                    				case "10":
-                    					qualificationToAdd = "Clinical Biomechanics, lecture and lab";
-                    					break;
-                    				case "11":
-                    					qualificationToAdd = "Sports Biomechanics lecture and lab";
-                    					break;
-                    				case "12":
-                    					qualificationToAdd = "Sports Nutrition";
-                    					break;
-                    					
-                    				
-                    				}//end switch
-                    				gradList.get(gradList.size() - 1).addQualification(qualificationToAdd);
-                    			}//end if for if the qualifications is empty
-                    			
+                    			if (!currentCell.getStringCellValue().isEmpty())
+                    			{
+                    				gradList.get(gradList.size() - 1).addQualification(currentCell.getStringCellValue());
+                    			}                    			
                     		}//end if for the qualifications
                     	}
                     }
-                	
+                    workbook.close();
                 }
             }//end if
             else{
@@ -181,6 +130,7 @@ public class FXMLDocumentController implements Initializable {
             }
             
             //just some test code to test if the data population is working
+            System.out.println("-----Reading in Grad Students-----");
             for(int i = 0; i < gradList.size(); i ++){
             	System.out.println("Grad Student: " + gradList.get(i).getName());
             	System.out.println("Has phone number: " + gradList.get(i).getPhoneNumber());
@@ -191,15 +141,23 @@ public class FXMLDocumentController implements Initializable {
             	System.out.println("Is available on Monday at 3pm: " + gradList.get(i).isAvailable(0, "3pm"));
             	System.out.println("Is available on Wednesday at 2pm: " + gradList.get(i).isAvailable(2, "2pm"));
             }
+            System.out.println();
     }//end selectFiles method for the grad students
 
-	 @FXML 
+	@FXML
+	/**
+	 * Method for selecting offered classes and reading the data in.
+	 * @param event
+	 * @throws Exception
+	 */
 	private void selectClasses(ActionEvent event) throws Exception {
 		resultsText.appendText("Loading Classes.\n");
 		List<File> classes = fileChooser.showOpenMultipleDialog(null);
 
-		if (classes != null) {
-			for (File file : classes) {
+		if (classes != null) 
+		{
+			for (File file : classes) 
+			{
 				FileInputStream fIP = new FileInputStream(file);
 				Workbook workbook = new XSSFWorkbook(fIP);
 				Sheet datatypeSheet = workbook.getSheetAt(0);
@@ -271,40 +229,30 @@ public class FXMLDocumentController implements Initializable {
 						}
 					}
 				}
+				workbook.close();
 			}
 		               // testing purposes
 		               resultsText.appendText("Classes Loaded!\n");
-		               System.out.println(classList.get(classes.size()-1).getClassNumber());
-		               System.out.println(classList.get(classes.size()-1).getStartTime());
-		               System.out.println(classList.get(classes.size()-1).getEndTime());
-		               System.out.println(classList.get(classes.size()-1).getProfessor());
-		               System.out.println(classList.get(classes.size()-1).getDaysOfWeek());
-		               System.out.println(classList.size());
+		               
 		} 
 		else {
 			resultsText.appendText("No Classes loaded.\n");
 		}
-	}	
-	
-	public void handle(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-		//Desktop desktop =Desktop.getDesktop();
-
-		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xls)", "*.xls");
-		fileChooser.getExtensionFilters().add(extFilter);
-
-		// Show save file dialog
-		File file = fileChooser.showSaveDialog(null);
-
-		if (file != null) {
-			SaveFile(file);
-			System.out.println("File Saved");
+		
+		// Checking results for correctness
+		System.out.println("-----Reading in Classes-----");
+		for (Class weeklyClass : classList)
+		{
+			System.out.println("Class Name: " + weeklyClass.getClassNumber());
+			System.out.println("Professor: " + weeklyClass.getProfessor());
+			System.out.println("Start Time: " + weeklyClass.getStartTime());
+			System.out.println("End Time: " + weeklyClass.getEndTime());
+			System.out.println("Days of Week: " + weeklyClass.getDaysOfWeek());
 		}
+		System.out.println();
 	}
 
-	@SuppressWarnings("unused")
-	private void SaveFile(File file) {
+	private void saveFile(File file) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(file);
 			HSSFWorkbook workbook = new HSSFWorkbook();
@@ -337,6 +285,7 @@ public class FXMLDocumentController implements Initializable {
 			cellD1.setCellStyle(cellStyle);
 
 			workbook.write(fileOut);
+			workbook.close();
 			fileOut.flush();
 			fileOut.close();
 		} catch (FileNotFoundException e) {
