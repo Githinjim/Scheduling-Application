@@ -243,6 +243,11 @@ public class Class {
 	{
 		return endTime;
 	}
+	
+	public int getPrepHours()
+	{
+		return prepHours;
+	}
 
 	public int getWorkTime(){
 		ArrayList<String> timeList = new ArrayList<String>();
