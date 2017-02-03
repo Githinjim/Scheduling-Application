@@ -110,14 +110,14 @@ public class Algorithm {
 		// Now attempt to assign any assigned classes
 		for (int i = 0; i < unassignedClasses.size(); i++)
 		{
-//			if (partialAssignment(unassignedClasses.get(i)))
-//			{
-//				unassignedClasses.remove(i);
-//			}
-//			else 
-//			{
-//				
-//			}
+			if (partialAssignment(unassignedClasses.get(i)))
+			{
+				unassignedClasses.remove(i);
+			}
+			else 
+			{
+				
+			}
 		}
 		
 		// Verifying output
@@ -213,7 +213,8 @@ public class Algorithm {
 	}
 
 	/**
-	 * 
+	 * In the case of a class having no available GAs, this method checks for any conflicting classes and attempts
+	 * to re-assign the conflicting classes, freeing up a GA for assignment
 	 * @return True if the class was assigned
 	 */
 	private boolean alternatingPath(Class weeklyClass)
@@ -226,11 +227,10 @@ public class Algorithm {
 			ArrayList<Class> conflicting = new ArrayList<Class>();
 			for (Class potentialConflict : ga.getAssignedClasses())
 			{
-				// Class conflicts if the start and end time are the same?
-				// And the potential class is not the same as the weeklyClass
-				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) &&
-//					potentialConflict.getAssignedGA().size() >= 1 &&
-					isBetween(potentialConflict, weeklyClass))
+				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) && // Don't want it to be the same class
+					potentialConflict.getAssignedGA().size() >= 1 &&							// Conflicting class has to have a GA assigned
+					hourConflict(potentialConflict, weeklyClass) &&								// Conflicting times
+					dayConflict(potentialConflict, weeklyClass))									
 				{
 					conflicting.add(potentialConflict);
 				}
@@ -258,10 +258,10 @@ public class Algorithm {
 						return true;
 					}
 				}
-//				else if (alternatingPath(conflict))
-//				{
-//					return true;
-//				}
+				else if (alternatingPath(conflict))
+				{
+					return true;
+				}
 				else
 				{
 					conflict.setAssignedGA(ga);
@@ -284,16 +284,19 @@ public class Algorithm {
 		// Ignore qualifications		
 		if (assignIgnoringQualifications(weeklyClass))
 		{
-			//return true;
+			return true;
+		}
+		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
+		else if (availablePartialHours(weeklyClass))
+		{
+			return true;
 		}
 		
-		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-				
 		// Attempt to assign a GA that is available for the given times, but not all days of the week
 		
 		// Attempt to assign a GA that is available some days of the week, for some of the time
 		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -352,21 +355,45 @@ public class Algorithm {
 	 * @param ga
 	 * @return
 	 */
-	private boolean availablePartialHours(ArrayList<Integer> days, String startTime, String endTime, GraduateAssistant ga)
+	private boolean availablePartialHours(Class weeklyClass)
 	{
-		boolean returnVal = true;
+		boolean returnVal = false;
 		
-		int startIndex = stringToHour(startTime);
-		int endIndex = stringToHour(endTime);
+		int startIndex = stringToHour(weeklyClass.getStartTime());
+		int endIndex = stringToHour(weeklyClass.getEndTime());
 		
-		for (int i = startIndex + 1; i < endIndex; i++)
-		{
-			if (!ga.isAvailable(days, startTime, endTime))
+		MersenneTwisterFast random_index = new MersenneTwisterFast(System.nanoTime());
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		int index;
+		
+		// For the number of available GAs
+		for (int i = 0; i < students.size(); i++)
+		{	
+			// Get a random GA
+			do
 			{
-				returnVal = false;
+				index = random_index.nextInt(students.size());
+			}
+			while (visited.contains(index));
+			visited.add(index);
+			
+			GraduateAssistant ga = students.get(index);
+		
+			for (int j = startIndex; j < endIndex; j++)
+			{
+				if (ga.isAvailable(weeklyClass.getDaysOfWeek(), hourToString(j), weeklyClass.getEndTime()))
+				{
+					ga.addAssistingClass(weeklyClass);
+					weeklyClass.setAssignedGA(ga);
+					returnVal = true;
+					break;
+				}
+			}
+			if (returnVal == true)
+			{
+				break;
 			}
 		}
-
 		return returnVal;
 	}
 	
@@ -376,7 +403,7 @@ public class Algorithm {
 	 * @param c2
 	 * @return True if Class 1 has any hours that overlap with Class 2
 	 */
-	private boolean isBetween(Class c1, Class c2)
+	private boolean hourConflict(Class c1, Class c2)
 	{
 		boolean returnVal = false;
 		
@@ -385,9 +412,35 @@ public class Algorithm {
 		int c2_start = stringToHour(c2.getStartTime());
 		int c2_end = stringToHour(c2.getEndTime());
 		
+		// See if there are conflicting hours
 		for (int i = c1_start; i < c1_end; i++)
 		{
 			if (i >= c2_start && i < c2_end)
+			{
+				returnVal = true;
+				break;
+			}
+		}
+		
+		return returnVal;
+	}
+	
+	/**
+	 * Determines if two classes have overlapping days
+	 * @param c1
+	 * @param c2
+	 * @return
+	 */
+	private boolean dayConflict(Class c1, Class c2)
+	{
+		boolean returnVal = false;
+		
+		ArrayList<Integer> days_c1 = c1.getDaysOfWeek();
+		ArrayList<Integer> days_c2 = c2.getDaysOfWeek();
+		
+		for (int day : days_c1)
+		{
+			if (days_c2.contains(day))
 			{
 				returnVal = true;
 				break;
@@ -450,6 +503,59 @@ public class Algorithm {
 			break;
 		case "9PM":
 			time = 13;
+			break;
+		}
+		
+		return time;
+	}
+	
+	private String hourToString(int hour)
+	{
+		String time = "";
+		
+		switch(hour)
+		{
+		case 0:
+			time = "8AM";
+			break;
+		case 1:
+			time = "9AM";
+			break;
+		case 2:
+			time = "10AM";
+			break;
+		case 3:
+			time = "11AM";
+			break;
+		case 4:
+			time = "12PM";
+			break;
+		case 5:
+			time = "1PM";
+			break;
+		case 6:
+			time = "2PM";
+			break;
+		case 7:
+			time = "3PM";
+			break;
+		case 8:
+			time = "4PM";
+			break;
+		case 9:
+			time = "5PM";
+			break;
+		case 10:
+			time = "6PM";
+			break;
+		case 11:
+			time = "7PM";
+			break;
+		case 12:
+			time = "8PM";
+			break;
+		case 13:
+			time = "9PM";
 			break;
 		}
 		

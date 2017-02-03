@@ -93,8 +93,8 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		//370.001
 		classList.add(new Class());
 		classList.get(classList.size() - 1).setClassNumber("EXSC 370.001");
-		classList.get(classList.size() - 1).setStartTime("11am");
-		classList.get(classList.size() - 1).setEndTime("12pm");
+		classList.get(classList.size() - 1).setStartTime("2pm");
+		classList.get(classList.size() - 1).setEndTime("3pm");
 		classList.get(classList.size() - 1).addDayOfWeek(0);
 		classList.get(classList.size() - 1).addDayOfWeek(1);
 		classList.get(classList.size() - 1).addDayOfWeek(2);
@@ -104,8 +104,8 @@ public class Test_Algorithm_BaseCase extends TestCase {
 		//370.006
 		classList.add(new Class());
 		classList.get(classList.size() - 1).setClassNumber("EXSC 370.006");
-		classList.get(classList.size() - 1).setStartTime("9am");
-		classList.get(classList.size() - 1).setEndTime("11am");
+		classList.get(classList.size() - 1).setStartTime("2pm");
+		classList.get(classList.size() - 1).setEndTime("4pm");
 		classList.get(classList.size() - 1).addDayOfWeek(3);
 		classList.get(classList.size() - 1).setPrepHours(2);
 		
