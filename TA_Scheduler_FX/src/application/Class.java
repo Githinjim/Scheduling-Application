@@ -31,7 +31,6 @@ public class Class {
 	{
 		classNumber = null;
 		professor = null;
-//		qualifications = new ArrayList<String>();
 		startTime = "";
 		endTime = "";
 		daysOfWeek = new ArrayList<Integer>();
@@ -311,6 +310,12 @@ public class Class {
 	public void removeAvailableGA(GraduateAssistant ga)
 	{
 		availableGAs.remove(ga);
+	}
+	
+	public void resetClass()
+	{
+		assignedGA.clear();
+		availableGAs.clear();
 	}
 	
 	@Override

@@ -70,20 +70,13 @@ public class Algorithm {
 	/**
 	 * Creates an initial solution
 	 */
-	public void createInitialSolution()
+	public ArrayList<Class> createInitialSolution()
 	{
 		
 		ArrayList<Class> unassignedClasses = new ArrayList<Class>();
 		
 		// Sort all Classes by the number of available TAs
 		Collections.sort(classes, new CompareClasses());
-		
-		// Verifying results
-		System.out.println("-----AVAILABLE GAS-----");
-		for (Class weeklyClass : classes)
-		{
-			System.out.println("Number available GAs for " + weeklyClass.getClassNumber() + ": " + weeklyClass.getNumberOfAvailableGA());
-		}
 		
 		// For each class, start assigning GAs
 		for (Class weeklyClass : classes)
@@ -110,52 +103,65 @@ public class Algorithm {
 		// Now attempt to assign any assigned classes
 		for (int i = 0; i < unassignedClasses.size(); i++)
 		{
-			if (partialAssignment(unassignedClasses.get(i)))
-			{
-				unassignedClasses.remove(i);
-			}
-			else 
-			{
-				
-			}
-		}
+//			if (partialAssignment(unassignedClasses.get(i)))
+//			{
+//				unassignedClasses.remove(i);
+//			}
+//			else 
+//			{
+//				
+//			}
+		}		
 		
-		// Verifying output
-		System.out.println("-----CLASSES-----");
-		for (Class weeklyClass : classes)
-		{
-			System.out.print(weeklyClass.getClassNumber() + " is assisted by: ");
-			for (GraduateAssistant ga : weeklyClass.getAssignedGA())
-			{
-				System.out.print("\t" + ga.getName());
-			}
-			System.out.println();
-		}
-		
-		System.out.println("-----STUDENTS-----");
+		return unassignedClasses;
+	}
+	
+	/**
+	 * 
+	 */
+	public void reset()
+	{
 		for (GraduateAssistant ga : students)
 		{
-			System.out.print(ga.getName() + " is assisting for " + ga.getHoursAssigned() + ":");
-			for (Class weeklyClass : ga.getAssignedClasses())
-			{
-				System.out.print("\t" + weeklyClass.getClassNumber());
-			}
-			System.out.println();
+			ga.resetGA();
+		}
+		
+		for (Class weekly : classes)
+		{
+			weekly.resetClass();
 		}
 	}
 	
 	/**
-	 * Method for performing a Variable Neighborhood Search
+	 * 
+	 * @return
 	 */
-	
-	public void VNS()
+	public int getStudentHours()
 	{
+		int hours = 0;
 		
+		for (GraduateAssistant ga : students)
+		{
+			hours += ga.getHoursAssigned();
+		}
+		
+		return hours;
 	}
 	
-	public void MILP()
+	/**
+	 * 
+	 * @return
+	 */
+	public int getClassHours()
 	{
+		int hours = 0;
 		
+		for (Class weekly : classes)
+		{
+			hours += weekly.getWorkTime();
+		}
+		
+		return hours;
 	}
 	
 	/**
@@ -219,10 +225,8 @@ public class Algorithm {
 	 */
 	private boolean alternatingPath(Class weeklyClass)
 	{
-		System.out.println("Class: " + weeklyClass + " was unassigned");
 		for (GraduateAssistant ga : weeklyClass.getAvailableGA())
 		{
-			System.out.println(ga + ": " + ga.getAssignedClasses());
 			// Find conflicting class(es)
 			ArrayList<Class> conflicting = new ArrayList<Class>();
 			for (Class potentialConflict : ga.getAssignedClasses())
@@ -236,32 +240,26 @@ public class Algorithm {
 				}
 			}
 			
-			System.out.println("Conflicting: " + conflicting);
 			// Attempt to re-assign a conflicting class
 			for (Class conflict : conflicting)
 			{
-				System.out.println(conflict + " is assigned: " + conflict.getAssignedGA());
-				System.out.println("With GA's" + conflict.getAvailableGA() + "available");
 				conflict.removeAssignedGA(ga);
 				conflict.removeAvailableGA(ga);
 				
-				System.out.println("Checking removal of assignment: " + conflict.getAvailableGA());
 				if (assignGA(conflict))
 				{
-					System.out.println(conflict + " now assigned: " + conflict.getAssignedGA());
 						
 					// Don't re-assign the same GA
 					if (!conflict.getAssignedGA().contains(ga))
 					{
-						System.out.println("Assigning " + ga + " to " + weeklyClass);
 						weeklyClass.setAssignedGA(ga);
 						return true;
 					}
 				}
-				else if (alternatingPath(conflict))
-				{
-					return true;
-				}
+//				else if (alternatingPath(conflict))
+//				{
+//					return true;
+//				}
 				else
 				{
 					conflict.setAssignedGA(ga);
@@ -279,7 +277,7 @@ public class Algorithm {
 	 * @param weeklyClass
 	 * @return True if a GA was assigned
 	 */
-	private boolean partialAssignment(Class weeklyClass)
+	public boolean partialAssignment(Class weeklyClass)
 	{
 		// Ignore qualifications		
 		if (assignIgnoringQualifications(weeklyClass))
@@ -287,10 +285,10 @@ public class Algorithm {
 			return true;
 		}
 		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-		else if (availablePartialHours(weeklyClass))
-		{
-			return true;
-		}
+//		else if (availablePartialHours(weeklyClass))
+//		{
+//			return true;
+//		}
 		
 		// Attempt to assign a GA that is available for the given times, but not all days of the week
 		

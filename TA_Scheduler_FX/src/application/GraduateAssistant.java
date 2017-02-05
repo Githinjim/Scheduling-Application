@@ -307,6 +307,18 @@ public class GraduateAssistant {
 		listOfClassGACouldAssist.remove(weeklyClass);
 	}
 	
+	public void resetGA()
+	{
+		for (Class weekly : listOfClassAssisting)
+		{
+			availability.setFree(weekly.getDaysOfWeek(), weekly.getStartTime(), weekly.getEndTime());
+		}
+		
+		listOfClassGACouldAssist.clear();
+		listOfClassAssisting.clear();
+		hoursAssigned = 0;
+	}
+	
 	@Override
 	public String toString()
 	{

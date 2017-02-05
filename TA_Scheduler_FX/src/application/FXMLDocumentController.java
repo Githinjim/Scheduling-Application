@@ -617,15 +617,53 @@ public class FXMLDocumentController implements Initializable {
 
 	@FXML
 	private void runAlgorithm(ActionEvent event) {
+		
+		double totalHours = 0;
+		double workedHours = -1;
+		int iterations = 0;
+		
 		Algorithm alg = new Algorithm(gradList, classList);
-		alg.initializeGraph();
-		alg.createInitialSolution();
+		
+		ArrayList<Class> unassigned = null;
+		
+		while(totalHours != workedHours)
+		{
+			totalHours = 0;
+			workedHours = 0;
+			
+			alg.reset();
+			alg.initializeGraph();
+			unassigned = alg.createInitialSolution();
+			
+			for (Class weekly : unassigned)
+			{
+				alg.partialAssignment(weekly);
+			}
+			
+			totalHours = alg.getClassHours();
+			workedHours = alg.getStudentHours();
+			iterations++;
+			
+			// Attempt 2000 times
+			if (iterations > 2000)
+			{
+				break;
+			}
+		}
+		
+		for (GraduateAssistant ga : gradList)
+		{
+			System.out.println(ga.getName() + " is working " + ga.getHoursAssigned());
+		}
+		System.out.print(totalHours);
+		System.out.print(" " + workedHours);
+		System.out.print("\t " + iterations);
+		System.out.println();	
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files (*.xlsx)", "*.xlsx", ".xls"));
-		fileChooser.getExtensionFilters().add(new ExtensionFilter("All Files", "*.*"));
 
 	}
 
