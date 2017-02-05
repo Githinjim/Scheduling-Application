@@ -13,14 +13,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javafx.event.ActionEvent;
@@ -52,6 +48,7 @@ public class FXMLDocumentController implements Initializable {
 	private void selectGAs(ActionEvent event) throws Exception {
 		List<File> list =
                 fileChooser.showOpenMultipleDialog(null);
+		resultsText.appendText("Loading Graduate Students\n");
             if (list != null) {
                 for (File file : list) {
                 	FileInputStream fIP = new FileInputStream(file);
@@ -69,16 +66,16 @@ public class FXMLDocumentController implements Initializable {
                     try{
                     	workbook.getSheetAt(0).getRow(1).getCell(0).getStringCellValue().equals(null);
                     	if(!workbook.getSheetAt(0).getRow(1).getCell(0).getStringCellValue().equals("Phone Number:")){
-                    		resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n");
+                    		resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n\n");
                     		continue;
                     	}//end if
                     	workbook.getSheetAt(0).getRow(2).getCell(1).getStringCellValue().equals(null);
                     	if(!workbook.getSheetAt(0).getRow(2).getCell(1).getStringCellValue().equals("Monday")){
-                    		resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n");
+                    		resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n\n");
                     		continue;
                     	}
                     }catch(NullPointerException e){
-                    	resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n");
+                    	resultsText.appendText("File \"" + file.getName() + "\" could not be identified as a graduate assistant file.\n\n");
                     	continue;
                     }	
                     
@@ -149,17 +146,14 @@ public class FXMLDocumentController implements Initializable {
                     }
                     workbook.close();
                 }
-                resultsText.appendText("End reading in Graduate Assistant files.\n");
+                resultsText.appendText("Graduate Students Loaded!\n\n");
             }//end if
             else{
-            	resultsText.appendText("No files were selected for the Graduate Students.\n");
+            	resultsText.appendText("No file(s) were selected for Graduate Students.\n\n");
             }
             
     }//end selectFiles method for the grad students
 
-	
-	
-	
 	@FXML
 	/**
 	 * Method for selecting offered classes and reading the data in.
@@ -242,36 +236,22 @@ public class FXMLDocumentController implements Initializable {
 				}
 				workbook.close();
 			}		               
-			resultsText.appendText("Classes Loaded!\n");               
+			resultsText.appendText("Classes Loaded!\n\n");               
 		} 
 		else 
 		{
-			resultsText.appendText("No Classes loaded.\n");
+			resultsText.appendText("No Classes loaded.\n\n");
 		}
-		
-		// Checking results for correctness
-		System.out.println("-----Reading in Classes-----");
-		for (Class weeklyClass : classList)
-		{
-			System.out.println("Class Name: " + weeklyClass.getClassNumber());
-			System.out.println("Professor: " + weeklyClass.getProfessor());
-			System.out.println("Start Time: " + weeklyClass.getStartTime());
-			System.out.println("End Time: " + weeklyClass.getEndTime());
-			System.out.println("Days of Week: " + weeklyClass.getDaysOfWeek());
-			System.out.println("Prep Hour: " + weeklyClass.getPrepHours());
-		}
-		System.out.println();
 	}
 	
-	
+	@FXML
 	public void handle(ActionEvent event) {
-		System.out.println("in the save file method");
 		
 		FileChooser fileChooser = new FileChooser();
 		//Desktop desktop =Desktop.getDesktop();
 
 		// Set extension filter
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("excel files (*.xls)", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		// Show save file dialog
@@ -279,7 +259,6 @@ public class FXMLDocumentController implements Initializable {
 
 		if (file != null) {
 			saveFile(file);
-			System.out.println("File Saved");
 		}
 		
 	}
@@ -293,10 +272,10 @@ public class FXMLDocumentController implements Initializable {
 
 		try {
 			FileOutputStream fileOut = new FileOutputStream(file);
-			HSSFWorkbook workbook = new HSSFWorkbook();
-			HSSFSheet worksheet = workbook.createSheet("POI Worksheet");
+			XSSFWorkbook workbook = new XSSFWorkbook();
+			XSSFSheet worksheet = workbook.createSheet("POI Worksheet");
 			
-			HSSFCellStyle cellStyle = workbook.createCellStyle();
+			XSSFCellStyle cellStyle = workbook.createCellStyle();
 			cellStyle.setFillForegroundColor(HSSFColor.GOLD.index);
 			cellStyle.setWrapText(true);
 			
@@ -306,10 +285,10 @@ public class FXMLDocumentController implements Initializable {
 			busyStyle.setFillForegroundColor(HSSFColor.YELLOW.index);
 			busyStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);;
 
-			busyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			busyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			busyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			busyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			busyStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			busyStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+			busyStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			busyStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
 			busyStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
 			busyStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 			busyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
@@ -319,10 +298,10 @@ public class FXMLDocumentController implements Initializable {
 			
 			CellStyle classStyle = workbook.createCellStyle();
 			classStyle.setWrapText(true);
-			classStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			classStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			classStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			classStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			classStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			classStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+			classStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			classStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
 			classStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
 			classStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 			classStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
@@ -330,10 +309,10 @@ public class FXMLDocumentController implements Initializable {
 			
 			
 			CellStyle freeStyle = workbook.createCellStyle();
-			freeStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			freeStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			freeStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			freeStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			freeStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			freeStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+			freeStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			freeStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
 			freeStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
 			freeStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 			freeStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
@@ -414,9 +393,8 @@ public class FXMLDocumentController implements Initializable {
 					
 					//loop through the list of days for the current class
 					for(int z = 0; z < dayList.size(); z++){
-						boolean isTheEndTime = false;
-						int startInt = stringToInt(startTime);
-						int endInt = stringToInt(endTime);
+						int startInt = stringToHour(startTime);
+						int endInt = stringToHour(endTime);
 						while(startInt < endInt){
 							try{
 								worksheet.getRow(startInt + 1 + rowCounter).getCell(dayList.get(z) + 1 + columnCounter).equals(null);
@@ -436,48 +414,7 @@ public class FXMLDocumentController implements Initializable {
 					for(int day = 1; day < 6; day++){
 						for(int j = 1; j < 14; j++){
 							String time = "";
-							switch(j){
-								case 1:
-									time = "8am";
-									break;
-								case 2:
-									time = "9am";
-									break;
-								case 3:
-									time = "10am";
-									break;
-								case 4:
-									time = "11am";
-									break;
-								case 5:
-									time = "12pm";
-									break;
-								case 6:
-									time = "1pm";
-									break;
-								case 7:
-									time = "2pm";
-									break;
-								case 8:
-									time = "3pm";
-									break;
-								case 9:
-									time = "4pm";
-									break;
-								case 10:
-									time = "5pm";
-									break;
-								case 11:
-									time = "6pm";
-									break;
-								case 12:
-									time = "7pm";
-									break;
-								case 13:
-									time = "8pm";
-									break;
-							}//end switch
-							
+							time = intToHour(j);
 							if(!currentGrad.isAvailable(day - 1, time)){
 								try{
 									worksheet.getRow(j + rowCounter).getCell(day + columnCounter).equals(null);
@@ -505,18 +442,16 @@ public class FXMLDocumentController implements Initializable {
 				}//end for loop	
 				
 				if(numberOfGraduatesWritten % 10 == 0){
-					resultsText.appendText("Algorithm Still running please do not close.");
+					resultsText.appendText("Algorithm Still running please do not close.\n");
 				}
 				numberOfGraduatesWritten += 1;
 			}//end while loop
-			
-
-			//worksheet.getRow(1).getCell(0).setCellStyle(cellStyle);
 			
 			workbook.write(fileOut);
 			fileOut.flush();
 			fileOut.close();
 			resultsText.appendText("File has been saved!");
+			workbook.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -525,8 +460,8 @@ public class FXMLDocumentController implements Initializable {
 		
 	}//end save file method
 
-	private static String intToDay(int intDay){
-		switch(intDay){
+	private static String intToHour(int intHour){
+		switch(intHour){
 		case 1:
 			return "8am";
 		case 2:
@@ -565,48 +500,37 @@ public class FXMLDocumentController implements Initializable {
 		case 13:
 			return "8pm";
 		default:
-			return null;
+			return "";
 		}//end switch
 	}//end method intToDay
 
 
-	private static int stringToInt(String stringDay){
+	private static int stringToHour(String stringDay){
 		switch(stringDay){
 		case "8am":
 			return 0;
 		case "9am":
 			return 1;
-
 		case "10am":
 			return 2;
-	
 		case "11am":
 			return 3;
-		
 		case "12pm":
 			return 4;
-		
 		case "1pm":
 			return 5;
-		
 		case "2pm":
 			return 6;
-		
 		case "3pm":
 			return 7;
-	
 		case "4pm":
 			return 8;
-			
 		case "5pm":
 			return 9;
-			
 		case "6pm":
 			return 10;
-			
 		case "7pm":
 			return 11;
-			
 		case "8pm":
 			return 12;
 		default:
@@ -617,7 +541,7 @@ public class FXMLDocumentController implements Initializable {
 
 	@FXML
 	private void runAlgorithm(ActionEvent event) {
-		
+		resultsText.appendText("Starting to assign TAs\n");
 		double totalHours = 0;
 		double workedHours = -1;
 		int iterations = 0;
@@ -625,6 +549,7 @@ public class FXMLDocumentController implements Initializable {
 		Algorithm alg = new Algorithm(gradList, classList);
 		
 		ArrayList<Class> unassigned = null;
+		
 		
 		while(totalHours != workedHours)
 		{
@@ -635,6 +560,7 @@ public class FXMLDocumentController implements Initializable {
 			alg.initializeGraph();
 			unassigned = alg.createInitialSolution();
 			
+			// Assign unassigned classes
 			for (Class weekly : unassigned)
 			{
 				alg.partialAssignment(weekly);
@@ -651,6 +577,13 @@ public class FXMLDocumentController implements Initializable {
 			}
 		}
 		
+		resultsText.appendText("-----Partial Assignments-----\n");
+		for (Class weekly : unassigned)
+		{
+			resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+		}
+		resultsText.appendText("\n");
+		
 		for (GraduateAssistant ga : gradList)
 		{
 			System.out.println(ga.getName() + " is working " + ga.getHoursAssigned());
@@ -659,12 +592,13 @@ public class FXMLDocumentController implements Initializable {
 		System.out.print(" " + workedHours);
 		System.out.print("\t " + iterations);
 		System.out.println();	
+		
+		resultsText.appendText("Finished Assigning TAs\n");
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files (*.xlsx)", "*.xlsx", ".xls"));
-
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files (*.xlsx)", "*.xlsx"));
 	}
 
 }

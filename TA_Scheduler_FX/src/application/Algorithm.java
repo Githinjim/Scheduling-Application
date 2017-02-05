@@ -285,10 +285,10 @@ public class Algorithm {
 			return true;
 		}
 		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-//		else if (availablePartialHours(weeklyClass))
-//		{
-//			return true;
-//		}
+		else if (availablePartialHours(weeklyClass))
+		{
+			return true;
+		}
 		
 		// Attempt to assign a GA that is available for the given times, but not all days of the week
 		
@@ -379,7 +379,8 @@ public class Algorithm {
 		
 			for (int j = startIndex; j < endIndex; j++)
 			{
-				if (ga.isAvailable(weeklyClass.getDaysOfWeek(), hourToString(j), weeklyClass.getEndTime()))
+				if (checkStillAvailable(weeklyClass, ga) &&
+						20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 				{
 					ga.addAssistingClass(weeklyClass);
 					weeklyClass.setAssignedGA(ga);
