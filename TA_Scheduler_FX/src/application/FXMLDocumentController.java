@@ -296,7 +296,18 @@ public class FXMLDocumentController implements Initializable {
 			busyStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
 			busyStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 			
-			//busyStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			CellStyle rightBorder;
+			rightBorder = workbook.createCellStyle();
+			rightBorder.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			rightBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		
+			
+			CellStyle rightAndBottomBorder;
+			rightAndBottomBorder = workbook.createCellStyle();
+			rightAndBottomBorder.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			rightAndBottomBorder.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			rightAndBottomBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
+			rightAndBottomBorder.setTopBorderColor(IndexedColors.BLACK.getIndex());
 			
 			CellStyle classStyle = workbook.createCellStyle();
 			classStyle.setWrapText(true);
@@ -308,6 +319,8 @@ public class FXMLDocumentController implements Initializable {
 			classStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 			classStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
 			classStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+			classStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+			classStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);;
 			
 			
 			CellStyle freeStyle = workbook.createCellStyle();
@@ -322,7 +335,25 @@ public class FXMLDocumentController implements Initializable {
 			
 			CellStyle IndividualTextStyle = workbook.createCellStyle();
 			IndividualTextStyle.setAlignment(CellStyle.ALIGN_CENTER);
+			IndividualTextStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			IndividualTextStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+			IndividualTextStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			IndividualTextStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+			IndividualTextStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+			IndividualTextStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+			IndividualTextStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+			IndividualTextStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 
+			CellStyle justBorder = workbook.createCellStyle();
+			justBorder.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+			justBorder.setBorderTop(XSSFCellStyle.BORDER_THIN);
+			justBorder.setBorderRight(XSSFCellStyle.BORDER_THIN);
+			justBorder.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+			justBorder.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+			justBorder.setTopBorderColor(IndexedColors.BLACK.getIndex());
+			justBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
+			justBorder.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+			
 			XSSFFont boldFont= workbook.createFont();
 			boldFont.setBold(true);
 			
@@ -458,7 +489,7 @@ public class FXMLDocumentController implements Initializable {
 				//---------Here is where we write to the individual sheets---------
 				workbook.createSheet(currentGrad.getName());
 				
-				for(int rowIndex = 0; rowIndex < 15; rowIndex++){
+				for(int rowIndex = 0; rowIndex < 25; rowIndex++){
 					try{
 						workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).equals(null);
 					}
@@ -476,18 +507,31 @@ public class FXMLDocumentController implements Initializable {
 				//workbook.getSheet(currentGrad.getName()).getRow(rowCounter).createCell(columnCounter).setCellValue(currentGrad.getName());
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(columnCounter);
 				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellValue("8:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellValue("9:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellValue("10:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellValue("11:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellValue("12:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellValue("1:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellValue("2:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellValue("3:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellValue("4:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellValue("5:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellValue("6:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellValue("7:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellValue("8:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(0);
 				
 				//create the rows necessary
@@ -501,10 +545,15 @@ public class FXMLDocumentController implements Initializable {
 				
 				//set the days of the week at the top of the excel file
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(1).setCellValue("Monday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(1).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(2).setCellValue("Tuesday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(2).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(3).setCellValue("Wednesday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(3).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(4).setCellValue("Thursday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(4).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(5).setCellValue("Friday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(5).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(1);
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(2);
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(3);
@@ -555,12 +604,112 @@ public class FXMLDocumentController implements Initializable {
 				
 				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(6).setCellValue("Additional hours:\n (prep times, grading, \n research etc.)");
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(6);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(1,2,6,6));
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(6).setCellStyle(classStyle);
+				//workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(1,2,6,6));
 				
-			}//end while loop
+				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(4).setCellValue("Total Hours worked: ");
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(16,16,4,6));
 			
-
-			//worksheet.getRow(1).getCell(0).setCellStyle(cellStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(0).setCellValue("Strike out days not worked for example due to vacation or holidays!");
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(0).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(1).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(2).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(3).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(4).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(5).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(6).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(17,17,0,6));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(18).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(0).setCellValue("This timesheet shows assigned GA duties initialing at a time slot the instructor of record "
+						+ "declares that the GA worked these hours.  By signing this form the student certifies that these hours are a true and accurate record of all time worked during the week.");
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(0).setCellStyle(cellStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(18,20,0,6));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(0).setCellValue("Employee Signature: ");
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(1).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(2).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21,21,0,2));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(3).setCellValue("Date Signed: ");
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(3).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21,21,3,4));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(5).setCellValue("Week of (Daterange): ");
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21,21,5,6));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(0).setCellValue("Supervisor Signature ");
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(1).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(2).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(3).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(22,22,0,4));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(5).setCellValue("Date: ");
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(22,22,5,6));
+				
+				
+				//loop though all cells in the individual sheets and set borders if there
+				//are no borders (just to make the sheet asthetically pleasing)
+				//first loop through just calendar
+				for(int rowIndexer = 2; rowIndexer < 15; rowIndexer++){
+					for(int columnIndexer = 1; columnIndexer < 6; columnIndexer++){
+						try{
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer).equals(null);
+						}catch(NullPointerException e){
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(columnIndexer);
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer).setCellStyle(justBorder);;
+						}//end try / catch
+					}//end inner for
+				}//end outer for
+				
+				//set right borders for additional prep hour boxes
+				for(int rowIndexer = 2; rowIndexer < 14; rowIndexer++){
+					try{
+						workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6).equals(null);
+					}catch(NullPointerException e){
+						workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(6);
+						workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6).setCellStyle(rightBorder);
+					}//end try / catch
+				}
+				
+				workbook.getSheet(currentGrad.getName()).getRow(14).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(6).setCellStyle(rightAndBottomBorder);
+			}//end while loop
 			
 			workbook.write(fileOut);
 			fileOut.flush();
