@@ -16,6 +16,8 @@ import java.util.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -318,7 +320,14 @@ public class FXMLDocumentController implements Initializable {
 			freeStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
 			freeStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
 			
+			CellStyle IndividualTextStyle = workbook.createCellStyle();
+			IndividualTextStyle.setAlignment(CellStyle.ALIGN_CENTER);
+
+			XSSFFont boldFont= workbook.createFont();
+			boldFont.setBold(true);
 			
+			
+			IndividualTextStyle.setFont(boldFont);
 			
 			//create an iterator of the graduate assistant
 			Iterator<GraduateAssistant> itr = gradList.listIterator();
@@ -445,13 +454,118 @@ public class FXMLDocumentController implements Initializable {
 					resultsText.appendText("Algorithm Still running please do not close.\n");
 				}
 				numberOfGraduatesWritten += 1;
+				
+				//---------Here is where we write to the individual sheets---------
+				workbook.createSheet(currentGrad.getName());
+				
+				for(int rowIndex = 0; rowIndex < 15; rowIndex++){
+					try{
+						workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).equals(null);
+					}
+					catch(java.lang.NullPointerException e){
+						workbook.getSheet(currentGrad.getName()).createRow((short) rowIndex);
+					}
+					workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).createCell((short) 0);
+					
+					workbook.getSheet(currentGrad.getName()).getRow(rowIndex).getCell(0).setCellStyle(cellStyle);
+				}
+				
+				//workbook.getSheet(currentGrad.getName()).getRow(rowCounter).createCell(columnCounter);
+				
+				//set the time value on the left hand side of the excel file
+				//workbook.getSheet(currentGrad.getName()).getRow(rowCounter).createCell(columnCounter).setCellValue(currentGrad.getName());
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(columnCounter);
+				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellValue("8:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellValue("9:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellValue("10:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellValue("11:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellValue("12:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellValue("1:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellValue("2:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellValue("3:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellValue("4:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellValue("5:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellValue("6:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellValue("7:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellValue("8:00 PM");
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(0);
+				
+				//create the rows necessary
+				for(int columnIndex = 1; columnIndex < 13; columnIndex++){
+					workbook.getSheet(currentGrad.getName()).getRow(1).createCell((short) columnIndex);
+					workbook.getSheet(currentGrad.getName()).getRow(0).createCell((short) columnIndex);
+					
+					workbook.getSheet(currentGrad.getName()).getRow(1).getCell(columnIndex).setCellStyle(cellStyle);
+
+				}
+				
+				//set the days of the week at the top of the excel file
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(1).setCellValue("Monday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(2).setCellValue("Tuesday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(3).setCellValue("Wednesday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(4).setCellValue("Thursday");
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(5).setCellValue("Friday");
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(1);
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(2);
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(3);
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(4);
+				
+				//loop through all class the graduate student is going to be assisting
+				for(int classIndex = 0; classIndex < currentGrad.getAssignedClasses().size(); classIndex++){
+					Class currentClass = currentGrad.getAssignedClasses().get(classIndex);
+					String startTime = currentClass.getStartTime();
+					String endTime = currentClass.getEndTime();
+					ArrayList<Integer> dayList = currentClass.getDaysOfWeek();
+					
+					//loop through the list of days for the current class
+					for(int z = 0; z < dayList.size(); z++){
+						//boolean isTheEndTime = false;
+						int startInt = stringToInt(startTime);
+						int endInt = stringToInt(endTime);
+						while(startInt < endInt){
+							try{
+								workbook.getSheet(currentGrad.getName()).getRow(startInt + 2).getCell(dayList.get(z) + 1).equals(null);
+							}catch(java.lang.NullPointerException e){
+								workbook.getSheet(currentGrad.getName()).getRow(startInt + 2).createCell(dayList.get(z) + 1);
+							}
+							workbook.getSheet(currentGrad.getName()).getRow(startInt + 2).getCell(dayList.get(z) + 1).setCellValue(currentClass.getClassNumber() + "\n" + currentClass.getProfessor());
+							workbook.getSheet(currentGrad.getName()).getRow(startInt + 2).getCell(dayList.get(z) + 1).setCellStyle(classStyle);
+							workbook.getSheet(currentGrad.getName()).autoSizeColumn(dayList.get(z) + 1);
+							startInt += 1;
+							
+						}//end while
+						
+					}//end for loop for the number of days in the class
+					
+				}//end for loop	
+				
+				//set the stuff that is always in the excel file
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(0).setCellValue("Health Sciences");
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(0).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(0,0,0,1));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(2).setCellValue("Integrative Human Physiology");
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(2).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(0,0,2,4));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(5).setCellValue("GA Timesheet for: " + currentGrad.getName());
+				workbook.getSheet(currentGrad.getName()).getRow(0).getCell(5).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(5);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(0,0,5,7));
+				
+				workbook.getSheet(currentGrad.getName()).getRow(1).getCell(6).setCellValue("Additional hours:\n (prep times, grading, \n research etc.)");
+				workbook.getSheet(currentGrad.getName()).autoSizeColumn(6);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(1,2,6,6));
+				
 			}//end while loop
+			
+
+			//worksheet.getRow(1).getCell(0).setCellStyle(cellStyle);
 			
 			workbook.write(fileOut);
 			fileOut.flush();
 			fileOut.close();
 			resultsText.appendText("File has been saved!");
-			workbook.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -459,7 +573,53 @@ public class FXMLDocumentController implements Initializable {
 		}
 		
 	}//end save file method
+				
 
+	private static int stringToInt(String stringDay){
+		switch(stringDay){
+		case "8am":
+			return 0;
+		case "9am":
+			return 1;
+
+		case "10am":
+			return 2;
+	
+		case "11am":
+			return 3;
+		
+		case "12pm":
+			return 4;
+		
+		case "1pm":
+			return 5;
+		
+		case "2pm":
+			return 6;
+		
+		case "3pm":
+			return 7;
+	
+		case "4pm":
+			return 8;
+			
+		case "5pm":
+			return 9;
+			
+		case "6pm":
+			return 10;
+			
+		case "7pm":
+			return 11;
+			
+		case "8pm":
+			return 12;
+		default:
+			return -1;
+		}//end switch
+	}//end method intToDay
+
+	
 	private static String intToHour(int intHour){
 		switch(intHour){
 		case 1:
