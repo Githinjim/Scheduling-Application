@@ -281,6 +281,11 @@ public class FXMLDocumentController implements Initializable {
 			cellStyle.setFillForegroundColor(HSSFColor.GOLD.index);
 			cellStyle.setWrapText(true);
 			
+			CellStyle blackStyle;
+			blackStyle = workbook.createCellStyle();
+			blackStyle.setFillForegroundColor(HSSFColor.BLACK.index);
+			blackStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);;
+			
 			//create the busy cell style
 			CellStyle busyStyle;
 			busyStyle = workbook.createCellStyle();
@@ -300,6 +305,7 @@ public class FXMLDocumentController implements Initializable {
 			rightBorder = workbook.createCellStyle();
 			rightBorder.setBorderRight(XSSFCellStyle.BORDER_THIN);
 			rightBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
+			rightBorder.setWrapText(true);
 		
 			
 			CellStyle rightAndBottomBorder;
@@ -308,6 +314,7 @@ public class FXMLDocumentController implements Initializable {
 			rightAndBottomBorder.setBorderBottom(XSSFCellStyle.BORDER_THIN);
 			rightAndBottomBorder.setRightBorderColor(IndexedColors.BLACK.getIndex());
 			rightAndBottomBorder.setTopBorderColor(IndexedColors.BLACK.getIndex());
+			rightAndBottomBorder.setWrapText(true);
 			
 			CellStyle classStyle = workbook.createCellStyle();
 			classStyle.setWrapText(true);
@@ -682,6 +689,21 @@ public class FXMLDocumentController implements Initializable {
 				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(6).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(22,22,5,6));
 				
+				//set extra columns to a black background
+				for (int rowIndexer = 15; rowIndexer < 17; rowIndexer++){
+					if(rowIndexer == 15){
+						for(int columnIndexer = 0; columnIndexer < 7; columnIndexer++){
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(columnIndexer);
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer).setCellStyle(blackStyle);
+						}
+					}
+					if(rowIndexer == 16){
+						for(int columnIndexer = 0; columnIndexer < 4; columnIndexer++){
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(columnIndexer);
+							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer).setCellStyle(blackStyle);
+						}
+					}
+				}
 				
 				//loop though all cells in the individual sheets and set borders if there
 				//are no borders (just to make the sheet asthetically pleasing)
@@ -709,6 +731,24 @@ public class FXMLDocumentController implements Initializable {
 				
 				workbook.getSheet(currentGrad.getName()).getRow(14).createCell(6);
 				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(6).setCellStyle(rightAndBottomBorder);
+				
+				//set prep hours
+				for(int classIndex = 0; classIndex < currentGrad.getAssignedClasses().size(); classIndex++){
+					
+					if(currentGrad.getAssignedClasses().get(classIndex).getPrepHours() > 0){
+						//System.out.println(currentGrad.getName() + " has prep hours for " + currentGrad.getAssignedClasses().get(classIndex).getClassNumber());
+						for(int rowIndexer = 2; rowIndexer < 15; rowIndexer++){
+							if(workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6).getStringCellValue().equals("")){
+								workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6).setCellValue(currentGrad.getAssignedClasses().get(classIndex).getClassNumber() + "\nHours:" + currentGrad.getAssignedClasses().get(classIndex).getPrepHours());
+								
+								break;
+							}
+						}
+					}
+					
+					
+				}//end prep hours loop
+				
 			}//end while loop
 			
 			workbook.write(fileOut);
