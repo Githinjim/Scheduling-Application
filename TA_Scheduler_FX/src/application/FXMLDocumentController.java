@@ -778,7 +778,7 @@ public class FXMLDocumentController implements Initializable {
 			fileOut.close();
 			resultsText.appendText("File has been saved!");
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			resultsText.appendText("Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
