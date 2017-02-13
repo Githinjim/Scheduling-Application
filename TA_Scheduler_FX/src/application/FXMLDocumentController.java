@@ -270,7 +270,7 @@ public class FXMLDocumentController implements Initializable {
 		int columnCounter = 0;
 		int numberOfGraduatesWritten = 0;
 		final int ROW_OFFSET = 16;
-		final int COLUMN_OFFSET = 7;
+		final int COLUMN_OFFSET = 8;
 
 		try {
 			FileOutputStream fileOut = new FileOutputStream(file);
@@ -289,7 +289,7 @@ public class FXMLDocumentController implements Initializable {
 			//create the busy cell style
 			CellStyle busyStyle;
 			busyStyle = workbook.createCellStyle();
-			busyStyle.setFillForegroundColor(HSSFColor.YELLOW.index);
+			busyStyle.setFillForegroundColor(HSSFColor.BLACK.index);
 			busyStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);;
 
 			busyStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
@@ -410,7 +410,7 @@ public class FXMLDocumentController implements Initializable {
 				worksheet.getRow(13 + rowCounter).getCell(0 + columnCounter).setCellValue("8:00 PM");
 				
 				//create the rows necessary
-				for(int columnIndex = 1; columnIndex < 6; columnIndex++){
+				for(int columnIndex = 1; columnIndex < 7; columnIndex++){
 					worksheet.getRow(0 + rowCounter).createCell((short) columnIndex + columnCounter);
 					
 					worksheet.getRow(0 + rowCounter).getCell(columnIndex + columnCounter).setCellStyle(cellStyle);
@@ -423,11 +423,13 @@ public class FXMLDocumentController implements Initializable {
 				worksheet.getRow(0 + rowCounter).getCell(3 + columnCounter).setCellValue("Wednesday");
 				worksheet.getRow(0 + rowCounter).getCell(4 + columnCounter).setCellValue("Thursday");
 				worksheet.getRow(0 + rowCounter).getCell(5 + columnCounter).setCellValue("Friday");
+				worksheet.getRow(0 + rowCounter).getCell(6 + columnCounter).setCellValue("Prep Hours:");
 				worksheet.autoSizeColumn(1 + columnCounter);
 				worksheet.autoSizeColumn(2 + columnCounter);
 				worksheet.autoSizeColumn(3 + columnCounter);
 				worksheet.autoSizeColumn(4 + columnCounter);
 				worksheet.autoSizeColumn(5 + columnCounter);
+				worksheet.autoSizeColumn(6 + columnCounter);
 				
 				
 				
@@ -485,6 +487,26 @@ public class FXMLDocumentController implements Initializable {
 							}
 						}//end inner for loop
 					}//end outer for loop
+					
+					//Add the extra hours for grading etc. if needed for the current class
+					if(currentClass.getPrepHours() > 0){
+						for(int rowIndexer = (1 + rowCounter); rowIndexer < (14 + rowCounter); rowIndexer++){
+							
+							try{
+								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).getStringCellValue().equals("");
+								
+							}catch(java.lang.NullPointerException e){
+								worksheet.getRow(rowIndexer).createCell(6 + columnCounter);
+								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).setCellValue(currentClass.getClassNumber() + "\nHours:" + currentClass.getPrepHours());
+								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).setCellStyle(classStyle);
+								worksheet.autoSizeColumn(6 + columnCounter);
+								break;
+							}
+							
+						}
+					}
+					
+					
 					
 				}//end for loop	
 				
