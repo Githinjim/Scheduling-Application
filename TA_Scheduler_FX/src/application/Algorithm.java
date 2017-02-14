@@ -8,6 +8,7 @@ public class Algorithm {
 
 	private ArrayList<GraduateAssistant> students;
 	private ArrayList<Class> classes;
+	private int MAX_HOURS = 20;
 	
 	/**
 	 * Default constructor
@@ -98,26 +99,13 @@ public class Algorithm {
 					}
 				}
 			}
-		}
-		
-		// Now attempt to assign any assigned classes
-		for (int i = 0; i < unassignedClasses.size(); i++)
-		{
-//			if (partialAssignment(unassignedClasses.get(i)))
-//			{
-//				unassignedClasses.remove(i);
-//			}
-//			else 
-//			{
-//				
-//			}
-		}		
+		}	
 		
 		return unassignedClasses;
 	}
 	
 	/**
-	 * 
+	 * Resets all assignments
 	 */
 	public void reset()
 	{
@@ -134,7 +122,7 @@ public class Algorithm {
 	
 	/**
 	 * 
-	 * @return
+	 * @return Total number of hours worked by GAs
 	 */
 	public int getStudentHours()
 	{
@@ -150,7 +138,7 @@ public class Algorithm {
 	
 	/**
 	 * 
-	 * @return
+	 * @return Total number of class hours that require a TA
 	 */
 	public int getClassHours()
 	{
@@ -162,6 +150,31 @@ public class Algorithm {
 		}
 		
 		return hours;
+	}
+	
+	/**
+	 * Assigns a GA to a class - where the GA is only available for part of the class times
+	 * @param weeklyClass
+	 * @return True if a GA was assigned
+	 */
+	public boolean partialAssignment(Class weeklyClass)
+	{
+		// Ignore qualifications		
+		if (assignIgnoringQualifications(weeklyClass))
+		{
+			return true;
+		}
+		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
+		else if (assignPartialHours(weeklyClass))
+		{
+			return true;
+		}
+		else if(assignIgnoringQualificationsAndTimes(weeklyClass))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -273,31 +286,6 @@ public class Algorithm {
 	}
 	
 	/**
-	 * Assigns a GA to a class - where the GA is only available for part of the class times
-	 * @param weeklyClass
-	 * @return True if a GA was assigned
-	 */
-	public boolean partialAssignment(Class weeklyClass)
-	{
-		// Ignore qualifications		
-		if (assignIgnoringQualifications(weeklyClass))
-		{
-			return true;
-		}
-		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-		else if (availablePartialHours(weeklyClass))
-		{
-			return true;
-		}
-		
-		// Attempt to assign a GA that is available for the given times, but not all days of the week
-		
-		// Attempt to assign a GA that is available some days of the week, for some of the time
-		
-		return false;
-	}
-	
-	/**
 	 * 
 	 * @param weeklyClass
 	 * @return True if the classes was assigned
@@ -353,46 +341,100 @@ public class Algorithm {
 	 * @param ga
 	 * @return
 	 */
-	private boolean availablePartialHours(Class weeklyClass)
+	private boolean assignPartialHours(Class weeklyClass)
 	{
 		boolean returnVal = false;
+		int maxAvailableHours = 0, numAvailableHours = 0;
+		GraduateAssistant mostAvailableGA = null;
 		
-		int startIndex = stringToHour(weeklyClass.getStartTime());
-		int endIndex = stringToHour(weeklyClass.getEndTime());
+		int startTime = stringToHour(weeklyClass.getStartTime());
+		int endTime = stringToHour(weeklyClass.getEndTime());
 		
-		MersenneTwisterFast random_index = new MersenneTwisterFast(System.nanoTime());
-		ArrayList<Integer> visited = new ArrayList<Integer>();
-		int index;
-		
-		// For the number of available GAs
-		for (int i = 0; i < students.size(); i++)
-		{	
-			// Get a random GA
-			do
+		// Determine which GA has the most time they would be able to spend on the class
+		// This also relaxes the qualifications
+		for (GraduateAssistant ga : students)
+		{
+			numAvailableHours = 0;
+			if (ga.isQualified(weeklyClass.getClassNumber()) &&
+				MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 			{
-				index = random_index.nextInt(students.size());
-			}
-			while (visited.contains(index));
-			visited.add(index);
-			
-			GraduateAssistant ga = students.get(index);
-		
-			for (int j = startIndex; j < endIndex; j++)
-			{
-				if (checkStillAvailable(weeklyClass, ga) &&
-						20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+				// For each day
+				for (int day : weeklyClass.getDaysOfWeek())
 				{
-					ga.addAssistingClass(weeklyClass);
-					weeklyClass.setAssignedGA(ga);
-					returnVal = true;
-					break;
+					// Determine the amount of available time
+					for (int i = startTime; i < endTime; i++)
+					{
+						if (ga.isAvailable(day, hourToString(i)))
+						{
+							numAvailableHours++;
+						}
+					}
 				}
 			}
-			if (returnVal == true)
+			
+			if (numAvailableHours > maxAvailableHours)
 			{
-				break;
+				mostAvailableGA = ga;
 			}
 		}
+		
+		if (mostAvailableGA != null)
+		{
+			mostAvailableGA.addAssistingClass(weeklyClass);
+			weeklyClass.setAssignedGA(mostAvailableGA);
+			returnVal = true;
+		}
+		return returnVal;
+	}
+	
+	/**
+	 * 
+	 * @param weeklyClass
+	 * @return
+	 */
+	private boolean assignIgnoringQualificationsAndTimes(Class weeklyClass)
+	{
+		boolean returnVal = false;
+		int maxAvailableHours = 0, numAvailableHours = 0;
+		GraduateAssistant mostAvailableGA = null;
+		
+		int startTime = stringToHour(weeklyClass.getStartTime());
+		int endTime = stringToHour(weeklyClass.getEndTime());
+		
+		// Determine which GA has the most time they would be able to spend on the class
+		// This also relaxes the qualifications
+		for (GraduateAssistant ga : students)
+		{
+			numAvailableHours = 0;
+			if (MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+			{
+				// For each day
+				for (int day : weeklyClass.getDaysOfWeek())
+				{
+					// Determine the amount of available time
+					for (int i = startTime; i < endTime; i++)
+					{
+						if (ga.isAvailable(day, hourToString(i)))
+						{
+							numAvailableHours++;
+						}
+					}
+				}
+			}
+			
+			if (numAvailableHours > maxAvailableHours)
+			{
+				mostAvailableGA = ga;
+			}
+		}
+		
+		if (mostAvailableGA != null)
+		{
+			mostAvailableGA.addAssistingClass(weeklyClass);
+			weeklyClass.setAssignedGA(mostAvailableGA);
+			returnVal = true;
+		}
+		
 		return returnVal;
 	}
 	
@@ -452,7 +494,7 @@ public class Algorithm {
 	/**
 	 * Converts a Time string to its integer representation
 	 * @param hour
-	 * @return
+	 * @return the integer representation of the string
 	 */
 	private int stringToHour(String hour)
 	{
@@ -508,6 +550,11 @@ public class Algorithm {
 		return time;
 	}
 	
+	/**
+	 * Converts an integer representation to it's equivalent String
+	 * @param hour
+	 * @return
+	 */
 	private String hourToString(int hour)
 	{
 		String time = "";
@@ -586,6 +633,5 @@ public class Algorithm {
 			return 1;
 		}
 	}
-
 	
 }//end class Algorithm
