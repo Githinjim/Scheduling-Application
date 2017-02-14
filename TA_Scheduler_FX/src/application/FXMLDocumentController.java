@@ -182,6 +182,11 @@ public class FXMLDocumentController implements Initializable {
 					Row currentRow = iterator.next();
 					Iterator<Cell> cellIterator = currentRow.iterator(); // 
 					
+					if(!(datatypeSheet.getRow(0).getCell(0).getStringCellValue().equals("Name:")) || !(datatypeSheet.getRow(3).getCell(1).getStringCellValue().equals("Start Time"))){
+						resultsText.appendText("File: \"" + file.getName() + "\"could not be recognized as a class sheet.\n\n");
+						break;
+					}
+					
 					while (cellIterator.hasNext()) {
 						Cell currentCell = cellIterator.next();
 						// Get the professor -> This only happens once in the
@@ -196,16 +201,18 @@ public class FXMLDocumentController implements Initializable {
 							// Get the class number
 							if (currentCell.getColumnIndex() == 0) 
 							{
-								if (currentCell.getStringCellValue().isEmpty()) 
-								{
-									break;
-								} 
-								else 
-								{
-									classList.add(new Class());
-									classList.get(classList.size() -1).setProfessor(professorName);
-									classList.get(classList.size() - 1).setClassNumber(currentCell.getStringCellValue());
-								}
+
+									if (currentCell.getStringCellValue().isEmpty()) 
+									{
+										break;
+									} 
+									else 
+									{
+										classList.add(new Class());
+										classList.get(classList.size() -1).setProfessor(professorName);
+										classList.get(classList.size() - 1).setClassNumber(currentCell.getStringCellValue());
+									}
+
 							}
 
 							// Get the start time
@@ -269,6 +276,7 @@ public class FXMLDocumentController implements Initializable {
 		int rowCounter = 0;
 		int columnCounter = 0;
 		int numberOfGraduatesWritten = 0;
+		int duplicateNameTracker = 0;
 		final int ROW_OFFSET = 16;
 		final int COLUMN_OFFSET = 8;
 
@@ -516,8 +524,8 @@ public class FXMLDocumentController implements Initializable {
 				numberOfGraduatesWritten += 1;
 				
 				//---------Here is where we write to the individual sheets---------
-				workbook.createSheet(currentGrad.getName());
-				
+					workbook.createSheet(currentGrad.getName());
+
 				for(int rowIndex = 0; rowIndex < 25; rowIndex++){
 					try{
 						workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).equals(null);
