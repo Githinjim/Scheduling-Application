@@ -972,7 +972,7 @@ public class FXMLDocumentController implements Initializable {
 		{
 			if (weekly.getAssignedGA().size() == 0)
 			{
-				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+				resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
 			}
 		}
 		resultsText.appendText("\n");
