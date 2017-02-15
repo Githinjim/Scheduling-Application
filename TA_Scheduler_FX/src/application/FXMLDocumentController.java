@@ -951,7 +951,21 @@ public class FXMLDocumentController implements Initializable {
 		resultsText.appendText("-----Partial Assignments-----\n");
 		for (Class weekly : unassigned)
 		{
-			resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+			System.out.println(weekly + "\t" + weekly.getAssignedGA());
+			if (weekly.getAssignedGA().size() > 0)
+			{
+				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+			}
+		}
+		resultsText.appendText("\n");
+		
+		resultsText.appendText("-----Unassigned Classes-----\n");
+		for (Class weekly : unassigned)
+		{
+			if (weekly.getAssignedGA().size() == 0)
+			{
+				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+			}
 		}
 		resultsText.appendText("\n");
 		
