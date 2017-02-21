@@ -96,7 +96,42 @@ public class FXMLDocumentController implements Initializable {
                     		Cell currentCell = cellIterator.next();
                     		//Conditional for the name field
                     		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
-                    			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
+                    			//check if the name already exists
+                                boolean doesNameAlreadyExist = false;
+                                try{
+                                	for(int gradSutdentNameIndexer = 0; gradSutdentNameIndexer < gradList.size(); gradSutdentNameIndexer++){
+                                		if(gradList.get(gradSutdentNameIndexer).getName().equals(currentCell.getStringCellValue())){
+                                			doesNameAlreadyExist = true;
+                                			break;
+                                		}
+                                	}
+                                }catch(NullPointerException e){
+                                	
+                                }
+                                //if the name already exists create a unique one, else just assign the name
+                                if(doesNameAlreadyExist == true){
+                                	//find a number to append to the end of the name to make it unique
+                                	int extraNumber = 1;
+                                	int index = 0;
+                                	while(true){
+                                		
+                                		String str = currentCell.getStringCellValue();
+                                		str += extraNumber;
+                                		try{
+                                			if(gradList.get(index).getName().equals(str)){
+                                				index = 0;
+                                				extraNumber += 1;
+                                			}
+                                			index++;
+                                		}catch(NullPointerException e){
+                                			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue() + extraNumber);
+                                			break;
+                                		}
+                      
+                                	}//end always true while
+                                }else{
+                                	gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
+                                }
                     		}
                     		
                     		//Conditional for the phone number field
@@ -970,7 +1005,21 @@ public class FXMLDocumentController implements Initializable {
 		resultsText.appendText("-----Partial Assignments-----\n");
 		for (Class weekly : unassigned)
 		{
-			resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+			System.out.println(weekly + "\t" + weekly.getAssignedGA());
+			if (weekly.getAssignedGA().size() > 0)
+			{
+				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+			}
+		}
+		resultsText.appendText("\n");
+		
+		resultsText.appendText("-----Unassigned Classes-----\n");
+		for (Class weekly : unassigned)
+		{
+			if (weekly.getAssignedGA().size() == 0)
+			{
+				resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
+			}
 		}
 		resultsText.appendText("\n");
 		
