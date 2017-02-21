@@ -5,6 +5,7 @@
  */
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -40,6 +43,8 @@ public class FXMLDocumentController implements Initializable {
     ArrayList<Class> classes = new ArrayList<Class>();
 
     @FXML TextArea resultsText;
+    @FXML CheckBox saveBox;
+    @FXML TextField hoursRequired;
     
 	@FXML
 	/**
@@ -81,7 +86,6 @@ public class FXMLDocumentController implements Initializable {
                     	continue;
                     }	
                     
-
                     
                     gradList.add(new GraduateAssistant());
                     while(iterator.hasNext()){
@@ -821,6 +825,12 @@ public class FXMLDocumentController implements Initializable {
 			fileOut.flush();
 			fileOut.close();
 			resultsText.appendText("File has been saved!");
+			if(saveBox.isSelected())
+			{
+				//open excel file if checkbox is checked
+				Desktop dt = Desktop.getDesktop();
+				dt.open(new File(file.getAbsolutePath()));
+			}
 		} catch (FileNotFoundException e) {
 			resultsText.appendText("Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.");
 		} catch (IOException e) {
@@ -960,11 +970,11 @@ public class FXMLDocumentController implements Initializable {
 		double totalHours = 0;
 		double workedHours = -1;
 		int iterations = 0;
+		int MAX_HOURS = Integer.parseInt(hoursRequired.getText());
 		
-		Algorithm alg = new Algorithm(gradList, classList);
+		Algorithm alg = new Algorithm(gradList, classList, MAX_HOURS);
 		
 		ArrayList<Class> unassigned = null;
-		
 		
 		while(totalHours != workedHours)
 		{
