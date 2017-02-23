@@ -45,6 +45,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML TextArea resultsText;
     @FXML CheckBox saveBox;
     @FXML TextField hoursRequired;
+    @FXML TextArea Help;
     
 	@FXML
 	/**
