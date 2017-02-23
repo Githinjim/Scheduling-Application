@@ -28,6 +28,13 @@ public class Algorithm {
 		classes = newClassList;
 	}
 	
+	public Algorithm(ArrayList<GraduateAssistant> newGAList, ArrayList<Class> newClassList,int MAX_HOURS)
+	{
+		this.MAX_HOURS = MAX_HOURS;
+		students = newGAList;
+		classes = newClassList;
+	}
+	
 	/**
 	 * 
 	 * @param GA
@@ -219,7 +226,7 @@ public class Algorithm {
 			
 			// Assign the GA if they are still available
 			if (checkStillAvailable(weeklyClass, ga) &&
-				20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+				MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 			{
 				weeklyClass.setAssignedGA(ga);
 				ga.addAssistingClass(weeklyClass);;
@@ -315,7 +322,7 @@ public class Algorithm {
 			
 			// Assign the GA if they are still available
 			if (checkStillAvailable(weeklyClass, ga) &&
-				20 >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+				MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 			{
 				weeklyClass.setAssignedGA(ga);
 				ga.addAssistingClass(weeklyClass);

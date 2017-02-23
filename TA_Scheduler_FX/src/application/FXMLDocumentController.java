@@ -5,6 +5,7 @@
  */
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -40,6 +43,9 @@ public class FXMLDocumentController implements Initializable {
     ArrayList<Class> classes = new ArrayList<Class>();
 
     @FXML TextArea resultsText;
+    @FXML CheckBox saveBox;
+    @FXML TextField hoursRequired;
+    @FXML TextArea Help;
     
 	@FXML
 	/**
@@ -91,7 +97,42 @@ public class FXMLDocumentController implements Initializable {
                     		Cell currentCell = cellIterator.next();
                     		//Conditional for the name field
                     		if(currentCell.getColumnIndex() == 1 && currentCell.getRowIndex() == 0){
-                    			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
+                    			//check if the name already exists
+                                boolean doesNameAlreadyExist = false;
+                                try{
+                                	for(int gradSutdentNameIndexer = 0; gradSutdentNameIndexer < gradList.size(); gradSutdentNameIndexer++){
+                                		if(gradList.get(gradSutdentNameIndexer).getName().equals(currentCell.getStringCellValue())){
+                                			doesNameAlreadyExist = true;
+                                			break;
+                                		}
+                                	}
+                                }catch(NullPointerException e){
+                                	
+                                }
+                                //if the name already exists create a unique one, else just assign the name
+                                if(doesNameAlreadyExist == true){
+                                	//find a number to append to the end of the name to make it unique
+                                	int extraNumber = 1;
+                                	int index = 0;
+                                	while(true){
+                                		
+                                		String str = currentCell.getStringCellValue();
+                                		str += extraNumber;
+                                		try{
+                                			if(gradList.get(index).getName().equals(str)){
+                                				index = 0;
+                                				extraNumber += 1;
+                                			}
+                                			index++;
+                                		}catch(NullPointerException e){
+                                			gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue() + extraNumber);
+                                			break;
+                                		}
+                      
+                                	}//end always true while
+                                }else{
+                                	gradList.get(gradList.size() - 1).setName(currentCell.getStringCellValue());
+                                }
                     		}
                     		
                     		//Conditional for the phone number field
@@ -182,6 +223,11 @@ public class FXMLDocumentController implements Initializable {
 					Row currentRow = iterator.next();
 					Iterator<Cell> cellIterator = currentRow.iterator(); // 
 					
+					if(!(datatypeSheet.getRow(0).getCell(0).getStringCellValue().equals("Name:")) || !(datatypeSheet.getRow(3).getCell(1).getStringCellValue().equals("Start Time"))){
+						resultsText.appendText("File: \"" + file.getName() + "\"could not be recognized as a class sheet.\n\n");
+						break;
+					}
+					
 					while (cellIterator.hasNext()) {
 						Cell currentCell = cellIterator.next();
 						// Get the professor -> This only happens once in the
@@ -196,16 +242,18 @@ public class FXMLDocumentController implements Initializable {
 							// Get the class number
 							if (currentCell.getColumnIndex() == 0) 
 							{
-								if (currentCell.getStringCellValue().isEmpty()) 
-								{
-									break;
-								} 
-								else 
-								{
-									classList.add(new Class());
-									classList.get(classList.size() -1).setProfessor(professorName);
-									classList.get(classList.size() - 1).setClassNumber(currentCell.getStringCellValue());
-								}
+
+									if (currentCell.getStringCellValue().isEmpty()) 
+									{
+										break;
+									} 
+									else 
+									{
+										classList.add(new Class());
+										classList.get(classList.size() -1).setProfessor(professorName);
+										classList.get(classList.size() - 1).setClassNumber(currentCell.getStringCellValue());
+									}
+
 							}
 
 							// Get the start time
@@ -269,6 +317,7 @@ public class FXMLDocumentController implements Initializable {
 		int rowCounter = 0;
 		int columnCounter = 0;
 		int numberOfGraduatesWritten = 0;
+		int duplicateNameTracker = 0;
 		final int ROW_OFFSET = 16;
 		final int COLUMN_OFFSET = 8;
 
@@ -516,8 +565,8 @@ public class FXMLDocumentController implements Initializable {
 				numberOfGraduatesWritten += 1;
 				
 				//---------Here is where we write to the individual sheets---------
-				workbook.createSheet(currentGrad.getName());
-				
+					workbook.createSheet(currentGrad.getName());
+
 				for(int rowIndex = 0; rowIndex < 25; rowIndex++){
 					try{
 						workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).equals(null);
@@ -777,6 +826,12 @@ public class FXMLDocumentController implements Initializable {
 			fileOut.flush();
 			fileOut.close();
 			resultsText.appendText("File has been saved!");
+			if(saveBox.isSelected())
+			{
+				//open excel file if checkbox is checked
+				Desktop dt = Desktop.getDesktop();
+				dt.open(new File(file.getAbsolutePath()));
+			}
 		} catch (FileNotFoundException e) {
 			resultsText.appendText("Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.");
 		} catch (IOException e) {
@@ -916,11 +971,11 @@ public class FXMLDocumentController implements Initializable {
 		double totalHours = 0;
 		double workedHours = -1;
 		int iterations = 0;
+		int MAX_HOURS = Integer.parseInt(hoursRequired.getText());
 		
-		Algorithm alg = new Algorithm(gradList, classList);
+		Algorithm alg = new Algorithm(gradList, classList, MAX_HOURS);
 		
 		ArrayList<Class> unassigned = null;
-		
 		
 		while(totalHours != workedHours)
 		{
@@ -964,7 +1019,7 @@ public class FXMLDocumentController implements Initializable {
 		{
 			if (weekly.getAssignedGA().size() == 0)
 			{
-				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+				resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
 			}
 		}
 		resultsText.appendText("\n");
