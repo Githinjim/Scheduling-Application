@@ -23,6 +23,7 @@ public class Class {
 	private ArrayList<GraduateAssistant> availableGAs;
 	private int numberOfGAs;
 	private int prepHours;
+	private int uniqueIdentifier = -1;
 
 	/**
 	 * 
@@ -48,6 +49,14 @@ public class Class {
 	public Class(int numberOfGAs){
 		this.numberOfGAs = numberOfGAs;
 		prepHours = 0;
+	}
+	
+	public void setUniqueIdentifier(int id){
+		uniqueIdentifier = id;
+	}//end method setUniqueIdentifier
+	
+	public int getUniqueIdentifier(){
+		return uniqueIdentifier;
 	}
 	
 	public void setPrepHours(int hours){

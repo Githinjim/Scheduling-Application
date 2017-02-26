@@ -41,6 +41,8 @@ public class FXMLDocumentController implements Initializable {
     ArrayList<GraduateAssistant> gradList = new ArrayList<GraduateAssistant>();
     ArrayList<Class> classList = new ArrayList<Class>();
     ArrayList<Class> classes = new ArrayList<Class>();
+    ArrayList<CellStyle> classStyleSheetList= new ArrayList<CellStyle>();
+    private int uniqueIdentifierCounter = 0;
 
     @FXML TextArea resultsText;
     @FXML CheckBox saveBox;
@@ -252,6 +254,8 @@ public class FXMLDocumentController implements Initializable {
 										classList.add(new Class());
 										classList.get(classList.size() -1).setProfessor(professorName);
 										classList.get(classList.size() - 1).setClassNumber(currentCell.getStringCellValue());
+										classList.get(classList.size() - 1).setUniqueIdentifier(uniqueIdentifierCounter);
+										uniqueIdentifierCounter += 1;
 									}
 
 							}
@@ -329,6 +333,133 @@ public class FXMLDocumentController implements Initializable {
 			XSSFCellStyle cellStyle = workbook.createCellStyle();
 			cellStyle.setFillForegroundColor(HSSFColor.GOLD.index);
 			cellStyle.setWrapText(true);
+			
+			
+			for(int i = 0; i < classList.size(); i++){
+				
+				classStyleSheetList.add(workbook.createCellStyle());
+				classStyleSheetList.get(i).setWrapText(true);
+				classStyleSheetList.get(i).setBorderBottom(XSSFCellStyle.BORDER_THIN);
+				classStyleSheetList.get(i).setBorderTop(XSSFCellStyle.BORDER_THIN);
+				classStyleSheetList.get(i).setBorderRight(XSSFCellStyle.BORDER_THIN);
+				classStyleSheetList.get(i).setBorderLeft(XSSFCellStyle.BORDER_THIN);
+				classStyleSheetList.get(i).setBottomBorderColor(IndexedColors.BLACK.getIndex());
+				classStyleSheetList.get(i).setTopBorderColor(IndexedColors.BLACK.getIndex());
+				classStyleSheetList.get(i).setRightBorderColor(IndexedColors.BLACK.getIndex());
+				classStyleSheetList.get(i).setLeftBorderColor(IndexedColors.BLACK.getIndex());
+				//classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+				classStyleSheetList.get(i).setFillPattern(CellStyle.SOLID_FOREGROUND);
+				System.out.println("I is: " + i);
+				
+				switch(i){
+					
+					case 1:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+						break;
+					case 2:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.PINK.index);
+						break;
+					case 3:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
+						break;
+					case 4:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.ORANGE.index);
+						break;
+					case 5:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREEN.index);
+						break;
+					case 6:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.YELLOW.index);
+						break;
+					case 7:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.PLUM.index);
+						break;
+					case 8:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.RED.index);
+						break;
+					case 9:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.AQUA.index);
+						break;
+					case 10:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LAVENDER.index);
+						break;
+					case 11:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GOLD.index);
+						break;
+					case 12:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.ROSE.index);
+						break;
+					case 13:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.INDIGO.index);
+						break;
+					case 14:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.TAN.index);
+						break;
+					case 15:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.TURQUOISE.index);
+						break;
+					case 16:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.BLUE_GREY.index);
+						break;
+					case 17:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.BRIGHT_GREEN.index);
+						break;
+					case 18:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.CORAL.index);
+						break;
+					case 19:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.DARK_YELLOW.index);
+						break;
+					case 20:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.VIOLET.index);
+						break;
+					case 21:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LEMON_CHIFFON.index);
+						break;
+					case 22:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.SEA_GREEN.index);
+						break;
+					case 23:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.ORCHID.index);
+						break;
+					case 24:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIME.index);
+						break;
+					case 25:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREY_50_PERCENT.index);
+						break;
+					case 26:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.ROYAL_BLUE.index);
+						break;
+					case 27:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
+						break;
+					case 28:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+						break;
+					case 29:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.PALE_BLUE.index);
+						break;
+					case 30:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.MAROON.index);
+						break;
+					case 31:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.DARK_RED.index);
+						break;
+					case 32:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+						break;
+					case 33:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+						break;
+					default:
+						classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+				
+				}//end switch
+				
+			}//end for loop
+			
+			
 			
 			CellStyle blackStyle;
 			blackStyle = workbook.createCellStyle();
@@ -500,7 +631,7 @@ public class FXMLDocumentController implements Initializable {
 								worksheet.getRow(startInt + 1 + rowCounter).createCell(dayList.get(z) + 1 + columnCounter);
 							}
 							worksheet.getRow(startInt + 1 + rowCounter).getCell(dayList.get(z) + 1 + columnCounter).setCellValue(currentClass.getClassNumber() + "\n" + currentClass.getProfessor());
-							worksheet.getRow(startInt + 1 + rowCounter).getCell(dayList.get(z) + 1 + columnCounter).setCellStyle(classStyle);
+							worksheet.getRow(startInt + 1 + rowCounter).getCell(dayList.get(z) + 1 + columnCounter).setCellStyle(classStyleSheetList.get(currentClass.getUniqueIdentifier()));
 							worksheet.autoSizeColumn(dayList.get(z) + 1 + columnCounter);
 							startInt += 1;
 							
@@ -547,7 +678,7 @@ public class FXMLDocumentController implements Initializable {
 							}catch(java.lang.NullPointerException e){
 								worksheet.getRow(rowIndexer).createCell(6 + columnCounter);
 								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).setCellValue(currentClass.getClassNumber() + "\nHours:" + currentClass.getPrepHours());
-								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).setCellStyle(classStyle);
+								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).setCellStyle(classStyleSheetList.get(currentClass.getUniqueIdentifier()));
 								worksheet.autoSizeColumn(6 + columnCounter);
 								break;
 							}
@@ -563,6 +694,7 @@ public class FXMLDocumentController implements Initializable {
 					resultsText.appendText("Algorithm Still running please do not close.\n");
 				}
 				numberOfGraduatesWritten += 1;
+
 				
 				//---------Here is where we write to the individual sheets---------
 					workbook.createSheet(currentGrad.getName());
