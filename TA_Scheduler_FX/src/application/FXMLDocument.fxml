@@ -1,19 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="432.0" prefWidth="612.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="434.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FXMLDocumentController">
     <children>
-      <Button layoutX="23.0" layoutY="110.0" mnemonicParsing="false" onAction="#selectClasses" prefHeight="36.0" prefWidth="170.0" text="Select Classes" />
-      <Button layoutX="23.0" layoutY="186.0" mnemonicParsing="false" onAction="#runAlgorithm" prefHeight="36.0" prefWidth="170.0" text="Run Algorithm" />
-      <Button layoutX="23.0" layoutY="265.0" mnemonicParsing="false" onAction="#handle" prefHeight="36.0" prefWidth="170.0" text="Save Results" />
-        <Button layoutX="23.0" layoutY="37.0" onAction="#selectGAs" prefHeight="36.0" prefWidth="170.0" text="Select Grad. Students" />
-      <TextArea fx:id="resultsText" editable="false" layoutX="240.0" layoutY="14.0" prefHeight="356.0" prefWidth="345.0" text="" wrapText="true" />
-      <CheckBox fx:id="saveBox" LayoutY="309.0" layoutX="25.0" prefHeight="36.0" prefWidth="108.0" text="Open After Save" />
-      <TextField fx:id="hoursRequired" layoutX="115.0" layoutY="12.0" prefWidth="30.0" text="20" />
-      <Label layoutX="23.0" layoutY="15.0" text="Hours Required:" />
-      <Button layoutX="24.0" layoutY="359.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="170.0" text="Help" />
+      <AnchorPane prefHeight="81.0" prefWidth="622.0">
+         <children>
+            <HBox prefHeight="47.0" prefWidth="622.0">
+               <children>
+                  <MenuBar prefHeight="25.0" prefWidth="660.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Load Schedule Files">
+                        <items>
+                          <MenuItem mnemonicParsing="false">
+                                 <graphic>
+                                      <Button onAction="#selectGAs" prefHeight="36.0" prefWidth="170.0" text="Select Grad. Students" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false" onAction="#selectClasses" prefHeight="36.0" prefWidth="170.0" text="Select Classes" />
+                                 </graphic>
+                              </MenuItem>
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Run Application">
+                        <items>
+                          <MenuItem mnemonicParsing="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false" onAction="#runAlgorithm" prefHeight="36.0" prefWidth="170.0" text="Run Algorithm" />
+                                 </graphic>
+                              </MenuItem>
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Saving Files">
+                          <items>
+                              <MenuItem mnemonicParsing="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false" onAction="#handle" prefHeight="36.0" prefWidth="170.0" text="Save Results" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="Open After Save">
+                                 <graphic>
+                                    <CheckBox fx:id="saveBox" LayoutY="309.0" prefHeight="36.0" prefWidth="108.0" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="Hours Required">
+                                 <graphic>
+                                    <TextField fx:id="hoursRequired" prefWidth="30.0" text="20" />
+                                 </graphic>
+                              </MenuItem>
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false">
+                                 <graphic>
+                                    <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="170.0" text="Help" />
+                                 </graphic>
+                              </MenuItem>
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <TextArea fx:id="resultsText" editable="false" layoutY="164.0" prefHeight="269.0" prefWidth="643.0" text="" wrapText="true" />
     </children>
 </AnchorPane>
