@@ -226,9 +226,10 @@ public class GraduateAssistant {
 	 * 
 	 * @param classNumberToRemove - the number of the class that is to be removed
 	 */
-	public void removeClassFromCurrentList(String classNumberToRemove){
+	public void removeAssisting(Class weekly){
 		
-		listOfClassAssisting.remove(classNumberToRemove);
+		listOfClassAssisting.remove(weekly);
+		hoursAssigned  -= weekly.getWorkTime();
 	}//end method removeClassFromCurrentList
 	
 //	public Iterator<Class> returnIteratorOfAllClassForGA(){

@@ -1157,11 +1157,10 @@ public class FXMLDocumentController implements Initializable {
 			{
 				best_solution = alg.clone();
 				best_unassigned = current_unassigned;
-				System.out.println(current_unassigned + " " + best_solution.getStudentHours());
 			}
 			
 			// Attempt 2000 times
-			if (iterations > 20000) {
+			if (iterations > 2) {
 				break;
 			}
 			//break;

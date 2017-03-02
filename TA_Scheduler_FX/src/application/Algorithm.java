@@ -100,7 +100,7 @@ public class Algorithm {
 				{
 					// Was unable to assign a class
 					// Need to perform backtracking or partial assignment
-					if (!alternatingPath(weeklyClass))
+					if (alternatingPath(weeklyClass))
 					{
 						unassignedClasses.add(weeklyClass);
 					}
@@ -166,20 +166,24 @@ public class Algorithm {
 	 */
 	public boolean partialAssignment(Class weeklyClass)
 	{
+		if (assignPartialHours(weeklyClass))
+		{
+			return true;
+		}
 		// Ignore qualifications		
-		if (assignIgnoringQualifications(weeklyClass))
-		{
-			return true;
-		}
-		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-		else if (assignPartialHours(weeklyClass))
-		{
-			return true;
-		}
-		else if(assignIgnoringQualificationsAndTimes(weeklyClass))
-		{
-			return true;
-		}
+//		if (assignIgnoringQualifications(weeklyClass))
+//		{
+//			return true;
+//		}
+//		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
+//		else if (assignPartialHours(weeklyClass))
+//		{
+//			return true;
+//		}
+//		else if(assignIgnoringQualificationsAndTimes(weeklyClass))
+//		{
+//			return true;
+//		}
 		
 		return false;
 	}
@@ -254,7 +258,8 @@ public class Algorithm {
 				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) && // Don't want it to be the same class
 					potentialConflict.getAssignedGA().size() >= 1 &&							// Conflicting class has to have a GA assigned
 					hourConflict(potentialConflict, weeklyClass) &&								// Conflicting times
-					dayConflict(potentialConflict, weeklyClass))									
+					dayConflict(potentialConflict, weeklyClass) &&
+					MAX_HOURS >= ga.getHoursAssigned() + potentialConflict.getWorkTime())									
 				{
 					conflicting.add(potentialConflict);
 				}
@@ -265,14 +270,15 @@ public class Algorithm {
 			{
 				conflict.removeAssignedGA(ga);
 				conflict.removeAvailableGA(ga);
+				ga.removeAssisting(conflict);
 				
 				if (assignGA(conflict))
 				{
-						
 					// Don't re-assign the same GA
 					if (!conflict.getAssignedGA().contains(ga))
 					{
 						weeklyClass.setAssignedGA(ga);
+						ga.addAssistingClass(weeklyClass);
 						return true;
 					}
 				}
@@ -283,11 +289,11 @@ public class Algorithm {
 				else
 				{
 					conflict.setAssignedGA(ga);
+					ga.addAssistingClass(conflict);
 				}
 				// Ensure that the GA is still available 
 				conflict.addAvailableGA(ga);
 			}
-			
 		}
 		return false;
 	}
