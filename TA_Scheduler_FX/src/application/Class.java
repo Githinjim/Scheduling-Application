@@ -259,6 +259,8 @@ public class Class {
 
 	public int getWorkTime(){
 		ArrayList<String> timeList = new ArrayList<String>();
+		timeList.add("6am");
+		timeList.add("7am");
 		timeList.add("8am");
 		timeList.add("9am");
 		timeList.add("10am");
@@ -272,9 +274,10 @@ public class Class {
 		timeList.add("6pm");
 		timeList.add("7pm");
 		timeList.add("8pm");
+		timeList.add("9pm");
 		
-		int startIndex = timeList.indexOf(this.getStartTime());
-		int endIndex = timeList.indexOf(this.getEndTime());
+		int startIndex = timeList.indexOf(this.getStartTime().toLowerCase());
+		int endIndex = timeList.indexOf(this.getEndTime().toLowerCase());
 		return ((endIndex - startIndex) * this.daysOfWeek.size()) + prepHours;
 		
 	} //end method getTotalTime
@@ -331,6 +334,28 @@ public class Class {
 	public String toString()
 	{
 		return classNumber;
+	}
+	
+	@Override
+	public Class clone()
+	{
+		Class classClone = new Class();
+		
+		classClone.classNumber = this.classNumber;
+		classClone.professor = this.professor;
+		classClone.startTime = this.startTime;
+		classClone.endTime = this.endTime;
+		classClone.daysOfWeek = this.daysOfWeek;
+		
+		for (GraduateAssistant assigned : assignedGA)
+		{
+			classClone.assignedGA.add(assigned);
+		}
+		
+		classClone.numberOfGAs = this.numberOfGAs;
+		classClone.prepHours = this.prepHours;
+		classClone.uniqueIdentifier = this.uniqueIdentifier;
+		return classClone;
 	}
 	
 }//end Class

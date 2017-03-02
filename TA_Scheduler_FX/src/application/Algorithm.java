@@ -65,8 +65,8 @@ public class Algorithm {
 			for (GraduateAssistant ga : students)
 			{
 				// Check if the GA is available for the class times
-				if (ga.isAvailable(weeklyClass.getDaysOfWeek(), weeklyClass.getStartTime(), weeklyClass.getEndTime()) &&
-						ga.isQualified(weeklyClass.getClassNumber()))
+				if (ga.isAvailable(weeklyClass.getDaysOfWeek(), weeklyClass.getStartTime(), weeklyClass.getEndTime())// &&
+						/*ga.isQualified(weeklyClass.getClassNumber())*/)
 				{
 					weeklyClass.addAvailableGA(ga);
 					ga.addPossibleGAClass(weeklyClass);
@@ -362,7 +362,7 @@ public class Algorithm {
 		for (GraduateAssistant ga : students)
 		{
 			numAvailableHours = 0;
-			if (ga.isQualified(weeklyClass.getClassNumber()) &&
+			if (//ga.isQualified(weeklyClass.getClassNumber()) &&
 				MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 			{
 				// For each day
@@ -505,56 +505,44 @@ public class Algorithm {
 	 */
 	private int stringToHour(String hour)
 	{
-		int time = -1;
-		hour = hour.toUpperCase();
+		hour = hour.toLowerCase();
 		
-		switch (hour)
-		{
-		case "8AM":
-			time = 0;
-			break;
-		case "9AM":
-			time = 1;
-			break;
-		case "10AM":
-			time = 2;
-			break;
-		case "11AM":
-			time = 3;
-			break;
-		case "12PM":
-			time = 4;
-			break;
-		case "1PM":
-			time = 5;
-			break;
-		case "2PM":
-			time = 6;
-			break;
-		case "3PM":
-			time = 7;
-			break;
-		case "4PM":
-			time = 8;
-			break;
-		case "5PM":
-			time = 9;
-			break;
-		case "6PM":
-			time = 10;
-			break;
-		case "7PM":
-			time = 11;
-			break;
-		case "8PM":
-			time = 12;
-			break;
-		case "9PM":
-			time = 13;
-			break;
-		}
-		
-		return time;
+		switch (hour) {
+		case "6am":
+			return 0;
+		case "7am":
+			return 1;
+		case "8am":
+			return 2;
+		case "9am":
+			return 3;
+		case "10am":
+			return 4;
+		case "11am":
+			return 5;
+		case "12pm":
+			return 6;
+		case "1pm":
+			return 7;
+		case "2pm":
+			return 8;
+		case "3pm":
+			return 9;
+		case "4pm":
+			return 10;
+		case "5pm":
+			return 11;
+		case "6pm":
+			return 12;
+		case "7pm":
+			return 13;
+		case "8pm":
+			return 14;
+		case "9pm":
+			return 15;
+		default:
+			return -1;
+		}// end switch
 	}
 	
 	/**
@@ -613,6 +601,34 @@ public class Algorithm {
 		}
 		
 		return time;
+	}
+	
+	@Override
+	public Algorithm clone()
+	{
+		Algorithm algClone = new Algorithm();
+		for (GraduateAssistant student : students)
+		{
+			algClone.students.add(student.clone());
+		}
+		
+		for (Class weekly : classes)
+		{
+			algClone.classes.add(weekly.clone());
+		}
+		
+		algClone.MAX_HOURS = this.MAX_HOURS;
+		return algClone;
+	}
+	
+	public ArrayList<GraduateAssistant> getGAList()
+	{
+		return students;
+	}
+	
+	public ArrayList<Class> getClassList()
+	{
+		return classes;
 	}
 	
 	/**

@@ -377,7 +377,7 @@ public class FXMLDocumentController implements Initializable {
 				classStyleSheetList.get(i).setLeftBorderColor(IndexedColors.BLACK.getIndex());
 				// classStyleSheetList.get(i).setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
 				classStyleSheetList.get(i).setFillPattern(CellStyle.SOLID_FOREGROUND);
-				System.out.println("I is: " + i);
+//				System.out.println("I is: " + i);
 
 				switch (i) {
 
@@ -815,8 +815,8 @@ public class FXMLDocumentController implements Initializable {
 					// loop through the list of days for the current class
 					for (int z = 0; z < dayList.size(); z++) {
 						// boolean isTheEndTime = false;
-						int startInt = stringToInt(startTime);
-						int endInt = stringToInt(endTime);
+						int startInt = stringToHour(startTime);
+						int endInt = stringToHour(endTime);
 						while (startInt < endInt) {
 							try {
 								workbook.getSheet(currentGrad.getName()).getRow(startInt + 2)
@@ -1032,54 +1032,6 @@ public class FXMLDocumentController implements Initializable {
 
 	}// end save file method
 
-	private static int stringToInt(String stringDay) {
-		switch (stringDay) {
-		case "6am":
-			return 0;
-		case "7am":
-			return 1;
-		case "8am":
-			return 2;
-		case "9am":
-			return 3;
-
-		case "10am":
-			return 4;
-
-		case "11am":
-			return 5;
-
-		case "12pm":
-			return 6;
-
-		case "1pm":
-			return 7;
-
-		case "2pm":
-			return 8;
-
-		case "3pm":
-			return 9;
-
-		case "4pm":
-			return 10;
-
-		case "5pm":
-			return 11;
-
-		case "6pm":
-			return 12;
-
-		case "7pm":
-			return 13;
-
-		case "8pm":
-			return 14;
-		default:
-			return -1;
-		}// end switch
-	}// end method intToDay
-
 	private static String intToHour(int intHour) {
 		switch (intHour) {
 		case 1:
@@ -1174,45 +1126,66 @@ public class FXMLDocumentController implements Initializable {
 		int MAX_HOURS = Integer.parseInt(hoursRequired.getText());
 
 		Algorithm alg = new Algorithm(gradList, classList, MAX_HOURS);
-
-		ArrayList<Class> unassigned = null;
+		totalHours = alg.getClassHours();
+		
+		Algorithm best_solution = new Algorithm();
+		ArrayList<Class> best_unassigned = null;
 
 		while (totalHours != workedHours) {
-			totalHours = 0;
 			workedHours = 0;
-
-			alg.reset();
+			//Algorithm alg = new_solution.clone();
+			ArrayList<Class> current_unassigned = new ArrayList<Class>();
+			
+			//alg.reset();
 			alg.initializeGraph();
-			unassigned = alg.createInitialSolution();
+			current_unassigned = alg.createInitialSolution();
 
 			// Assign unassigned classes
-			for (Class weekly : unassigned) {
+			for (Class weekly : current_unassigned) {
 				alg.partialAssignment(weekly);
 			}
 
-			totalHours = alg.getClassHours();
+			
 			workedHours = alg.getStudentHours();
 			iterations++;
 
+			if (workedHours > best_solution.getStudentHours())
+			{
+				best_solution = alg.clone();
+				best_unassigned = current_unassigned;
+				System.out.println(current_unassigned + " " + best_solution.getStudentHours());
+			}
+			
 			// Attempt 2000 times
-			if (iterations > 2000) {
+			if (iterations > 20000) {
 				break;
 			}
+			//break;
 		}
-
+		
+		gradList = best_solution.getGAList();
+		classList = best_solution.getClassList();
+		
 		resultsText.appendText("-----Partial Assignments-----\n");
-		for (Class weekly : unassigned) {
-			System.out.println(weekly + "\t" + weekly.getAssignedGA());
-			if (weekly.getAssignedGA().size() > 0) {
-				resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+		if (best_unassigned != null)
+		{
+			for (Class weekly : best_unassigned) {
+				if (weekly.getAssignedGA().size() > 0) {
+					resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+				}
 			}
 		}
 		resultsText.appendText("\n");
 
 		resultsText.appendText("-----Unassigned Classes-----\n");
-		for (Class weekly : unassigned) {
-			if (weekly.getAssignedGA().size() == 0) {
-				resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
+		if (best_unassigned != null) 
+		{
+			for (Class weekly : best_unassigned) 
+			{
+				if (weekly.getAssignedGA().size() == 0) 
+				{
+					resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
+				}
 			}
 		}
 		resultsText.appendText("\n");
@@ -1221,7 +1194,7 @@ public class FXMLDocumentController implements Initializable {
 			System.out.println(ga.getName() + " is working " + ga.getHoursAssigned());
 		}
 		System.out.print(totalHours);
-		System.out.print(" " + workedHours);
+		System.out.print(" " + best_solution.getStudentHours());
 		System.out.print("\t " + iterations);
 		System.out.println();
 
