@@ -159,7 +159,13 @@ public class FXMLDocumentController implements Initializable {
 						// the available times data
 						else if (currentCell.getColumnIndex() >= 1 && currentCell.getColumnIndex() <= 5
 								&& currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 17) {
-							if (currentCell.getStringCellValue().equals("")) {
+							String currentCellValue = "";
+							try{
+								currentCellValue = currentCell.getStringCellValue();
+							}catch(IllegalStateException e){
+								currentCellValue = Double.toString(currentCell.getNumericCellValue());
+							}
+							if (currentCellValue.equals("")) {
 								// System.out.println("true");
 								String timeOfTheDay = "";
 								switch (currentCell.getRowIndex() - 3) {
@@ -722,9 +728,7 @@ public class FXMLDocumentController implements Initializable {
 
 				} // end for loop
 
-				if (numberOfGraduatesWritten % 10 == 0) {
-					resultsText.appendText("Algorithm Still running please do not close.\n");
-				}
+
 				numberOfGraduatesWritten += 1;
 
 				// ---------Here is where we write to the individual
@@ -1020,12 +1024,12 @@ public class FXMLDocumentController implements Initializable {
 				// open excel file if checkbox is checked
 				Desktop dt = Desktop.getDesktop();
 				dt.open(new File(file.getAbsolutePath()));
-				resultsText.appendText("Saved File will open shortly on your Desktop as an Excel Spreed Sheet");
+				resultsText.appendText("Saved File will open shortly on your Desktop as an Excel Spreed Sheet\n");
 
 			}
 		} catch (FileNotFoundException e) {
 			resultsText.appendText(
-					"Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.");
+					"Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
