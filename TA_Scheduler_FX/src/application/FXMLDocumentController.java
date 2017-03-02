@@ -158,48 +158,54 @@ public class FXMLDocumentController implements Initializable {
 						// conditional to check if the current cell is part of
 						// the available times data
 						else if (currentCell.getColumnIndex() >= 1 && currentCell.getColumnIndex() <= 5
-								&& currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 15) {
+								&& currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 17) {
 							if (currentCell.getStringCellValue().equals("")) {
 								// System.out.println("true");
 								String timeOfTheDay = "";
 								switch (currentCell.getRowIndex() - 3) {
 								case 0:
-									timeOfTheDay = "8am";
+									timeOfTheDay = "6am";
 									break;
 								case 1:
-									timeOfTheDay = "9am";
+									timeOfTheDay = "7am";
 									break;
 								case 2:
-									timeOfTheDay = "10am";
+									timeOfTheDay = "8am";
 									break;
 								case 3:
-									timeOfTheDay = "11am";
+									timeOfTheDay = "9am";
 									break;
 								case 4:
-									timeOfTheDay = "12pm";
+									timeOfTheDay = "10am";
 									break;
 								case 5:
-									timeOfTheDay = "1pm";
+									timeOfTheDay = "11am";
 									break;
 								case 6:
-									timeOfTheDay = "2pm";
+									timeOfTheDay = "12pm";
 									break;
 								case 7:
-									timeOfTheDay = "3pm";
+									timeOfTheDay = "1pm";
 									break;
 								case 8:
-									timeOfTheDay = "4pm";
+									timeOfTheDay = "2pm";
 									break;
 								case 9:
-									timeOfTheDay = "5pm";
+									timeOfTheDay = "3pm";
 									break;
 								case 10:
-									timeOfTheDay = "6pm";
+									timeOfTheDay = "4pm";
 									break;
 								case 11:
-									timeOfTheDay = "7pm";
+									timeOfTheDay = "5pm";
 									break;
 								case 12:
+									timeOfTheDay = "6pm";
+									break;
+								case 13:
+									timeOfTheDay = "7pm";
+									break;
+								case 14:
 									timeOfTheDay = "8pm";
 									break;
 
@@ -211,7 +217,7 @@ public class FXMLDocumentController implements Initializable {
 						} // end if conditional for the times section
 
 						// conditional for the qualifications
-						else if (currentCell.getRowIndex() >= 3 && currentCell.getRowIndex() <= 10
+						else if (currentCell.getRowIndex() >= 5 && currentCell.getRowIndex() <= 12
 								&& currentCell.getColumnIndex() == 7) {
 							if (!currentCell.getStringCellValue().isEmpty()) {
 								gradList.get(gradList.size() - 1).addQualification(currentCell.getStringCellValue());
@@ -345,7 +351,7 @@ public class FXMLDocumentController implements Initializable {
 		int columnCounter = 0;
 		int numberOfGraduatesWritten = 0;
 		int duplicateNameTracker = 0;
-		final int ROW_OFFSET = 16;
+		final int ROW_OFFSET = 18;
 		final int COLUMN_OFFSET = 8;
 
 		try {
@@ -579,7 +585,7 @@ public class FXMLDocumentController implements Initializable {
 				columnCounter = ((numberOfGraduatesWritten % 2) * COLUMN_OFFSET);
 
 				// creating cells for times of the day
-				for (int rowIndex = 0; rowIndex < 14; rowIndex++) {
+				for (int rowIndex = 0; rowIndex < 16; rowIndex++) {
 					try {
 						worksheet.getRow((short) rowIndex + rowCounter).equals(null);
 					} catch (java.lang.NullPointerException e) {
@@ -593,19 +599,21 @@ public class FXMLDocumentController implements Initializable {
 				// set the time value on the left hand side of the excel file
 				worksheet.getRow(rowCounter).createCell(columnCounter).setCellValue(currentGrad.getName());
 				worksheet.autoSizeColumn(columnCounter);
-				worksheet.getRow(1 + rowCounter).getCell(0 + columnCounter).setCellValue("8:00 AM");
-				worksheet.getRow(2 + rowCounter).getCell(0 + columnCounter).setCellValue("9:00 AM");
-				worksheet.getRow(3 + rowCounter).getCell(0 + columnCounter).setCellValue("10:00 AM");
-				worksheet.getRow(4 + rowCounter).getCell(0 + columnCounter).setCellValue("11:00 AM");
-				worksheet.getRow(5 + rowCounter).getCell(0 + columnCounter).setCellValue("12:00 PM");
-				worksheet.getRow(6 + rowCounter).getCell(0 + columnCounter).setCellValue("1:00 PM");
-				worksheet.getRow(7 + rowCounter).getCell(0 + columnCounter).setCellValue("2:00 PM");
-				worksheet.getRow(8 + rowCounter).getCell(0 + columnCounter).setCellValue("3:00 PM");
-				worksheet.getRow(9 + rowCounter).getCell(0 + columnCounter).setCellValue("4:00 PM");
-				worksheet.getRow(10 + rowCounter).getCell(0 + columnCounter).setCellValue("5:00 PM");
-				worksheet.getRow(11 + rowCounter).getCell(0 + columnCounter).setCellValue("6:00 PM");
-				worksheet.getRow(12 + rowCounter).getCell(0 + columnCounter).setCellValue("7:00 PM");
-				worksheet.getRow(13 + rowCounter).getCell(0 + columnCounter).setCellValue("8:00 PM");
+				worksheet.getRow(1 + rowCounter).getCell(0 + columnCounter).setCellValue("6:00 AM");
+				worksheet.getRow(2 + rowCounter).getCell(0 + columnCounter).setCellValue("7:00 AM");
+				worksheet.getRow(3 + rowCounter).getCell(0 + columnCounter).setCellValue("8:00 AM");
+				worksheet.getRow(4 + rowCounter).getCell(0 + columnCounter).setCellValue("9:00 AM");
+				worksheet.getRow(5 + rowCounter).getCell(0 + columnCounter).setCellValue("10:00 AM");
+				worksheet.getRow(6 + rowCounter).getCell(0 + columnCounter).setCellValue("11:00 AM");
+				worksheet.getRow(7 + rowCounter).getCell(0 + columnCounter).setCellValue("12:00 PM");
+				worksheet.getRow(8 + rowCounter).getCell(0 + columnCounter).setCellValue("1:00 PM");
+				worksheet.getRow(9 + rowCounter).getCell(0 + columnCounter).setCellValue("2:00 PM");
+				worksheet.getRow(10 + rowCounter).getCell(0 + columnCounter).setCellValue("3:00 PM");
+				worksheet.getRow(11 + rowCounter).getCell(0 + columnCounter).setCellValue("4:00 PM");
+				worksheet.getRow(12 + rowCounter).getCell(0 + columnCounter).setCellValue("5:00 PM");
+				worksheet.getRow(13 + rowCounter).getCell(0 + columnCounter).setCellValue("6:00 PM");
+				worksheet.getRow(14 + rowCounter).getCell(0 + columnCounter).setCellValue("7:00 PM");
+				worksheet.getRow(15 + rowCounter).getCell(0 + columnCounter).setCellValue("8:00 PM");
 
 				// create the rows necessary
 				for (int columnIndex = 1; columnIndex < 7; columnIndex++) {
@@ -662,7 +670,7 @@ public class FXMLDocumentController implements Initializable {
 
 					// loop set all remaining busy days to black
 					for (int day = 1; day < 6; day++) {
-						for (int j = 1; j < 14; j++) {
+						for (int j = 1; j < 16; j++) {
 							String time = "";
 							time = intToHour(j);
 							if (!currentGrad.isAvailable(day - 1, time)) {
@@ -694,7 +702,7 @@ public class FXMLDocumentController implements Initializable {
 					// Add the extra hours for grading etc. if needed for the
 					// current class
 					if (currentClass.getPrepHours() > 0) {
-						for (int rowIndexer = (1 + rowCounter); rowIndexer < (14 + rowCounter); rowIndexer++) {
+						for (int rowIndexer = (1 + rowCounter); rowIndexer < (16 + rowCounter); rowIndexer++) {
 
 							try {
 								worksheet.getRow(rowIndexer).getCell(6 + columnCounter).getStringCellValue().equals("");
@@ -723,7 +731,7 @@ public class FXMLDocumentController implements Initializable {
 				// sheets---------
 				workbook.createSheet(currentGrad.getName());
 
-				for (int rowIndex = 0; rowIndex < 25; rowIndex++) {
+				for (int rowIndex = 0; rowIndex < 27; rowIndex++) {
 					try {
 						workbook.getSheet(currentGrad.getName()).getRow((short) rowIndex).equals(null);
 					} catch (java.lang.NullPointerException e) {
@@ -739,32 +747,36 @@ public class FXMLDocumentController implements Initializable {
 				// set the time value on the left hand side of the excel file
 				// workbook.getSheet(currentGrad.getName()).getRow(rowCounter).createCell(columnCounter).setCellValue(currentGrad.getName());
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(columnCounter);
-				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellValue("8:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellValue("6:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(2).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellValue("9:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellValue("7:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(3).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellValue("10:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellValue("8:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(4).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellValue("11:00 AM");
+				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellValue("9:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(5).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellValue("12:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellValue("10:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(6).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellValue("1:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellValue("11:00 AM");
 				workbook.getSheet(currentGrad.getName()).getRow(7).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellValue("2:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellValue("12:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(8).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellValue("3:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellValue("1:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(9).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellValue("4:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellValue("2:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(10).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellValue("5:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellValue("3:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(11).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellValue("6:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellValue("4:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(12).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellValue("7:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellValue("5:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(13).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellValue("8:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellValue("6:00 PM");
 				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(15).getCell(0).setCellValue("7:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(15).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(0).setCellValue("8:00 PM");
+				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(0).setCellStyle(justBorder);
 				workbook.getSheet(currentGrad.getName()).autoSizeColumn(0);
 
 				// create the rows necessary
@@ -849,93 +861,93 @@ public class FXMLDocumentController implements Initializable {
 				// workbook.getSheet(currentGrad.getName()).addMergedRegion(new
 				// CellRangeAddress(1,2,6,6));
 
-				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(4);
-				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(5);
-				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(6);
-				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(4).setCellValue("Total Hours worked: ");
-				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(4).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(5).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(6).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(16, 16, 4, 6));
+				workbook.getSheet(currentGrad.getName()).getRow(18).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(18).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(18).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(4).setCellValue("Total Hours worked: ");
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(18, 18, 4, 6));
 
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(0);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(1);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(2);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(3);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(4);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(5);
-				workbook.getSheet(currentGrad.getName()).getRow(17).createCell(6);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(0)
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(19).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(0)
 						.setCellValue("Strike out days not worked for example due to vacation or holidays!");
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(0).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(1).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(2).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(3).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(4).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(5).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).getRow(17).getCell(6).setCellStyle(IndividualTextStyle);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(17, 17, 0, 6));
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(0).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(1).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(2).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(3).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(4).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(5).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).getRow(19).getCell(6).setCellStyle(IndividualTextStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(19, 19, 0, 6));
 
-				workbook.getSheet(currentGrad.getName()).getRow(18).createCell(0);
-				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(0).setCellValue(
+				workbook.getSheet(currentGrad.getName()).getRow(20).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(20).getCell(0).setCellValue(
 						"This timesheet shows assigned GA duties initialing at a time slot the instructor of record "
 								+ "declares that the GA worked these hours.  By signing this form the student certifies that these hours are a true and accurate record of all time worked during the week.");
-				workbook.getSheet(currentGrad.getName()).getRow(18).getCell(0).setCellStyle(cellStyle);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(18, 20, 0, 6));
+				workbook.getSheet(currentGrad.getName()).getRow(20).getCell(0).setCellStyle(cellStyle);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(20, 22, 0, 6));
 
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(0);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(0).setCellValue("Employee Signature: ");
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(1);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(1).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(2);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(2).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21, 21, 0, 2));
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(0).setCellValue("Employee Signature: ");
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(1).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(2).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(23, 23, 0, 2));
 
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(3);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(3).setCellValue("Date Signed: ");
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(3).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(4);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(4).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21, 21, 3, 4));
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(3).setCellValue("Date Signed: ");
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(3).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(23, 23, 3, 4));
 
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(5);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(5).setCellValue("Week of (Daterange): ");
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(5).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(21).createCell(6);
-				workbook.getSheet(currentGrad.getName()).getRow(21).getCell(6).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(21, 21, 5, 6));
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(5).setCellValue("Week of (Daterange): ");
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(23).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(23).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(23, 23, 5, 6));
 
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(0);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(0).setCellValue("Supervisor Signature ");
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(0).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(1);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(1).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(2);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(2).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(3);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(3).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(4);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(4).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(22, 22, 0, 4));
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(0);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(0).setCellValue("Supervisor Signature ");
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(0).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(1);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(1).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(2);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(2).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(3);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(3).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(4);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(4).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(24, 24, 0, 4));
 
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(5);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(5).setCellValue("Date: ");
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(5).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).getRow(22).createCell(6);
-				workbook.getSheet(currentGrad.getName()).getRow(22).getCell(6).setCellStyle(justBorder);
-				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(22, 22, 5, 6));
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(5);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(5).setCellValue("Date: ");
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(5).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(24).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(24).getCell(6).setCellStyle(justBorder);
+				workbook.getSheet(currentGrad.getName()).addMergedRegion(new CellRangeAddress(24, 24, 5, 6));
 
 				// set extra columns to a black background
-				for (int rowIndexer = 15; rowIndexer < 17; rowIndexer++) {
-					if (rowIndexer == 15) {
+				for (int rowIndexer = 17; rowIndexer < 19; rowIndexer++) {
+					if (rowIndexer == 17) {
 						for (int columnIndexer = 0; columnIndexer < 7; columnIndexer++) {
 							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(columnIndexer);
 							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer)
 									.setCellStyle(blackStyle);
 						}
 					}
-					if (rowIndexer == 16) {
+					if (rowIndexer == 18) {
 						for (int columnIndexer = 0; columnIndexer < 4; columnIndexer++) {
 							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).createCell(columnIndexer);
 							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer)
@@ -948,7 +960,7 @@ public class FXMLDocumentController implements Initializable {
 				// borders if there
 				// are no borders (just to make the sheet asthetically pleasing)
 				// first loop through just calendar
-				for (int rowIndexer = 2; rowIndexer < 15; rowIndexer++) {
+				for (int rowIndexer = 2; rowIndexer < 17; rowIndexer++) {
 					for (int columnIndexer = 1; columnIndexer < 6; columnIndexer++) {
 						try {
 							workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(columnIndexer)
@@ -963,7 +975,7 @@ public class FXMLDocumentController implements Initializable {
 				} // end outer for
 
 				// set right borders for additional prep hour boxes
-				for (int rowIndexer = 2; rowIndexer < 14; rowIndexer++) {
+				for (int rowIndexer = 2; rowIndexer < 16; rowIndexer++) {
 					try {
 						workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6).equals(null);
 					} catch (NullPointerException e) {
@@ -973,8 +985,8 @@ public class FXMLDocumentController implements Initializable {
 					} // end try / catch
 				}
 
-				workbook.getSheet(currentGrad.getName()).getRow(14).createCell(6);
-				workbook.getSheet(currentGrad.getName()).getRow(14).getCell(6).setCellStyle(rightAndBottomBorder);
+				workbook.getSheet(currentGrad.getName()).getRow(16).createCell(6);
+				workbook.getSheet(currentGrad.getName()).getRow(16).getCell(6).setCellStyle(rightAndBottomBorder);
 
 				// set prep hours
 				for (int classIndex = 0; classIndex < currentGrad.getAssignedClasses().size(); classIndex++) {
@@ -983,7 +995,7 @@ public class FXMLDocumentController implements Initializable {
 						// System.out.println(currentGrad.getName() + " has prep
 						// hours for " +
 						// currentGrad.getAssignedClasses().get(classIndex).getClassNumber());
-						for (int rowIndexer = 2; rowIndexer < 15; rowIndexer++) {
+						for (int rowIndexer = 2; rowIndexer < 17; rowIndexer++) {
 							if (workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6)
 									.getStringCellValue().equals("")) {
 								workbook.getSheet(currentGrad.getName()).getRow(rowIndexer).getCell(6)
@@ -1022,43 +1034,47 @@ public class FXMLDocumentController implements Initializable {
 
 	private static int stringToInt(String stringDay) {
 		switch (stringDay) {
-		case "8am":
+		case "6am":
 			return 0;
-		case "9am":
+		case "7am":
 			return 1;
-
-		case "10am":
+		case "8am":
 			return 2;
-
-		case "11am":
+		case "9am":
 			return 3;
 
-		case "12pm":
+		case "10am":
 			return 4;
 
-		case "1pm":
+		case "11am":
 			return 5;
 
-		case "2pm":
+		case "12pm":
 			return 6;
 
-		case "3pm":
+		case "1pm":
 			return 7;
 
-		case "4pm":
+		case "2pm":
 			return 8;
 
-		case "5pm":
+		case "3pm":
 			return 9;
 
-		case "6pm":
+		case "4pm":
 			return 10;
 
-		case "7pm":
+		case "5pm":
 			return 11;
 
-		case "8pm":
+		case "6pm":
 			return 12;
+
+		case "7pm":
+			return 13;
+
+		case "8pm":
+			return 14;
 		default:
 			return -1;
 		}// end switch
@@ -1067,41 +1083,45 @@ public class FXMLDocumentController implements Initializable {
 	private static String intToHour(int intHour) {
 		switch (intHour) {
 		case 1:
-			return "8am";
+			return "6am";
 		case 2:
+			return "7am";
+		case 3:
+			return "8am";
+		case 4:
 			return "9am";
 
-		case 3:
+		case 5:
 			return "10am";
 
-		case 4:
+		case 6:
 			return "11am";
 
-		case 5:
+		case 7:
 			return "12pm";
 
-		case 6:
+		case 8:
 			return "1pm";
 
-		case 7:
+		case 9:
 			return "2pm";
 
-		case 8:
+		case 10:
 			return "3pm";
 
-		case 9:
+		case 11:
 			return "4pm";
 
-		case 10:
+		case 12:
 			return "5pm";
 
-		case 11:
+		case 13:
 			return "6pm";
 
-		case 12:
+		case 14:
 			return "7pm";
 
-		case 13:
+		case 15:
 			return "8pm";
 		default:
 			return "";
@@ -1110,32 +1130,36 @@ public class FXMLDocumentController implements Initializable {
 
 	private static int stringToHour(String stringDay) {
 		switch (stringDay) {
-		case "8am":
+		case "6am":
 			return 0;
-		case "9am":
+		case "7am":
 			return 1;
-		case "10am":
+		case "8am":
 			return 2;
-		case "11am":
+		case "9am":
 			return 3;
-		case "12pm":
+		case "10am":
 			return 4;
-		case "1pm":
+		case "11am":
 			return 5;
-		case "2pm":
+		case "12pm":
 			return 6;
-		case "3pm":
+		case "1pm":
 			return 7;
-		case "4pm":
+		case "2pm":
 			return 8;
-		case "5pm":
+		case "3pm":
 			return 9;
-		case "6pm":
+		case "4pm":
 			return 10;
-		case "7pm":
+		case "5pm":
 			return 11;
-		case "8pm":
+		case "6pm":
 			return 12;
+		case "7pm":
+			return 13;
+		case "8pm":
+			return 14;
 		default:
 			return -1;
 		}// end switch

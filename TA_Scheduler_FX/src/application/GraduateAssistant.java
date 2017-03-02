@@ -79,6 +79,9 @@ public class GraduateAssistant {
 	public void addAssistingClass(Class weeklyClass){
 		
 		listOfClassAssisting.add(weeklyClass);
+		System.out.println("Days of the week: " + weeklyClass.getDaysOfWeek().toString());
+		System.out.println("Start Time: " + weeklyClass.getStartTime());
+		System.out.println("End time: "+ weeklyClass.getEndTime());
 		availability.setBusy(weeklyClass.getDaysOfWeek(), weeklyClass.getStartTime(), weeklyClass.getEndTime());
 		addToHours(weeklyClass.getWorkTime());
 	}//end method addClassToCurrentList

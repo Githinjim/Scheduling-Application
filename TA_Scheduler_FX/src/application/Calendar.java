@@ -10,7 +10,7 @@ public class Calendar {
 	 */
 	public Calendar()
 	{
-		calendar = new boolean[5][13]; // Everything is false by default. Available = True
+		calendar = new boolean[5][15]; // Everything is false by default. Available = True
 	}
 	
 	/**
@@ -95,11 +95,13 @@ public class Calendar {
 
 		for (int i = startTime; i < endTime; i++)
 		{
+
 			if (calendar[day][i] == false) // is busy at that time
 			{
 				returnVal = false;
 				break;
 			}
+
 		}
 		
 		return returnVal;
@@ -322,47 +324,53 @@ public class Calendar {
 		
 		switch (hour)
 		{
-		case "8AM":
+		case "6AM":
 			time = 0;
 			break;
-		case "9AM":
+		case "7AM":
 			time = 1;
 			break;
-		case "10AM":
+		case "8AM":
 			time = 2;
 			break;
-		case "11AM":
+		case "9AM":
 			time = 3;
 			break;
-		case "12PM":
+		case "10AM":
 			time = 4;
 			break;
-		case "1PM":
+		case "11AM":
 			time = 5;
 			break;
-		case "2PM":
+		case "12PM":
 			time = 6;
 			break;
-		case "3PM":
+		case "1PM":
 			time = 7;
 			break;
-		case "4PM":
+		case "2PM":
 			time = 8;
 			break;
-		case "5PM":
+		case "3PM":
 			time = 9;
 			break;
-		case "6PM":
+		case "4PM":
 			time = 10;
 			break;
-		case "7PM":
+		case "5PM":
 			time = 11;
 			break;
-		case "8PM":
+		case "6PM":
 			time = 12;
 			break;
-		case "9PM":
+		case "7PM":
 			time = 13;
+			break;
+		case "8PM":
+			time = 14;
+			break;
+		case "9PM":
+			time = 15;
 			break;
 		}
 		
