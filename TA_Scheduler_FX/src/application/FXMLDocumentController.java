@@ -1160,7 +1160,7 @@ public class FXMLDocumentController implements Initializable {
 			}
 			
 			// Attempt 2000 times
-			if (iterations > 2) {
+			if (iterations > 50) {
 				break;
 			}
 			//break;

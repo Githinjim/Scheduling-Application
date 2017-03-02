@@ -102,6 +102,7 @@ public class Algorithm {
 					// Need to perform backtracking or partial assignment
 					if (alternatingPath(weeklyClass))
 					{
+						System.out.println(weeklyClass);
 						unassignedClasses.add(weeklyClass);
 					}
 				}
@@ -109,22 +110,6 @@ public class Algorithm {
 		}	
 		
 		return unassignedClasses;
-	}
-	
-	/**
-	 * Resets all assignments
-	 */
-	public void reset()
-	{
-		for (GraduateAssistant ga : students)
-		{
-			ga.resetGA();
-		}
-		
-		for (Class weekly : classes)
-		{
-			weekly.resetClass();
-		}
 	}
 	
 	/**
@@ -166,24 +151,24 @@ public class Algorithm {
 	 */
 	public boolean partialAssignment(Class weeklyClass)
 	{
-		if (assignPartialHours(weeklyClass))
+//		if (assignPartialHours(weeklyClass))
+//		{
+//			return true;
+//		}
+		// Ignore qualifications		
+		if (assignIgnoringQualifications(weeklyClass))
 		{
 			return true;
 		}
-		// Ignore qualifications		
-//		if (assignIgnoringQualifications(weeklyClass))
-//		{
-//			return true;
-//		}
-//		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
-//		else if (assignPartialHours(weeklyClass))
-//		{
-//			return true;
-//		}
-//		else if(assignIgnoringQualificationsAndTimes(weeklyClass))
-//		{
-//			return true;
-//		}
+		// Attempt to assign a GA that is available all days of the week, but for only part of the class hours
+		else if (assignPartialHours(weeklyClass))
+		{
+			return true;
+		}
+		else if(assignIgnoringQualificationsAndTimes(weeklyClass))
+		{
+			return true;
+		}
 		
 		return false;
 	}
@@ -258,8 +243,7 @@ public class Algorithm {
 				if (!potentialConflict.getClassNumber().equals(weeklyClass.getClassNumber()) && // Don't want it to be the same class
 					potentialConflict.getAssignedGA().size() >= 1 &&							// Conflicting class has to have a GA assigned
 					hourConflict(potentialConflict, weeklyClass) &&								// Conflicting times
-					dayConflict(potentialConflict, weeklyClass) &&
-					MAX_HOURS >= ga.getHoursAssigned() + potentialConflict.getWorkTime())									
+					dayConflict(potentialConflict, weeklyClass))									
 				{
 					conflicting.add(potentialConflict);
 				}
@@ -277,9 +261,12 @@ public class Algorithm {
 					// Don't re-assign the same GA
 					if (!conflict.getAssignedGA().contains(ga))
 					{
-						weeklyClass.setAssignedGA(ga);
-						ga.addAssistingClass(weeklyClass);
-						return true;
+						if (MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+						{
+							weeklyClass.setAssignedGA(ga);
+							ga.addAssistingClass(weeklyClass);
+							return true;
+						}
 					}
 				}
 //				else if (alternatingPath(conflict))
@@ -368,8 +355,7 @@ public class Algorithm {
 		for (GraduateAssistant ga : students)
 		{
 			numAvailableHours = 0;
-			if (//ga.isQualified(weeklyClass.getClassNumber()) &&
-				MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
+			if (MAX_HOURS >= ga.getHoursAssigned() + weeklyClass.getWorkTime())
 			{
 				// For each day
 				for (int day : weeklyClass.getDaysOfWeek())
@@ -391,7 +377,7 @@ public class Algorithm {
 			}
 		}
 		
-		if (mostAvailableGA != null)
+		if (mostAvailableGA != null && MAX_HOURS >= mostAvailableGA.getHoursAssigned() + weeklyClass.getWorkTime())
 		{
 			mostAvailableGA.addAssistingClass(weeklyClass);
 			weeklyClass.setAssignedGA(mostAvailableGA);
@@ -441,7 +427,7 @@ public class Algorithm {
 			}
 		}
 		
-		if (mostAvailableGA != null)
+		if (mostAvailableGA != null && MAX_HOURS >= mostAvailableGA.getHoursAssigned() + weeklyClass.getWorkTime())
 		{
 			mostAvailableGA.addAssistingClass(weeklyClass);
 			weeklyClass.setAssignedGA(mostAvailableGA);
