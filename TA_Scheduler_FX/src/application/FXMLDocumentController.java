@@ -26,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -47,7 +48,7 @@ public class FXMLDocumentController implements Initializable {
 	@FXML
 	TextArea resultsText;
 	@FXML
-	CheckBox saveBox;
+	CheckMenuItem saveBox;
 	@FXML
 	TextField hoursRequired;
 	@FXML
