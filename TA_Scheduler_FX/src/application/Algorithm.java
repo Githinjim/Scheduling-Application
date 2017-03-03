@@ -379,11 +379,52 @@ public class Algorithm {
 		
 		if (mostAvailableGA != null && MAX_HOURS >= mostAvailableGA.getHoursAssigned() + weeklyClass.getWorkTime())
 		{
-			mostAvailableGA.addAssistingClass(weeklyClass);
+			//mostAvailableGA.addAssistingClass(weeklyClass);
+			mostAvailableGA.addAssistingClass(createFakeClass(weeklyClass, mostAvailableGA));
 			weeklyClass.setAssignedGA(mostAvailableGA);
 			returnVal = true;
 		}
 		return returnVal;
+	}
+	
+	public Class createFakeClass(Class realClass, GraduateAssistant grad){
+		Class fakeClass = realClass;
+		String startTime = realClass.getStartTime();
+		String endTime = realClass.getEndTime();
+		
+		String newStart = "";
+		String newEnd = "";
+		
+		//changing start time
+		for(int i = stringToHour(startTime); i < stringToHour(endTime);){
+			newStart = hourToString(i);
+			if(grad.isAvailable(realClass.getDaysOfWeek(), newStart, endTime)){
+				break;
+			}else{
+				i++;
+			}
+			
+		}//end for loop
+		
+		//change end time
+		for(int i = stringToHour(endTime); i > stringToHour(startTime);){
+			newEnd = hourToString(i);
+			if(grad.isAvailable(realClass.getDaysOfWeek(), startTime, newEnd)){
+				break;
+			}else{
+				i--;
+			}
+			
+		}//end for loop
+		
+		//compare the two different end times
+		if((stringToHour(endTime) - stringToHour(newStart)) > (stringToHour(newEnd) - stringToHour(startTime))){
+			fakeClass.setStartTime(newStart);
+		}
+		else{
+			fakeClass.setEndTime(newEnd);
+		}
+		return fakeClass;
 	}
 	
 	/**
