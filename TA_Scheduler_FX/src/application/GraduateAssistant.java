@@ -229,6 +229,7 @@ public class GraduateAssistant {
 	public void removeAssisting(Class weekly){
 		
 		listOfClassAssisting.remove(weekly);
+		availability.setFree(weekly.getDaysOfWeek(), weekly.getStartTime(), weekly.getEndTime());
 		hoursAssigned  -= weekly.getWorkTime();
 	}//end method removeClassFromCurrentList
 	

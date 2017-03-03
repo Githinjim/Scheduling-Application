@@ -1019,7 +1019,7 @@ public class FXMLDocumentController implements Initializable {
 			workbook.write(fileOut);
 			fileOut.flush();
 			fileOut.close();
-			resultsText.appendText("File has been saved!");
+			resultsText.appendText("File has been saved!\n");
 			if (saveBox.isSelected()) {
 				// open excel file if checkbox is checked
 				Desktop dt = Desktop.getDesktop();
@@ -1174,7 +1174,7 @@ public class FXMLDocumentController implements Initializable {
 		{
 			for (Class weekly : best_unassigned) {
 				if (weekly.getAssignedGA().size() > 0) {
-					resultsText.appendText(weekly.getClassNumber() + " has a partial assignment\n");
+					resultsText.appendText(weekly.getClassNumber() + " (assigned to " + weekly.getAssignedGA() +") " + " has a partial assignment\n");
 				}
 			}
 		}
@@ -1187,7 +1187,7 @@ public class FXMLDocumentController implements Initializable {
 			{
 				if (weekly.getAssignedGA().size() == 0) 
 				{
-					resultsText.appendText(weekly.getClassNumber() + " is unassigned\n");
+					resultsText.appendText(weekly.getClassNumber() + " with " + weekly.getProfessor() + " is unassigned\n");
 				}
 			}
 		}

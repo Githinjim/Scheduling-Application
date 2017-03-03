@@ -24,6 +24,8 @@ public class Class {
 	private int numberOfGAs;
 	private int prepHours;
 	private int uniqueIdentifier = -1;
+	private boolean isClone = false;
+	private int workHours = 0;
 
 	/**
 	 * 
@@ -258,6 +260,9 @@ public class Class {
 	}
 
 	public int getWorkTime(){
+		
+		if (isClone == false)
+		{
 		ArrayList<String> timeList = new ArrayList<String>();
 		timeList.add("6am");
 		timeList.add("7am");
@@ -278,7 +283,9 @@ public class Class {
 		
 		int startIndex = timeList.indexOf(this.getStartTime().toLowerCase());
 		int endIndex = timeList.indexOf(this.getEndTime().toLowerCase());
-		return ((endIndex - startIndex) * this.daysOfWeek.size()) + prepHours;
+		workHours = ((endIndex - startIndex) * this.daysOfWeek.size()) + prepHours;
+		}
+		return workHours;
 		
 	} //end method getTotalTime
 	
@@ -346,6 +353,7 @@ public class Class {
 		classClone.startTime = this.startTime;
 		classClone.endTime = this.endTime;
 		classClone.daysOfWeek = this.daysOfWeek;
+
 		
 		for (GraduateAssistant assigned : assignedGA)
 		{
@@ -355,6 +363,7 @@ public class Class {
 		classClone.numberOfGAs = this.numberOfGAs;
 		classClone.prepHours = this.prepHours;
 		classClone.uniqueIdentifier = this.uniqueIdentifier;
+		classClone.isClone = true;
 		return classClone;
 	}
 	
