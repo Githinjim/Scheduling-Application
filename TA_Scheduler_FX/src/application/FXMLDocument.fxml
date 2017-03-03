@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.web.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxWidth="-Infinity" prefHeight="292.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FXMLDocumentController">
+<AnchorPane maxWidth="-Infinity" prefHeight="292.0" prefWidth="622.0" styleClass="separator-label" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FXMLDocumentController">
     <children>
       <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="622.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -14,21 +13,22 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#selectGAs" text="Select Grad. Students" />
                   <MenuItem mnemonicParsing="false" onAction="#selectClasses" text="Select Classes" />
-                  <MenuItem mnemonicParsing="false" onAction="#runAlgorithm" text="Run Algorithm" />
+                  <MenuItem mnemonicParsing="false" onAction="#runAlgorithm" text="Create Schedule" />
                   <MenuItem mnemonicParsing="false" onAction="#handle" text="Save Results" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
                   <CheckMenuItem fx:id="saveBox" mnemonicParsing="false" selected="true" text="Open After Save" />
-                  <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
-                     <content>
-                        <TextField fx:id="hoursRequired" promptText="Hours to Work" text="20" />
-                     </content>
-                     <graphic>
-                        <TextArea prefHeight="200.0" prefWidth="200.0" text="Test" />
-                     </graphic>
-                  </CustomMenuItem>
+                  <Menu mnemonicParsing="false" text="Num Hours TA's Required to Work">
+                    <items>
+                        <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Num Hours TA's Required to Work">
+                           <content>
+                              <TextField fx:id="hoursRequired" promptText="Hours to Work" text="20" />
+                           </content>
+                        </CustomMenuItem>
+                    </items>
+                  </Menu>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

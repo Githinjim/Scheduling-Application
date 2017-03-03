@@ -25,9 +25,10 @@ public class GUI extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setTitle("TA/GA Scheduler");
+        stage.setTitle("TA Scheduler");
         stage.setResizable(false);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("wildcatIcon.jpg")));
+        scene.getStylesheets().add(GUI.class.getResource("CWUTheme.css").toExternalForm());
         stage.show();
     }
 

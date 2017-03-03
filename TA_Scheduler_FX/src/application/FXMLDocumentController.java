@@ -44,6 +44,7 @@ public class FXMLDocumentController implements Initializable {
 	ArrayList<Class> classes = new ArrayList<Class>();
 	ArrayList<CellStyle> classStyleSheetList = new ArrayList<CellStyle>();
 	private int uniqueIdentifierCounter = 0;
+	private int hasRun = 0;
 
 	@FXML
 	TextArea resultsText;
@@ -1124,6 +1125,8 @@ public class FXMLDocumentController implements Initializable {
 
 	@FXML
 	private void runAlgorithm(ActionEvent event) {
+		if (hasRun == 0)
+		{
 		resultsText.appendText("Starting to assign TAs\n");
 		double totalHours = 0;
 		double workedHours = -1;
@@ -1203,6 +1206,12 @@ public class FXMLDocumentController implements Initializable {
 		System.out.println();
 
 		resultsText.appendText("Finished Assigning TAs\n");
+		hasRun = 1;
+		}
+		else 
+		{
+			resultsText.appendText("Already Ran Algorithm\n");
+		}
 	}
 
 	@Override
