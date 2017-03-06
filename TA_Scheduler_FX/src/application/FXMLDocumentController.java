@@ -11,8 +11,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
+
 
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -335,6 +341,23 @@ public class FXMLDocumentController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void helpAction(ActionEvent event){
+		try{
+		//File myFile = new File("Scheduling-Application\\TA_Scheduler_FX\\src\\Application\\User_Manual");
+		//InputStream myFile = getClass().getResourceAsStream("wildcatIcon.jpg");
+		//Desktop.getDesktop().open(myFile.);
+			String inputPdf = "User_Manual.pdf";
+			Path tempOutput = Files.createTempFile("manual", ".pdf");
+			tempOutput.toFile().deleteOnExit();
+			InputStream is = getClass().getResourceAsStream(inputPdf);
+			Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+			Desktop.getDesktop().open(tempOutput.toFile());
+		}catch(IOException e){
+			resultsText.appendText("Error when opening the user manual.");
+		}
+	}
+	
 	@FXML
 	public void handle(ActionEvent event) {
 
