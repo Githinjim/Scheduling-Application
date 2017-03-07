@@ -1049,12 +1049,12 @@ public class FXMLDocumentController implements Initializable {
 				// open excel file if checkbox is checked
 				Desktop dt = Desktop.getDesktop();
 				dt.open(new File(file.getAbsolutePath()));
-				resultsText.appendText("Saved File will open shortly on your Desktop as an Excel Spreed Sheet\n");
+				resultsText.appendText("Saved File will open shortly on your Desktop as an Excel Spread Sheet\n");
 
 			}
 		} catch (FileNotFoundException e) {
 			resultsText.appendText(
-					"Error when saving file: Please check to make sure the file you are saving to is not already open.  Then try to save file again.\n");
+					"Error when saving file: Please check to make sure the file you are saving to is not already open.Then try to save file again.\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
