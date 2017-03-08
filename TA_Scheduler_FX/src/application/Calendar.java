@@ -14,10 +14,11 @@ public class Calendar {
 	}
 	
 	/**
+	 * get if the given time is available or not
 	 * 
-	 * @param day
-	 * @param hour
-	 * @return
+	 * @param day	an integer for the day value 0 being Monday and 4 being Friday
+	 * @param hour	an integer for the hour, 0 being 6am and 14 being 8pm
+	 * @return		true for is available and false for not
 	 */
 	public boolean getAvailable(int day, int hour)
 	{
@@ -36,10 +37,11 @@ public class Calendar {
 	}
 	
 	/**
+	 *  get if the given time is available or not
 	 * 
-	 * @param day
-	 * @param hour
-	 * @return
+	 * @param day 	an integer for the day value 0 being Monday and 4 being Friday
+	 * @param hour	a string value for the hour.
+	 * @return		true for is available and false for not
 	 */
 	public boolean getAvailable(int day, String hour)
 	{
@@ -57,10 +59,11 @@ public class Calendar {
 	}
 	
 	/**
+	 *  get if the given time is available or not
 	 * 
-	 * @param day
-	 * @param hour
-	 * @return
+	 * @param day	a string value for the day monday - friday
+	 * @param hour	a string for the hour of the day
+	 * @return		true for is available and false for is not
 	 */
 	public boolean getAvailable(String day, String hour)
 	{
@@ -81,11 +84,12 @@ public class Calendar {
 	}
 	
 	/**
+	 *  get if the given time is available or not
 	 * 
-	 * @param day
-	 * @param startHour
-	 * @param endHour
-	 * @return
+	 * @param day			integer value for the day, 0 being monday and 4 being friday
+	 * @param startHour		a string value for the starting hour (example 6am)
+	 * @param endHour		a string value for the ending hour (example 7am)
+	 * @return				true for is available and false for not available
 	 */
 	public boolean getAvailable(int day, String startHour, String endHour)
 	{
@@ -108,9 +112,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set the desired hour of a day to busy
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	an integer value for the day, 0 being monday and 4 being friday
+	 * @param hour	an integer value for the hour, 0 being 6am and 14 being 8pm
 	 */
 	public void setBusy(int day, int hour)
 	{
@@ -125,9 +130,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set the desired hour of a day to busy
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	an integer value for the day, 0 being monday and 4 being friday
+	 * @param hour	a string value for the hour, 6am - 8pm
 	 */
 	public void setBusy(int day, String hour)
 	{
@@ -144,9 +150,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set the desired hour of a day to busy
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	a string value for the day, monday - friday
+	 * @param hour	a string value for the hour, 6am - 8pm
 	 */
 	public void setBusy(String day, String hour)
 	{
@@ -163,10 +170,11 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set the desired hours of a day to busy
 	 * 
-	 * @param day
-	 * @param startHour
-	 * @param endHour
+	 * @param day		the integer value for the day, 0 being monday and 4 being friday
+	 * @param startHour	a string value for the starting hour of being busy. 6am - 8pm
+	 * @param endHour	a string value for the ending hour of being busy. 6am - 8pm
 	 */
 	public void setBusy(int day, String startHour, String endHour)
 	{
@@ -180,10 +188,11 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set the desired hours of multiple days to busy
 	 * 
-	 * @param day
-	 * @param startHour
-	 * @param endHour
+	 * @param day		an array of integers for the days to set busy, 0 being monday and 4 being friday
+	 * @param startHour	a string value for the starting hours of being busy, 6am - 8pm
+	 * @param endHour	a string value for the ending hours of being
 	 */
 	public void setBusy(ArrayList<Integer> days, String startHour, String endHour)
 	{
@@ -200,9 +209,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * Used to free up a desired hour of a day
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	an integer value for the day, 0 for monday and 4 for friday
+	 * @param hour	hour of the day, 6am - 8pm
 	 */
 	public void setFree(int day, int hour)
 	{
