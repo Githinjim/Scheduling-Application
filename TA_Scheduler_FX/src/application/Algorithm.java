@@ -36,8 +36,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @param GA
+	 * Add a graduate student for scheduling
+	 * @param GA The graduate student to add
 	 */
 	public void addGradStudent(GraduateAssistant GA)
 	{
@@ -45,8 +45,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @param newClass
+	 * Add a Class for scheduling
+	 * @param newClass The class to add
 	 */
 	public void addClass(Class newClass)
 	{
@@ -113,8 +113,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @return Total number of hours worked by GAs
+	 * Calculates the total number of hours worked by Graduate Assistants
+	 * @return Total hours worked by GAs
 	 */
 	public int getStudentHours()
 	{
@@ -129,8 +129,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @return Total number of class hours that require a TA
+	 * Calculates the total number of work hours available
+	 * @return Total hours that require a TA
 	 */
 	public int getClassHours()
 	{
@@ -286,8 +286,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @param weeklyClass
+	 * Performs assignments while ignoring qualifications
+	 * @param weeklyClass The class to assign
 	 * @return True if the classes was assigned
 	 */
 	private boolean assignIgnoringQualifications(Class weeklyClass)
@@ -334,12 +334,9 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @param days
-	 * @param startTime
-	 * @param endTime
-	 * @param ga
-	 * @return
+	 * Assign a class with a Graduate Assistant who is available for part of the necessary hours
+	 * @param weeklyClass The class to assign
+	 * @return True if a class was assigned
 	 */
 	private boolean assignPartialHours(Class weeklyClass)
 	{
@@ -387,59 +384,13 @@ public class Algorithm {
 		}
 		return returnVal;
 	}
-	
-	public Class createFakeClass(Class realClass, GraduateAssistant grad){
-		Class fakeClass = realClass;
-		String startTime = realClass.getStartTime();
-		String endTime = realClass.getEndTime();
 		
-		String newStart = "";
-		String newEnd = "";
-		
-		//changing start time
-		for(int i = stringToHour(startTime); i < stringToHour(endTime);){
-			
-			if(grad.isAvailable(realClass.getDaysOfWeek(), newStart, endTime))
-			{
-				newStart = hourToString(i);
-				break;
-			}
-			else
-			{
-				i++;
-			}
-			
-		}//end for loop
-		
-		//change end time
-		for(int i = stringToHour(endTime); i > stringToHour(startTime);){
-			
-			if(grad.isAvailable(realClass.getDaysOfWeek(), startTime, newEnd))
-			{
-				newEnd = hourToString(i);
-				break;
-			}
-			else
-			{
-				i--;
-			}
-			
-		}//end for loop
-		
-		//compare the two different end times
-		if((stringToHour(endTime) - stringToHour(newStart)) > (stringToHour(newEnd) - stringToHour(startTime))){
-			fakeClass.setStartTime(newStart);
-		}
-		else{
-			fakeClass.setEndTime(newEnd);
-		}
-		return fakeClass;
-	}
-	
 	/**
-	 * 
-	 * @param weeklyClass
-	 * @return
+	 * Assigns a Graduate Assistant to a class.  Ignores qualifications for the class
+	 * and allows the Graduate Assistant to be assigned if they are available for part of the 
+	 * class's hours
+	 * @param weeklyClass The class to assign
+	 * @return True if the class was assigned
 	 */
 	private boolean assignIgnoringQualificationsAndTimes(Class weeklyClass)
 	{
@@ -488,8 +439,8 @@ public class Algorithm {
 	}
 	
 	/**
-	 * 
-	 * @param c1
+	 * Determines if two classes have overlapping times
+	 * @param c1 
 	 * @param c2
 	 * @return True if Class 1 has any hours that overlap with Class 2
 	 */
@@ -590,7 +541,7 @@ public class Algorithm {
 	/**
 	 * Converts an integer representation to it's equivalent String
 	 * @param hour
-	 * @return
+	 * @return The string representation of an hour
 	 */
 	private String hourToString(int hour)
 	{
@@ -646,6 +597,9 @@ public class Algorithm {
 	}
 	
 	@Override
+	/**
+	 * Returns a duplicate of the algorithm
+	 */
 	public Algorithm clone()
 	{
 		Algorithm algClone = new Algorithm();
@@ -663,11 +617,19 @@ public class Algorithm {
 		return algClone;
 	}
 	
+	/**
+	 * 
+	 * @return The list of Graduate Assistants
+	 */
 	public ArrayList<GraduateAssistant> getGAList()
 	{
 		return students;
 	}
 	
+	/**
+	 * 
+	 * @return THe list of Classes
+	 */
 	public ArrayList<Class> getClassList()
 	{
 		return classes;
