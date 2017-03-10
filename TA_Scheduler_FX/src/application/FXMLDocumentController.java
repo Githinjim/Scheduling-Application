@@ -63,11 +63,11 @@ public class FXMLDocumentController implements Initializable {
 
 	@FXML
 	/**
-	 * Method for opening several Excel files and reading them in to populate GA
+	 * Method for opening several Excel files and reading them in to populate assistant
 	 * data structures
 	 * 
-	 * @param event
-	 * @throws Exception
+	 * @param event			Event for when the upload assistants button is clicked
+	 * @throws Exception	Exception for if the file read in is not an excel file
 	 */
 	private void selectGAs(ActionEvent event) throws Exception {
 		List<File> list = fileChooser.showOpenMultipleDialog(null);
@@ -253,8 +253,8 @@ public class FXMLDocumentController implements Initializable {
 	/**
 	 * Method for selecting offered classes and reading the data in.
 	 * 
-	 * @param event
-	 * @throws Exception
+	 * @param event			Event for when the read in classes button is clicked
+	 * @throws Exception	Exception for if the file selected to read in is not an excel file.
 	 */
 	private void selectClasses(ActionEvent event) throws Exception {
 		resultsText.appendText("Loading Classes.\n");
@@ -342,6 +342,11 @@ public class FXMLDocumentController implements Initializable {
 	}
 
 	@FXML
+	/**
+	 * Used to display the user manual to the user in the form of a PDF
+	 * 
+	 * @param event	Event for when the user manual button is clicked.
+	 */
 	public void helpAction(ActionEvent event){
 		try{
 		//File myFile = new File("Scheduling-Application\\TA_Scheduler_FX\\src\\Application\\User_Manual");
@@ -359,6 +364,11 @@ public class FXMLDocumentController implements Initializable {
 	}
 	
 	@FXML
+	/**
+	 * Used to start the handling process for saving the schedule.
+	 * 
+	 * @param event	Event for when the saave scheule button is pressed.
+	 */
 	public void handle(ActionEvent event) {
 
 		FileChooser fileChooser = new FileChooser();
@@ -377,6 +387,12 @@ public class FXMLDocumentController implements Initializable {
 
 	}
 
+	
+	/**
+	 * Used to save the schedule to the excel file.
+	 * 
+	 * @param file	The file name to save to
+	 */
 	private void saveFile(File file) {
 		int rowCounter = 0;
 		int columnCounter = 0;
@@ -1061,6 +1077,12 @@ public class FXMLDocumentController implements Initializable {
 
 	}// end save file method
 
+	/**
+	 * Used to convert an int to a String in the terms of 0 being 6am and 15 being 8pm
+	 * 
+	 * @param intHour	The int of the hour
+	 * @return			The corresponding string to the parameter input
+	 */
 	private static String intToHour(int intHour) {
 		switch (intHour) {
 		case 1:
@@ -1109,6 +1131,13 @@ public class FXMLDocumentController implements Initializable {
 		}// end switch
 	}// end method intToDay
 
+	/**
+	 * Used to convert a string to an hours in terms of 6am being 0 and
+	 * 8pm being 15
+	 * 
+	 * @param stringDay	The input day to convert	
+	 * @return			the corresponding int value
+	 */		
 	private static int stringToHour(String stringDay) {
 		switch (stringDay) {
 		case "6am":
@@ -1147,6 +1176,11 @@ public class FXMLDocumentController implements Initializable {
 	}// end method intToDay
 
 	@FXML
+	/**
+	 * Used to run the sorting algorithm
+	 * 
+	 * @param event	Event click for when run algorithm is pressed.
+	 */
 	private void runAlgorithm(ActionEvent event) {
 		if (hasRun == 0)
 		{

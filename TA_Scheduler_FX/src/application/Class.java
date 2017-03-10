@@ -28,6 +28,7 @@ public class Class {
 	private int workHours = 0;
 
 	/**
+	 * Default Constructor
 	 * 
 	 */
 	public Class()
@@ -46,28 +47,43 @@ public class Class {
 	
 	/**
 	 * Constructor for creating a class with a number of GAs
-	 * @param numberOfGAs
+	 * @param numberOfGAs	The number of graduates needed for the class
 	 */
 	public Class(int numberOfGAs){
 		this.numberOfGAs = numberOfGAs;
 		prepHours = 0;
 	}
 	
+	/**
+	 * used to set the unique identifier of the class
+	 * 
+	 * @param id	The unique identifier
+	 */
 	public void setUniqueIdentifier(int id){
 		uniqueIdentifier = id;
 	}//end method setUniqueIdentifier
 	
+	/**
+	 * used to receive the unique identifier 
+	 * 
+	 * @return	the unique identifier
+	 */
 	public int getUniqueIdentifier(){
 		return uniqueIdentifier;
 	}
 	
+	/**
+	 * Used to set the number of preperation hours for the given class
+	 * 
+	 * @param hours	The hours of prep for the class
+	 */
 	public void setPrepHours(int hours){
 		prepHours = hours;
 	}
 	
 	/**
 	 * Method for adding a day of the week that the class occurs
-	 * @param day
+	 * @param day The day of the week to add, 0 being monday and 4 being Friday
 	 */
 	public void addDayOfWeek(int day)
 	{
@@ -80,7 +96,7 @@ public class Class {
 	
 	/**
 	 * Method for adding a day of the week that the class occurs
-	 * @param day
+	 * @param day	The day of the week to add, monday - friday
 	 */
 	public void addDayOfWeek(String day)
 	{
@@ -103,9 +119,9 @@ public class Class {
 	}
 	
 	/**
-	 * This method will add the a GA (name of the GA to the ArrayList)
+	 * Used to add a GA to the list of possible assistant available
 	 * 
-	 * @param newGA - the name of the GA that is to be added
+	 * @param newGA - The graduate assistant to add
 	 */
 	public void addAvailableGA(GraduateAssistant newGA){
 		
@@ -114,8 +130,9 @@ public class Class {
 	}//end method addAvailableGA
 	
 	/**
+	 * Sets the start time of the class
 	 * 
-	 * @param newTime
+	 * @param newTime	The start time of the class in string form, 6am - 8pm
 	 */
 	public void setStartTime(String newTime)
 	{
@@ -124,8 +141,9 @@ public class Class {
 	}//end method setStartTime
 	
 	/**
+	 * Sets the end time of the class
 	 * 
-	 * @param newTime
+	 * @param newTime	The end time of the class, 6am - 8pm
 	 */
 	public void setEndTime(String newTime)
 	{
@@ -133,8 +151,9 @@ public class Class {
 	}//end method setEndTime
 	
 	/**
+	 * Sets the days of the week the class occurs
 	 * 
-	 * @param newDays
+	 * @param newDays	the list of days the class occurs, 0 being monday and 4 being friday
 	 */
 	public void setDaysOfWeek(ArrayList<Integer> newDays)
 	{
@@ -142,8 +161,10 @@ public class Class {
 	}
 	
 	/**
+	 * set a graduate assistant to assist with the class
 	 * 
-	 * @param ga
+	 * @param ga	The graduate to assist with the class
+	 * @return		false for is the assistant was not still available and true for if it was assign
 	 */
 	public boolean setAssignedGA(GraduateAssistant ga)
 	{
@@ -160,6 +181,7 @@ public class Class {
 	
 	/**
 	 * This method will add the class number
+	 * 
 	 * @param newClassNumber - the classNumber
 	 */
 	public void setClassNumber(String newClassNumber){
@@ -182,7 +204,7 @@ public class Class {
 	/**
 	 * This method is used to set the qualifications of the class
 	 * 
-	 * @param newQualifications - the newQualification
+	 * @param newQualifications - the newQualifications
 	 */
 	public void setQualifications(ArrayList<String> newQualifications){
 		
@@ -237,8 +259,9 @@ public class Class {
 	}//end method getNumberOfAvailableGA
 	
 	/**
+	 * Used to get the start time of the class
 	 * 
-	 * @return
+	 * @return the start time, 6am - 8pm
 	 */
 	public String getStartTime()
 	{
@@ -246,19 +269,31 @@ public class Class {
 	}
 	
 	/**
+	 * User to get the end time of the class
 	 * 
-	 * @return
+	 * @return the end time, 6am - 8pm
 	 */
 	public String getEndTime()
 	{
 		return endTime;
 	}
 	
+	/**
+	 * used to get the number of preparation hours
+	 * 
+	 * @return an int value for how many prep hours are needed
+	 */
 	public int getPrepHours()
 	{
 		return prepHours;
 	}
 
+	/**
+	 * used to get the total amount of hours the class is being held.
+	 * This is based off of the startTime and endTime
+	 * 
+	 * @return	the number of hours the class is held.
+	 */
 	public int getWorkTime(){
 		
 		if (isClone == false)
@@ -289,28 +324,40 @@ public class Class {
 		
 	} //end method getTotalTime
 	
+	/**
+	 * Used to get the days of the week that the class is offered.
+	 * 
+	 * @return	The list of the days that the class is offered.
+	 */
 	public ArrayList<Integer> getDaysOfWeek()
 	{
 		return daysOfWeek;
 	}
 	
 	/**
+	 * used to get a list of all the available assistant that are available to teach this class,
+	 * based off of the initial times available
 	 * 
-	 * @return
+	 * @return	The list of the assistant available.
 	 */
 	public ArrayList<GraduateAssistant> getAvailableGA()
 	{
 		return availableGAs;
 	}
 	
+	/**
+	 * Used to get all the assistant that have been assigned.
+	 * 
+	 * @return	The list of the assistant that have been assigned this class.
+	 */
 	public ArrayList<GraduateAssistant> getAssignedGA()
 	{
 		return assignedGA;
 	}
 	
 	/**
+	 * Used to remove all assistants that were previously assigned
 	 * 
-	 * @param ga
 	 */
 	public void removeAssignedGA()
 	{
@@ -318,25 +365,42 @@ public class Class {
 	}
 	
 	/**
+	 * Used to remove a single assistant that has been assigned this class
 	 * 
-	 * @param ga
+	 * @param ga	The assistant to move.
 	 */
 	public void removeAssignedGA(GraduateAssistant ga)
 	{
 		assignedGA.remove(ga);
 	}
 	
+	/**
+	 * Used to remove an assistant that was marked as available to the class
+	 * 
+	 * @param ga	The assistant to remove
+	 */
 	public void removeAvailableGA(GraduateAssistant ga)
 	{
 		availableGAs.remove(ga);
 	}
 	
+	/**
+	 * Used to reset the data structure instance to no assigned assistant and no 
+	 * available assistants
+	 * 
+	 */
 	public void resetClass()
 	{
 		assignedGA.clear();
 		availableGAs.clear();
 	}
 	
+	/**
+	 * Used to return the class number
+	 * 
+	 * @return the class number
+	 * 
+	 */
 	@Override
 	public String toString()
 	{
@@ -344,6 +408,12 @@ public class Class {
 	}
 	
 	@Override
+	/**
+	 * Creates a clone of this instance of a class
+	 * 
+	 * @return the clone of the class
+	 * 
+	 */
 	public Class clone()
 	{
 		Class classClone = new Class();

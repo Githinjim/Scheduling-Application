@@ -227,9 +227,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * Used to free up an hour of a day for a desired day
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	day to be free'ed from, 0 being monday and 4 being friday
+	 * @param hour	the hour of the day, 6am through 8pm
 	 */
 	public void setFree(int day, String hour)
 	{
@@ -246,9 +247,10 @@ public class Calendar {
 	}
 	
 	/**
+	 * Used to free up an hour of a day for a desired day
 	 * 
-	 * @param day
-	 * @param hour
+	 * @param day	day to be free'ed from, monday through friday
+	 * @param hour	the hour of the day, 6am - 8pm
 	 */
 	public void setFree(String day, String hour)
 	{
@@ -265,10 +267,11 @@ public class Calendar {
 	}
 	
 	/**
+	 * used to set a time frame free for a given day
 	 * 
-	 * @param day
-	 * @param startHour
-	 * @param endHour
+	 * @param day		The day to set free, 0 being monday and 4 being Friday
+	 * @param startHour	The start hour to set free, 6am - 8pm
+	 * @param endHour	The end hour to set free (not inclusive), 6am - 8pm
 	 */
 	public void setFree(int day, String startHour, String endHour)
 	{
@@ -281,6 +284,13 @@ public class Calendar {
 		}
 	}
 	
+	/**
+	 * used to set a time frame free for given days
+	 * 
+	 * @param days		the days to be set free, 0 being monday and 4 being friday
+	 * @param startHour	the start hour to set free, 6am - 8pm
+	 * @param endHour	the end hour (not inclusive) to set free. 6am - 8pm
+	 */
 	public void setFree(ArrayList<Integer> days, String startHour, String endHour)
 	{
 		int startTime = stringToHour(startHour);
@@ -296,9 +306,11 @@ public class Calendar {
 	}
 	
 	/**
-	 * 
-	 * @param day
-	 * @return
+	 * Used to change a string of a day to the corresponding day in integer form, 0 
+	 * being monday and 4 being friday
+	 * 	
+	 * @param day	the string value of the day, ex Monday
+	 * @return		The corresponding int value for the day
 	 */
 	private int stringToDay (String day)
 	{
@@ -327,6 +339,13 @@ public class Calendar {
 		return dayOfWeek;
 	}
 	
+	/**
+	 * Used to convert a string of an an hour (6am - 8pm) to the corresponding int value
+	 * (6am being 0 and 8pm being 14)
+	 * 
+	 * @param hour	String to convert to corresponding string hour to int value
+	 * @return		The int value of the hour
+	 */
 	private int stringToHour(String hour)
 	{
 		int time = -1;

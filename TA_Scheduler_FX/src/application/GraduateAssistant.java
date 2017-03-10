@@ -29,8 +29,8 @@ public class GraduateAssistant {
 	
 	/**
 	 * Constructor that allows for the initialization of the name and phone number of the GA
-	 * @param name
-	 * @param phone
+	 * @param name	name of the assistant
+	 * @param phone	phone number of the assistant
 	 */
 	public GraduateAssistant(String name, String phone)
 	{
@@ -44,16 +44,18 @@ public class GraduateAssistant {
 	}
 	
 	/**
+	 * Used to add a qualification
 	 * 
-	 * @param newQualification
+	 * @param newQualification	The new qualification
 	 */
 	public void addQualification(String newQualification){
 		qualifiedClasses.add(newQualification);
 	}
 	
 	/**
+	 * Used to add to the total number of hours the assistant is currently assisting with.
 	 * 
-	 * @param hoursToAdd
+	 * @param hoursToAdd	The number of hours to add.
 	 */
 	public void addToHours(int hoursToAdd){
 		hoursAssigned += hoursToAdd;
@@ -84,8 +86,9 @@ public class GraduateAssistant {
 	}//end method addClassToCurrentList
 	
 	/**
+	 * User to get the hours currently assisting with
 	 * 
-	 * @return
+	 * @return	The number of hours
 	 */
 	public int getHoursAssigned(){
 		
@@ -93,8 +96,9 @@ public class GraduateAssistant {
 	}
 	
 	/**
+	 * Used to get all the qualifications that the assistant has.
 	 * 
-	 * @return
+	 * @return	A list of all the qualifications.
 	 */
 	public ArrayList<String> getQualifications(){
 		return qualifiedClasses;
@@ -104,7 +108,7 @@ public class GraduateAssistant {
 	/**
 	 * This method will return the name of the grad student
 	 * 
-	 * @return
+	 * @return	name
 	 */
 	public String getName(){
 		
@@ -115,7 +119,7 @@ public class GraduateAssistant {
 	/**
 	 * This method will return the phoneNumber of the gradStudent
 	 * 
-	 * @return
+	 * @return	The phone number
 	 */
 	public String getPhoneNumber(){
 		
@@ -124,23 +128,31 @@ public class GraduateAssistant {
 	}//end method phoneNumber
 	
 	/**
+	 * Used to get a list of all the assigned classes.
 	 * 
-	 * @return
+	 * @return	All the assigned classes
 	 */
 	public ArrayList<Class> getAssignedClasses()
 	{
 		return listOfClassAssisting;
 	}
 	
+	/**
+	 * Used to get all the classes that this assistant could assist based on its available
+	 * times and qualifications from the initial set up.
+	 * 
+	 * @return	The potential classes the assistant could assist with.
+	 */
 	public ArrayList<Class> getPotentialClasses()
 	{
 		return listOfClassGACouldAssist;
 	}
 	
 	/**
+	 * Used to check if the assistant is available at a given time of a given day
 	 * 
-	 * @param dayOfWeek
-	 * @param time
+	 * @param dayOfWeek	Day of the week, 0 being Monday and 4 being Friday
+	 * @param time		The time of the day to set free, 6am - 8pm
 	 * @return
 	 */
 	public boolean isAvailable(int dayOfWeek, String time){
@@ -149,11 +161,12 @@ public class GraduateAssistant {
 	}//end method isAvailable
 	
 	/**
+	 * Used to get if the assistant available for a time period of a given day.
 	 * 
-	 * @param dayOfWeek
-	 * @param startTime
-	 * @param endTime
-	 * @return
+	 * @param dayOfWeek	The day wanting to check.
+	 * @param startTime	The time starting of the period to check if available, 6am - 8pm
+	 * @param endTime	The time ending of the period to check if available, 6am - 8pm
+	 * @return			True for is available, else false
 	 */
 	public boolean isAvailable(int dayOfWeek, String startTime, String endTime)
 	{
@@ -161,11 +174,12 @@ public class GraduateAssistant {
 	}
 	
 	/**
+	 * Used to get if the assistant available for a time period for multiple days.
 	 * 
-	 * @param dayOfWeek
-	 * @param startTime
-	 * @param endTime
-	 * @return
+	 * @param dayOfWeek	The days wanting to check.
+	 * @param startTime	The time starting of the period to check if available, 6am - 8pm
+	 * @param endTime	The time ending of the period to check if aailable, 6am - 8pm
+	 * @return			True for if available, else false.
 	 */
 	public boolean isAvailable(ArrayList<Integer> daysOfWeek, String startTime, String endTime)
 	{
@@ -182,9 +196,10 @@ public class GraduateAssistant {
 	}
 	
 	/**
+	 * Used to check if qualified for a given qualification.
 	 * 
-	 * @param qualification
-	 * @return
+	 * @param qualification	The qualification to check
+	 * @return				True for is qualified, else false.
 	 */
 	public boolean isQualified(String qualification){
 		qualification = qualification.split("[.]")[0];
@@ -197,9 +212,10 @@ public class GraduateAssistant {
 	}
 	
 	/**
+	 * Used to get if the assistant is qualified for multiple qualifications.
 	 * 
-	 * @param qualificationList
-	 * @return
+	 * @param 	qualificationList	The list of qualifications to check.
+	 * @return	true for is qualified, else false.
 	 */
 	public boolean isQualified(ArrayList<String> qualificationList){
 		boolean isQualified = false;
@@ -273,29 +289,32 @@ public class GraduateAssistant {
 	}//end setNotAvailableAt
 	
 	/**
+	 * used to set the assistant not available for a given day for a time period
 	 * 
-	 * @param dayOfWeek
-	 * @param startTime - The starting time the GA is available.
-	 * @param endTime - The ending time the GA is available. 
+	 * @param dayOfWeek	The day of the week, 0 being monday and 4 being Friday
+	 * @param startTime Starting time for time period, 6am - 8pm
+	 * @param endTime	The ending time for the tme period, 6am - 8pm
 	 */
 	public void setNotAvailableAt(int dayOfWeek, String startTime, String endTime){
 		availability.setBusy(dayOfWeek, startTime, endTime);		
 	}//end setNotAvailableAt
 	
 	/**
+	 * Used to set the assistant available for a given day and time
 	 * 
-	 * @param dayOfWeek - The day of the week
-	 * @param time - Time the GA is available
+	 * @param dayOfWeek	The day of the week
+	 * @param time		Time the GA is available
 	 */
 	public void setAvailableAt(int dayOfWeek, String time){
 		availability.setFree(dayOfWeek, time);
 	}//end method setAvailableAt
 	
 	/**
+	 * Used to set the assistant available for a given day and a time period.
 	 * 
-	 * @param dayOfWeek - The day of the week
-	 * @param startTime - The starting time the GA is available.
-	 * @param endTime - The ending time the GA is available. 
+	 * @param dayOfWeek	The day of the week
+	 * @param startTime The starting time the GA is available.
+	 * @param endTime	The ending time the GA is available. 
 	 */
 	public void setAvailableAt(int dayOfWeek, String startTime, String endTime){
 		
@@ -304,11 +323,20 @@ public class GraduateAssistant {
 		
 	}//end method setAvailableAt
 	
+	/**
+	 * Used to remove a possible class for the corresponding list.
+	 * 
+	 * @param weeklyClass	The class to remove.
+	 */
 	public void removePossibleClass(Class weeklyClass)
 	{
 		listOfClassGACouldAssist.remove(weeklyClass);
 	}
 	
+	/**
+	 * Used to reset the assistant, setting all their times to free, all assisting and possible assisting class to empty.
+	 * 
+	 */
 	public void resetGA()
 	{
 		for (Class weekly : listOfClassAssisting)
@@ -322,12 +350,23 @@ public class GraduateAssistant {
 	}
 	
 	@Override
+	/**
+	 * Used to return the name of the assistant
+	 * 
+	 * @return	The name of the assistant
+	 * 
+	 */
 	public String toString()
 	{
 		return name;
 	}
 	
 	@Override
+	/**
+	 * Used to clone this assistant
+	 * 
+	 * @return	The cloned assistant
+	 */
 	public GraduateAssistant clone()
 	{
 		GraduateAssistant gaClone = new GraduateAssistant();
